@@ -1,4 +1,11 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2016.02.11 - version 2.10.6
+	* Update:  Add option to enable Dynamic Pricing Calculations when using this extension along with WooCommerce Dynamic Pricing.  
+		   Option is in the totals section when configuring products' gravity form options.   Option is only available when Dynamic Pricing is active. 
+
+	* Update:  Add filter, woocommerce_gforms_get_product_form_data to allow filtering of the gravity form attached to a product. 
+		   apply_filters( 'woocommerce_gforms_get_product_form_data', get_post_meta( $post_id, '_gravity_form_data', true ), $post_id );
+	
 2016.01.25 - version 2.10.5
 	* Update: Filter to load gravity form for variable product using old hook method.  
 		This is required for sites with WC 2.4+ but have themes which do not call the woocommerce_single_variation hook as 2.4+ requires.  
