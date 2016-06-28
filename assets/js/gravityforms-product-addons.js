@@ -140,7 +140,9 @@ jQuery(document).ready(function ($) {
 		$('.gform_next_button', 'form.cart').attr('onclick', '');
 		$('.gform_next_button', 'form.cart').click(function (event) {
 			window.location.hash = '#_form_' + gravityforms_params.form_id;
-
+			
+			$('form.cart').attr('action', window.location.hash);
+			
 			$("#gform_target_page_number_" + gravityforms_params.form_id).val(gravityforms_params.next_page);
 			$("form.cart").trigger("submit", [true]);
 
@@ -148,6 +150,10 @@ jQuery(document).ready(function ($) {
 
 		$('.gform_previous_button', 'form.cart').click(function (event) {
 			$("#gform_target_page_number_" + gravityforms_params.form_id).val(gravityforms_params.previous_page);
+			
+			window.location.hash = '#_form_' + gravityforms_params.form_id;
+			$('form.cart').attr('action', window.location.hash);
+			
 			$("form.cart").trigger("submit", [true]);
 		});
 	}
