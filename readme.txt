@@ -2,8 +2,8 @@
 Contributors: lucasstark
 Tags: woocommerce, gravity forms
 Requires at least: 3.0
-Tested up to: 3.3
-Stable tag: 1.3
+Tested up to: 4.5
+Stable tag: 2.10.7
 
 WooCommerce Gravity Forms.  This add-on requires Gravity Forms 1.6 or later.  
 

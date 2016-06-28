@@ -1,4 +1,19 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2016.06.20 - version 2.10.10
+	* Fix:  Correct WSOD issue when using the product_page shortcode. 
+	
+2016.06.16 - version 2.10.9
+	* Fix:  Prior to the 2.10.8 update the extension would automatically disable any emails from being sent by Gravity Forms
+		when an item was added to the cart.   This feature was missed in 2.10.8, and is added back here. 
+
+2016.06.13 - version 2.10.8
+	* Update:  Use new catalog visibility hook to render the form in the correct location. Requires WC 2.4 or greater. 
+	* Update:  Refactor cart and display logic into individual classes. 
+	* Fix:  Correct issue on admin screen with missing closing div
+	
+2016.04.12 - version 2.10.7
+	* Fix:  Correct issues with multipage forms, anchors, and Internet Explorer. 
+	
 2016.02.11 - version 2.10.6
 	* Update:  Add option to enable Dynamic Pricing Calculations when using this extension along with WooCommerce Dynamic Pricing.  
 		   Option is in the totals section when configuring products' gravity form options.   Option is only available when Dynamic Pricing is active. 
