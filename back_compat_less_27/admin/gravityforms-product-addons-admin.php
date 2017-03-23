@@ -35,7 +35,6 @@ class WC_GFPA_Admin_Controller {
 	}
 
 	function meta_box( $post ) {
-	    $product = wc_get_product($post);
 		?>
 
 		<script type="text/javascript">
@@ -52,7 +51,7 @@ class WC_GFPA_Admin_Controller {
 		<div id="gravityforms_data" class="panel woocommerce_options_panel">
 			<h4><?php _e( 'General', 'wc_gf_addons' ); ?></h4>
 			<?php
-			$gravity_form_data = $product->get_meta('_gravity_form_data', true );
+			$gravity_form_data = get_post_meta( $post->ID, '_gravity_form_data', true );
 			$gravityform = NULL;
 			if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_numeric( $gravity_form_data['id'] ) ) {
 
@@ -192,11 +191,15 @@ class WC_GFPA_Admin_Controller {
 		// Save gravity form as serialised array
 		if ( isset( $_POST['gravityform-id'] ) && !empty( $_POST['gravityform-id'] ) ) {
 
-            $product = wc_get_product($post);
+			$product = null;
+			if ( function_exists( 'get_product' ) ) {
+				$product = get_product( $post_id );
+			} else {
+				$product = new WC_Product( $post_id );
+			}
 
-
-			if ( $product->get_type() != 'variable' && empty( $product->get_price('edit') ) && ($product->get_price('edit') != '0' || $product->get_price('edit') != '0.00') ) {
-				wc_add_notice( __('You must set a price for the product before the gravity form will be visible.  Set the price to 0 if you are performing all price calculations with the attached Gravity Form.', 'woocommerce' ), 'error');
+			if ( $product->product_type != 'variable' && empty( $product->price ) && ($product->price != '0' || $product->price != '0.00') ) {
+				$woocommerce_errors[] = __( 'You must set a price for the product before the gravity form will be visible.  Set the price to 0 if you are performing all price calculations with the attached Gravity Form.', 'woocommerce' );
 			}
 
 			$gravity_form_data = array(
@@ -216,12 +219,9 @@ class WC_GFPA_Admin_Controller {
 			    'label_total' => $_POST['gravityform-label_total'],
 			    'use_ajax' => isset( $_POST['gravityform_use_ajax'] ) ? $_POST['gravityform_use_ajax'] : 'no'
 			);
-			$product->update_meta_data('_gravity_form_data', $gravity_form_data);
-            $product->save_meta_data();
+			update_post_meta( $post_id, '_gravity_form_data', $gravity_form_data );
 		} else {
-			$product = wc_get_product($post);
-            $product->delete_meta_data( '_gravity_form_data' );
-            $product->save_meta_data();
+			delete_post_meta( $post_id, '_gravity_form_data' );
 		}
 	}
 

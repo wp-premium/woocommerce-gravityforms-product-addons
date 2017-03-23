@@ -1,0 +1,174 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-11-15 09:33-0500\n"
+"PO-Revision-Date: 2016-11-15 09:34-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/gravityforms-product-addons-admin.php:24
+msgid ""
+"<strong>Gravity Forms Not Found</strong> &#8211; The Gravity Forms Plugin is "
+"required to build and manage the forms for your products."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:25
+msgid "Get Gravity Forms"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:34
+msgid "Gravity Forms Product Add-Ons"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:52
+msgid "General"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:67
+msgid "Choose Form"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:69
+msgid "None"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:80
+msgid "Display Title"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:85
+msgid "Display Description"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:100
+msgid "Multipage Forms"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:105
+msgid "Disable Gravity Forms Anchors"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:112
+msgid "Price Labels"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:117
+msgid "Remove WooCommerce Price?"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:120
+msgid "Price Before"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:122
+msgid "Base Price:"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:122
+msgid "Enter text you would like printed before the price of the product."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:124
+msgid "Price After"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:126
+msgid "Enter text you would like printed after the price of the product."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:132
+msgid "Total Calculations"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:139
+msgid "Enable Dynamic Pricing?"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:142
+msgid ""
+"Enable Dynamic Pricing calculations if you are using Dynamic Pricing to "
+"modify the price of this product."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:150
+msgid "Disable Calculations?"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:157
+msgid "Disable Subtotal?"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:160
+msgid "Subtotal Label"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:162
+#: gravityforms-product-addons-form.php:33
+msgid "Subtotal"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:162
+msgid "Enter \"Subtotal\" label to display on for single products."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:166
+msgid "Disable Options Label?"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:169
+msgid "Options Label"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:171
+#: gravityforms-product-addons-form.php:34
+msgid "Options"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:171
+msgid "Enter the \"Options\" label to display for single products."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:175
+msgid "Disable Total Label?"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:178
+msgid "Total Label"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:180
+#: gravityforms-product-addons-form.php:35
+msgid "Total"
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:180
+msgid "Enter the \"Total\" label to display for single products."
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:202
+msgid ""
+"You must set a price for the product before the gravity form will be "
+"visible.  Set the price to 0 if you are performing all price calculations "
+"with the attached Gravity Form."
+msgstr ""
+
+#: inc/gravityforms-product-addons-cart.php:46
+msgid " is invalid.  Please remove and try readding to the cart"
+msgstr ""
+
+#: inc/gravityforms-product-addons-display.php:27
+msgid "Select options"
+msgstr ""
+
+#: inc/html-order-item-meta.php:60
+msgid "Add&nbsp;meta"
+msgstr ""
