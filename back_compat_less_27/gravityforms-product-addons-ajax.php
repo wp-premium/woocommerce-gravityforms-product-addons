@@ -13,12 +13,19 @@ function woocommerce_gravityforms_get_updated_price() {
     $gform_total = isset($_POST['gform_total']) ? $_POST['gform_total'] : 0;
 
     $product_data = null;
-	$product_data = wc_get_product($variation_id > 0 ? $variation_id : $product_id);
-
+    if (function_exists('get_product')) {
+        $product_data = get_product($variation_id > 0 ? $variation_id : $product_id);
+    } else {
+        if ($variation_id > 0) :
+            $product_data = new WC_Product_Variation($variation_id);
+        else :
+            $product_data = new WC_Product($product_id);
+        endif;
+    }
     
     $discount_price = false;
     $gforms_discount_price = false;
-    $base_price = wc_get_price_to_display($product_data);
+    $base_price = $product_data->get_display_price();
 
     if (class_exists('WC_Dynamic_Pricing')) {
         $working_price = $base_price;
@@ -42,7 +49,7 @@ function woocommerce_gravityforms_get_updated_price() {
                 $gforms_working_price = $gforms_discount_price ? $gforms_discount_price : $gforms_base_price;
                 $gforms_working_price = $module->get_product_working_price($gforms_working_price, $product_data);
                 if (floatval($gforms_working_price)) {
-                    $gforms_discount_price = $module->get_discounted_price_for_shop($product_data, $gforms_working_price, $gform_total);
+                    $gforms_discount_price = $module->get_discounted_price_for_shop($product_data, $gforms_working_price);
                 }
             }
         }
