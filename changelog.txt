@@ -1,4 +1,51 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2017.02.16 - version 3.1.2
+    * Fix:  Fix notice in orders screen if the gravity form entry no longer exists.
+    * Fix:  Forms attached to variable products were no longer calculating grand total when variation changed.
+    * Fix:  Fix translation string for Select Options.
+
+2017.02.06 - version 3.1.1
+    * Fix:  Fixes issue where Max Length would show up twice on paragraph fields.
+    * Fix:  Fix issue with hanging when using Multiple Shipping Addresses plugin.
+
+2017.01.25 - version 3.1.0
+    * Major Update:
+        Gravity Form entries are now created when a customer places an order which has gravity forms data as part of it.
+        See the readme.txt for more details.
+
+    * Update:  WC 2.7 updates for adding order item meta.
+    * Update:  Adds some basic CSS for multifile upload button.
+    * Update:  Don't list gravity form product name twice when added to the cart, or order placed.
+    * Fix:  Include helper css for file uploaders on product shortcodes.
+
+2017.01.24 - version 3.0.2
+    * Update:  Include a filter to not delete the entries created when an item is added to the cart.
+    * Fix:     Fix issue with file uploaders.
+
+2017.01.19 - version 3.0.1
+    * Update:  Use a custom entry delete function so we don't delete files that are uploaded.
+
+2017.01.12 - version 3.0.0
+    * Update:  WooCommerce 2.7 Ready
+    * Update:  Remove gravity form entries after item added to the cart.
+               The entries are not connected to the actual order in any way and just cause confusion
+
+2017.01.05 - version 2.11.3
+    * Fix:  Remove deprecated code to gforms long field value.  Use RGFormsModel::get_lead_field_value instead.
+
+2016.11.23 - version 2.11.2
+    * Update: Allow products with gravity forms attached to work properly when loaded via WooCommerce Quick View extension.
+    * Update: Better handling of the scripts loaded and attached to each form.
+    * Update: Better compatibility with the WooCommerce products shortcode.
+    * Fix: Correct issue with variable reference missing $
+
+2016.11.15 - version 2.11.0
+    * Update: Include .pot language file for translators.
+
+2016.11.03 - version 2.10.11
+    * Update:  Added helper CSS classes to indicate if an item should be hidden from order emails and order administration screens.
+    * Update:  Added javascript function, get_gravity_forms_price so that extensions such as composite products can get the price of the form when re-loading parts of the composite.
+
 2016.06.20 - version 2.10.10
 	* Fix:  Correct WSOD issue when using the product_page shortcode. 
 	

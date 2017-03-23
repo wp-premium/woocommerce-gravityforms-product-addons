@@ -18,7 +18,7 @@ class WC_GFPA_Cart {
 		add_filter( 'woocommerce_get_item_data', array( $this, 'get_item_data' ), 10, 2 );
 		add_filter( 'woocommerce_add_cart_item', array( $this, 'add_cart_item' ), 10, 1 );
 
-		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'order_item_meta' ), 10, 3 );
+		add_action( 'woocommerce_add_order_item_meta', array( $this, 'order_item_meta' ), 10, 2 );
 		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99, 3 );
 
 		//Order Again
@@ -77,7 +77,7 @@ class WC_GFPA_Cart {
 			}
 
 			$cart_item['data']->adjust_price( $total );
-			$cart_item['_gform_total'] = $total;
+
 			error_reporting( $err_level );
 		}
 
@@ -240,6 +240,7 @@ class WC_GFPA_Cart {
 							$hidden = false;
 						} else {
 
+
 							$display_title = GFCommon::get_label( $field );
 
 							$prefix         = '';
@@ -325,12 +326,12 @@ class WC_GFPA_Cart {
 		return $valid;
 	}
 
-	public function order_item_meta( $item, $cart_item_key, $cart_item ) {
+	public function order_item_meta( $item_id, $cart_item ) {
 		if ( function_exists( 'woocommerce_add_order_item_meta' ) ) {
 
 			if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
-				$item_id = $item->get_id();
-				$item->add_meta_data( '_gravity_forms_history', array(
+
+				wc_add_order_item_meta( $item_id, '_gravity_forms_history', array(
 						'_gravity_form_lead' => $cart_item['_gravity_form_lead'],
 						'_gravity_form_data' => $cart_item['_gravity_form_data']
 					)
@@ -442,12 +443,13 @@ class WC_GFPA_Cart {
 									$display_value = str_replace( $display_title . ',', '', $display_text );;
 								}
 
-								$item->add_meta_data( $prefix . $display_title, $display_value );
+								wc_add_order_item_meta( $item_id, $prefix . $display_title, $display_value );
 							} catch ( Exception $e ) {
 
 							}
 						}
 					}
+					do_action( 'woocommerce_gforms_create_entry', $item_id, $gravity_form_data['id'], $lead );
 				}
 				error_reporting( $err_level );
 			}
@@ -603,7 +605,6 @@ class WC_GFPA_Cart {
 		return RGFormsModel::get_lead_field_value( $lead, $field );
 	}
 
-	//Use a custom delete function so we don't delete files that are uploaded.
 	private function delete_entry( $entry ) {
 		global $wpdb;
 		$lead_id = $entry['id'];

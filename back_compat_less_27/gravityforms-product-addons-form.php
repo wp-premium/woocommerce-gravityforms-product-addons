@@ -20,7 +20,7 @@ class woocommerce_gravityforms_product_form {
 		if (function_exists('get_product')) {
 			$product = get_product($this->product_id);
 		} else {
-			$product = wc_get_product($this->product_id);
+			$product = new WC_Product($this->product_id);
 		}
 
 		extract(shortcode_atts(array(
@@ -62,7 +62,7 @@ class woocommerce_gravityforms_product_form {
 			$this->previous_page = $this->current_page - 1;
 			$this->next_page = $this->next_page > $this->get_max_page_number($form_meta) ? 0 : $this->next_page;
 
-			if ($product->get_type() == 'variable' || $product->get_type() == 'variable-subscription') {
+			if ($product->product_type == 'variable' || $product->product_type == 'variable-subscription') {
 				echo '<div class="gform_variation_wrapper gform_wrapper single_variation_wrap">';
 			} else {
 				echo '<div class="gform_variation_wrapper gform_wrapper">';
@@ -71,8 +71,13 @@ class woocommerce_gravityforms_product_form {
 
 			echo '<input type="hidden" name="product_id" value="' . $this->product_id . '" />';
 
-            wp_nonce_field('add_to_cart');
 
+			if (wc_is_21x()) {
+				wp_nonce_field('add_to_cart');
+			} else {
+				$woocommerce->nonce_field('add_to_cart');
+			}
+			
 			if ($disable_anchor != 'yes'){
 				echo '<a id="_form_' . $this->form_id . '" href="#_form_' . $this->form_id . '" class="gform_anchor"></a>';
 			}
@@ -127,7 +132,7 @@ class woocommerce_gravityforms_product_form {
 						</li>
 					</ul>
 				</div>
-				<?php if ($product->get_type() != 'bundle') : ?>
+				<?php if ($product->product_type != 'bundle') : ?>
 				<style>
 					.single_variation .price {
 						display:none !important;
@@ -188,3 +193,4 @@ class woocommerce_gravityforms_product_form {
 	}
 
 }
+?>
