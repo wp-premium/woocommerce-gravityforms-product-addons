@@ -87,7 +87,7 @@ class WC_GFPA_Cart {
 
 	//When the item is being added to the cart.
 	public function add_cart_item_data( $cart_item_meta, $product_id ) {
-		if(!isset($_POST['gform_old_submit'])){
+		if ( ! isset( $_POST['gform_old_submit'] ) ) {
 			return $cart_item_meta;
 		}
 
@@ -212,7 +212,7 @@ class WC_GFPA_Cart {
 
 				foreach ( $form_meta['fields'] as $field ) {
 
-					if ( ( isset( $field['inputType'] ) && $field['inputType'] == 'hiddenproduct' ) || ( isset( $field['displayOnly'] ) && $field['displayOnly'] ) || ( isset( $field->cssClass ) && $field->cssClass == 'wc-gforms-hide-from-email-and-admin' ) ) {
+					if ( ( isset( $field['inputType'] ) && $field['inputType'] == 'hiddenproduct' ) || ( isset( $field['displayOnly'] ) && $field['displayOnly'] ) || ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email-and-admin' ) !== false ) ) {
 						continue;
 					}
 
@@ -250,7 +250,7 @@ class WC_GFPA_Cart {
 								$prefix = $hidden ? '_' : '';
 							}
 
-							if ( ! $display_hidden && ( isset( $field->cssClass ) && $field->cssClass == 'wc-gforms-hide-from-email' ) ) {
+							if ( ! $display_hidden && ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email' ) !== false ) ) {
 								$prefix        = '_gf_email_hidden_';
 								$display_title = str_replace( '_gf_email_hidden_', '', $display_title );
 								$hidden        = true;
@@ -377,10 +377,9 @@ class WC_GFPA_Cart {
 							}
 						}
 
-						$value   = $this->get_lead_field_value( $lead, $field );
-						$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
+						$value = $this->get_lead_field_value( $lead, $field );
 
-						if ( ! empty( $value ) && ! empty( $arr_var ) ) {
+						if ( ! empty( $value ) ) {
 							try {
 								$strip_html = true;
 								if ( $field['type'] == 'fileupload' && isset( $lead[ $field['id'] ] ) ) {
@@ -401,10 +400,16 @@ class WC_GFPA_Cart {
 									}
 								} else {
 
-									$display_value = GFCommon::get_lead_field_display( $field, $value, isset( $lead["currency"] ) ? $lead["currency"] : false, apply_filters( 'woocommerce_gforms_use_label_as_value', true, $value, $field, $lead, $form_meta ) );
+									if ( $field['type'] == 'address' ) {
+										$display_value = implode( ', ', array_filter( $value ) );
+									} else {
+										$display_value = GFCommon::get_lead_field_display( $field, $value, isset( $lead["currency"] ) ? $lead["currency"] : false, apply_filters( 'woocommerce_gforms_use_label_as_value', true, $value, $field, $lead, $form_meta ) );
+									}
 
 									$price_adjustement = false;
 									$display_value     = apply_filters( "gform_entry_field_value", $display_value, $field, $lead, $form_meta );
+
+
 								}
 
 								$display_title = GFCommon::get_label( $field );
