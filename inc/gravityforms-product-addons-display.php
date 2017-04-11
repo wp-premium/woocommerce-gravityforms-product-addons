@@ -27,7 +27,7 @@ class WC_GFPA_Display {
 
 		if ( ! is_single( $product->get_id() ) ) {
 			if ( is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) ) {
-				$text = apply_filters( 'woocommerce_gforms_add_to_cart_text', __( 'Select options', 'wc_gf_addons' ) );
+				$text = apply_filters( 'woocommerce_gforms_add_to_cart_text', __( 'Select options', 'woocommerce' ) );
 			}
 		}
 
