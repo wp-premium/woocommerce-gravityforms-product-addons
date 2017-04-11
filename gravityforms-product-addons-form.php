@@ -17,11 +17,9 @@ class woocommerce_gravityforms_product_form {
 		global $woocommerce;
 
 		$product = null;
-		if (function_exists('get_product')) {
-			$product = get_product($this->product_id);
-		} else {
-			$product = wc_get_product($this->product_id);
-		}
+
+        $product = wc_get_product($this->product_id);
+
 
 		extract(shortcode_atts(array(
 		    'display_title' => true,

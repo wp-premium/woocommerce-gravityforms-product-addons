@@ -1,4 +1,19 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2017.04.05 - version 3.1.6
+    * Fix:  Fix function reference error to wc_add_notice from the admin.
+    * Fix:  Fix product prices not being hidden in WC 3.0 when selecting the option in the Gravity Forms configuration.
+
+2017.03.28 - version 3.1.5
+    * Update:  Final tweaks for WC 3.0.0
+    * Fix:  Fix double slash in URL's when WC less than 3.0.0
+
+2017.03.21 - version 3.1.4
+    * Update: Check if the class exists wc-gforms-hide-from-email rather than if it is the only class on a field hidden from email.
+
+2017.03.07 - version 3.1.3
+    * Fix:  Update address field to separate field values with a comma in order item meta.
+    * Update:  Select options uses woocommerce text domain now, to match translations from WC Core iteself.
+
 2017.02.16 - version 3.1.2
     * Fix:  Fix notice in orders screen if the gravity form entry no longer exists.
     * Fix:  Forms attached to variable products were no longer calculating grand total when variation changed.
