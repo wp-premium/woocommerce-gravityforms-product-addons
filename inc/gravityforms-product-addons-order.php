@@ -49,29 +49,29 @@ class WC_GFPA_Order {
 						'display_value' => apply_filters( 'woocommerce_order_item_display_meta_value', wpautop( make_clickable( $display_value ) ) ),
 					);
 				}
+			}
 
+			if ( ! empty( $meta_to_display ) ) {
+				include( 'html-order-item-meta.php' );
+			}
+
+			$meta_data_items = $item->get_meta_data();
+
+			foreach ( $meta_data_items as $meta ) {
 				if ( $meta->key == '_gravity_forms_history' ) {
 					$entry_id = isset( $meta->value['_gravity_form_linked_entry_id'] ) ? $meta->value['_gravity_form_linked_entry_id'] : false;
 
 					if ( $entry_id ) {
 
 						$entry = GFAPI::get_entry( $entry_id );
-						if ( $entry && !is_wp_error($entry) ) {
-							$display_value = '<a href="' . admin_url( 'admin.php?page=gf_entries&view=entry&id=' . $entry['form_id'] . '&lid=' . $entry_id ) . '">' . __( 'View', 'wc_gf_addons' ) . '</a>';
-							$meta_to_display[ 'gravity_form_entry_' . $entry_id ] = (object) array(
-								'key'           => 'gravity_form_entry',
-								'value'         => $entry_id,
-								'display_key'   => apply_filters( 'woocommerce_order_item_display_meta_key', 'Form Entry' ),
-								'display_value' => apply_filters( 'woocommerce_order_item_display_meta_value', wpautop( make_clickable( $display_value ) ) ),
-							);
+						if ( $entry && ! is_wp_error( $entry ) ) {
+							echo '<div class="view">';
+							echo '<a href="' . admin_url( 'admin.php?page=gf_entries&view=entry&id=' . $entry['form_id'] . '&lid=' . $entry_id ) . '">' . __( 'View Gravity Form Entry', 'wc_gf_addons' ) . '</a>';
+							echo '</div>';
 						}
 					}
 
 				}
-			}
-
-			if ( ! empty( $meta_to_display ) ) {
-				include( 'html-order-item-meta.php' );
 			}
 		}
 
