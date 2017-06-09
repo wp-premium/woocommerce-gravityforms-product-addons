@@ -55,7 +55,7 @@ class WC_GFPA_Admin_Controller {
             });
         </script>
         <div id="gravityforms_data" class="panel woocommerce_options_panel">
-			<?php if ( $product->get_type() != 'variable' && isset( $_POST['_regular_price'] ) && $_POST['_regular_price'] == '' ) : ?>
+			<?php if ( !$product->is_purchasable() ) : ?>
                 <div style="margin:5px 0 15px;border-left:4px solid red;padding:1px 12px;box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);">
                     <p>You must set a price for the product before the gravity form will be visible. Set the price to 0 if you are performing all price calculations with the attached Gravity Form.</p>
                 </div>
@@ -232,13 +232,6 @@ class WC_GFPA_Admin_Controller {
 		if ( isset( $_POST['gravityform-id'] ) && ! empty( $_POST['gravityform-id'] ) ) {
 
 			$product = wc_get_product( $post );
-
-
-			if ( $product->get_type() != 'variable' && isset( $_POST['_regular_price'] ) && $_POST['_regular_price'] == '' ) {
-				WC_Admin_Notices::add_custom_notice( 'wc_gfpa_no_price_' . $product->get_id(), __( 'You must set a price for the product ' . $product->get_title() . ' before the gravity form will be visible.  Set the price to 0 if you are performing all price calculations with the attached Gravity Form.', 'woocommerce' ), 'error' );
-			} else {
-				WC_Admin_Notices::remove_notice( 'wc_gfpa_no_price_' . $product->get_id() );
-			}
 
 			$gravity_form_data = array(
 				'id'                        => $_POST['gravityform-id'],

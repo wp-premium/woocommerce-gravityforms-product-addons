@@ -10,6 +10,8 @@ class WC_GFPA_Cart {
 		}
 	}
 
+	private $removed_captcha = false;
+
 	private function __construct() {
 		// Filters for cart actions
 
@@ -70,13 +72,14 @@ class WC_GFPA_Cart {
 						}
 					}
 					$subtotal = floatval( $product["quantity"] ) * $price;
-					$total += $subtotal;
+					$total    += $subtotal;
 				}
 
 				$total += floatval( $products["shipping"]["price"] );
 			}
-
-			$cart_item['data']->adjust_price( $total );
+			$price = $cart_item['data']->get_price();
+			$price += (float) $total;
+			$cart_item['data']->set_price( $price );
 			$cart_item['_gform_total'] = $total;
 			error_reporting( $err_level );
 		}
@@ -125,7 +128,13 @@ class WC_GFPA_Cart {
 			GFFormDisplay::$submission[ $form_id ] = null;
 			require_once( GFCommon::get_base_path() . "/form_display.php" );
 			$_POST['gform_submit'] = $_POST['gform_old_submit'];
+
+
+			add_filter( 'gform_pre_process_' . $form_id, array( $this, 'on_gform_pre_process' ) );
 			GFFormDisplay::process_form( $form_id );
+			remove_filter( 'gform_pre_process_' . $form_id, array( $this, 'on_gform_pre_process' ) );
+
+
 			$_POST['gform_old_submit'] = $_POST['gform_submit'];
 			unset( $_POST['gform_submit'] );
 
@@ -137,6 +146,7 @@ class WC_GFPA_Cart {
 			);
 
 			foreach ( $form_meta['fields'] as $field ) {
+
 				if ( isset( $field['displayOnly'] ) && $field['displayOnly'] ) {
 					continue;
 				}
@@ -274,6 +284,7 @@ class WC_GFPA_Cart {
 	public function add_to_cart_validation( $valid, $product_id, $quantity ) {
 		global $woocommerce;
 
+
 		if ( ! $valid ) {
 			return false;
 		}
@@ -396,7 +407,7 @@ class WC_GFPA_Cart {
 									$sep = '';
 									foreach ( $files as $file ) {
 										$display_value .= $sep . '<a href="' . $file . '">' . $file . '</a>';
-										$sep = ', ';
+										$sep           = ', ';
 									}
 								} else {
 
@@ -444,6 +455,10 @@ class WC_GFPA_Cart {
 									$prefix        = '';
 									$display_title = GFCommon::get_label( $field );
 									$display_value = str_replace( $display_title . ',', '', $display_text );;
+								}
+
+								if (empty($prefix) && empty($display_title)) {
+									$display_title = $field['id'] . ' -';
 								}
 
 								$item->add_meta_data( $prefix . $display_title, $display_value );
@@ -675,6 +690,31 @@ class WC_GFPA_Cart {
 		} else {
 			return false;
 		}
+	}
+
+
+	public function on_gform_pre_process( $form ) {
+
+		$captcha_id = null;
+		if ( isset( $form['fields'] ) ) {
+			foreach ( $form['fields'] as $index => $field ) {
+				if ( isset( $field['type'] ) && $field['type'] == 'captcha' ) {
+					$captcha_id = $index;
+
+					$this->removed_captcha = array(
+						'index' => $index,
+						'field' => $field
+					);
+
+				}
+			}
+		}
+
+		if ( $captcha_id !== null ) {
+			unset( $form['fields'][ $captcha_id ] );
+		}
+
+		return $form;
 	}
 
 }

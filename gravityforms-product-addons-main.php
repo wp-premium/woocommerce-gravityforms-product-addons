@@ -54,11 +54,11 @@ class WC_GFPA_Main {
 		add_filter( 'woocommerce_variation_price_html', array( $this, 'get_price_html' ), 10, 2 );
 		add_filter( 'woocommerce_variation_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
 
-		add_filter( 'woocommerce_variable_price_html', array( $this, 'get_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_variable_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_variable_empty_price_html', array( $this, 'get_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_variable_free_sale_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_variable_free_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
+		//add_filter( 'woocommerce_variable_price_html', array( $this, 'get_price_html' ), 10, 2 );
+		//add_filter( 'woocommerce_variable_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
+		//add_filter( 'woocommerce_variable_empty_price_html', array( $this, 'get_price_html' ), 10, 2 );
+		//add_filter( 'woocommerce_variable_free_sale_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
+		//add_filter( 'woocommerce_variable_free_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
 
 		add_filter( 'woocommerce_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
 		add_filter( 'woocommerce_price_html', array( $this, 'get_price_html' ), 10, 2 );
