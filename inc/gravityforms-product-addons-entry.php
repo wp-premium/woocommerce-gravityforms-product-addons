@@ -45,7 +45,8 @@ class WC_GFPA_Entry {
 			$meta_data             = $order_item->get_meta_data();
 			$gravity_forms_history = wp_list_filter( $meta_data, array( 'key' => '_gravity_forms_history' ) );
 			if ( $gravity_forms_history ) {
-				$lead_data = $gravity_forms_history[0]->value['_gravity_form_lead'];
+				$gravity_forms_history_value = array_pop($gravity_forms_history);
+				$lead_data = $gravity_forms_history_value->value['_gravity_form_lead'];
 				unset( $lead_data['lead_id'] );
 				$entry_id = GFAPI::add_entry( $lead_data );
 				if ( $entry_id && ! is_wp_error( $entry_id ) ) {
@@ -54,8 +55,8 @@ class WC_GFPA_Entry {
 
 					$new_history = array(
 						'_gravity_form_linked_entry_id' => $entry_id,
-						'_gravity_form_lead' => $gravity_forms_history[0]->value['_gravity_form_lead'],
-						'_gravity_form_data' => $gravity_forms_history[0]->value['_gravity_form_data']
+						'_gravity_form_lead' => $gravity_forms_history_value->value['_gravity_form_lead'],
+						'_gravity_form_data' => $gravity_forms_history_value->value['_gravity_form_data']
 					);
 
 					wc_update_order_item_meta($order_item->get_id(), '_gravity_forms_history', $new_history);

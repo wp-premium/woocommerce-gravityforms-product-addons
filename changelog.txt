@@ -1,4 +1,25 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2017.05.31 - version 3.1.10
+    * Fix:  Fix issue where fields with empty labels were not being saved to the order on WC 3.x
+    * Fix:  Additional checks in display helper in case function called incorrectly from the theme or other extensions.
+    * Fix:  Fix recording the gravity forms history on order placement, resolves warnings regarding undefined index.
+
+2017.05.12 - version 3.1.9
+    * Fix:  Fix issue where fields hidden by conditional logic were showing up in the order details on a completed order.
+    * Fix:  Fix issue where entries where not created when the order was placed for Variable Products. #39
+    * Update:  Allow the recaptcha field to function.
+        There is a limitation though that on successful addition to the cart the product page needs to be refreshed in order for the re-captcha to show up again.
+    * Fix:  Fix issue where Before and After text was duplicated for Variable Products.
+    * Fix:  Fix issue with missing argument in add_to_cart text filter.
+    
+2017.04.25 - version 3.1.8
+    * Update:  Remove deprecated call to adjust_price();
+    * Update:  Prevent the View Gravity Form entry data from appearing in re-sent processing emails.
+    * Update:  Prevent the gravity form entry meta key from being saved as order item meta when an order is updated.
+
+2017.04.11 - version 3.1.7
+    * Update:  Fix display of admin notices on bookable products.
+
 2017.04.05 - version 3.1.6
     * Fix:  Fix function reference error to wc_add_notice from the admin.
     * Fix:  Fix product prices not being hidden in WC 3.0 when selecting the option in the Gravity Forms configuration.

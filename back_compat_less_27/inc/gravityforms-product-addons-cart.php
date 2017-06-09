@@ -378,8 +378,9 @@ class WC_GFPA_Cart {
 						}
 
 						$value = $this->get_lead_field_value( $lead, $field );
+						$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
 
-						if ( ! empty( $value ) ) {
+						if ( ! empty( $value ) && ! empty( $arr_var ) ) {
 							try {
 								$strip_html = true;
 								if ( $field['type'] == 'fileupload' && isset( $lead[ $field['id'] ] ) ) {
