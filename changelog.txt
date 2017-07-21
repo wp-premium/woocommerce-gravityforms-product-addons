@@ -1,4 +1,7 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2017.06.16 - version 3.1.11
+    * Fix:  Call get price in edit mode so price adjustments are not filtered and hardcoded on the cart item price.
+
 2017.05.31 - version 3.1.10
     * Fix:  Fix issue where fields with empty labels were not being saved to the order on WC 3.x
     * Fix:  Additional checks in display helper in case function called incorrectly from the theme or other extensions.
