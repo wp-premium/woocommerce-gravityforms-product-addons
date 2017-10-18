@@ -444,6 +444,16 @@ if ( !class_exists( 'WC_GFPA_Compatibility' ) ) :
 		}
 
 		/**
+		 * Returns true if the installed version of WooCommerce is 2.7 or greater
+		 *
+		 * @since 3.0.0
+		 * @return boolean true if the installed version of WooCommerce is 2.7 or greater
+		 */
+		public static function is_wc_version_gte_3_2() {
+			return self::get_wc_version() && version_compare( self::get_wc_version(), '3.2', '>=' );
+		}
+
+		/**
 		 * Returns true if the installed version of WooCommerce is greater than $version
 		 *
 		 * @since 2.0.0
