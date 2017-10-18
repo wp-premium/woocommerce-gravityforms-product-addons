@@ -48,11 +48,11 @@ class WC_GFPA_Main {
 
 
 		// Filters for price display
-		add_filter( 'woocommerce_grouped_price_html', array( $this, 'get_price_html' ), 10, 2 );
+		add_filter( 'woocommerce_grouped_price_html', array( $this, 'get_price_html' ), 999, 2 );
 
 
-		add_filter( 'woocommerce_variation_price_html', array( $this, 'get_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_variation_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
+		add_filter( 'woocommerce_variation_price_html', array( $this, 'get_price_html' ), 999, 2 );
+		add_filter( 'woocommerce_variation_sale_price_html', array( $this, 'get_price_html' ), 999, 2 );
 
 		//add_filter( 'woocommerce_variable_price_html', array( $this, 'get_price_html' ), 10, 2 );
 		//add_filter( 'woocommerce_variable_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
@@ -60,13 +60,13 @@ class WC_GFPA_Main {
 		//add_filter( 'woocommerce_variable_free_sale_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
 		//add_filter( 'woocommerce_variable_free_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
 
-		add_filter( 'woocommerce_sale_price_html', array( $this, 'get_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_price_html', array( $this, 'get_price_html' ), 10, 2 );
-		add_filter('woocommerce_get_price_html', array($this, 'get_price_html'), 10, 2);
-		add_filter( 'woocommerce_empty_price_html', array( $this, 'get_price_html' ), 10, 2 );
+		add_filter( 'woocommerce_sale_price_html', array( $this, 'get_price_html' ), 999, 2 );
+		add_filter( 'woocommerce_price_html', array( $this, 'get_price_html' ), 999, 2 );
+		add_filter( 'woocommerce_get_price_html', array( $this, 'get_price_html' ), 999, 2 );
+		add_filter( 'woocommerce_empty_price_html', array( $this, 'get_price_html' ), 999, 2 );
 
-		add_filter( 'woocommerce_free_sale_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
-		add_filter( 'woocommerce_free_price_html', array( $this, 'get_free_price_html' ), 10, 2 );
+		add_filter( 'woocommerce_free_sale_price_html', array( $this, 'get_free_price_html' ), 999, 2 );
+		add_filter( 'woocommerce_free_price_html', array( $this, 'get_free_price_html' ), 999, 2 );
 
 		//Modify Add to Cart Buttons
 		add_action( 'init', array( $this, 'get_gravity_products' ) );
@@ -90,6 +90,11 @@ class WC_GFPA_Main {
 
 	public function on_woocommerce_before_add_to_cart_form() {
 		$product = wc_get_product( get_the_ID() );
+
+		if ( empty( $product ) ) {
+			return;
+		}
+
 		if ( $product->is_type( 'variable' ) ) {
 			// Addon display
 
@@ -161,15 +166,15 @@ class WC_GFPA_Main {
 				//parsing shortcode attributes
 				$attr       = shortcode_parse_atts( $match[1] );
 				$product_id = isset( $attr['ids'] ) ? $attr['ids'] : false;
-				if ( ! empty( $product_id ) ) {
+				if ( !empty( $product_id ) ) {
 					$product_ids = array_merge( $product_ids, array_map( 'trim', explode( ',', $product_id ) ) );
 				}
 			}
-		} elseif ( $wp_query && ! empty( $wp_query->posts ) ) {
+		} elseif ( $wp_query && !empty( $wp_query->posts ) ) {
 			$product_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 		}
 
-		if ( ! empty( $product_ids ) ) {
+		if ( !empty( $product_ids ) ) {
 			foreach ( $product_ids as $post_id ) {
 				$_product = wc_get_product( $post_id );
 				if ( $_product ) {
@@ -249,7 +254,7 @@ class WC_GFPA_Main {
 				wp_enqueue_script( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/js/gravityforms-product-addons.js', array(
 					'jquery',
 					'accounting'
-				), true );
+				), '3.2.4', true );
 
 				$prices = array(
 					$product->get_id() => wc_get_price_to_display( $product ),
@@ -283,7 +288,7 @@ class WC_GFPA_Main {
 
 				wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
 			}
-		} elseif ( is_object( $post ) && isset( $post->post_content ) && ! empty( $post->post_content ) ) {
+		} elseif ( is_object( $post ) && isset( $post->post_content ) && !empty( $post->post_content ) ) {
 			$enqueue = false;
 			$forms   = array();
 			$prices  = array();
@@ -295,7 +300,7 @@ class WC_GFPA_Main {
 					$attr       = shortcode_parse_atts( $match[1] );
 					$product_id = isset( $attr['id'] ) ? $attr['id'] : false;
 
-					if ( ! empty( $product_id ) ) {
+					if ( !empty( $product_id ) ) {
 						$gravity_form_data = $this->get_gravity_form_data( $product_id );
 
 						if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
@@ -368,11 +373,11 @@ class WC_GFPA_Main {
 				$html = '';
 			}
 
-			if ( isset( $gravity_form_data['price_before'] ) && ! empty( $gravity_form_data['price_before'] ) ) {
+			if ( isset( $gravity_form_data['price_before'] ) && !empty( $gravity_form_data['price_before'] ) ) {
 				$html = '<span class="woocommerce-price-before">' . $gravity_form_data['price_before'] . ' </span>' . $html;
 			}
 
-			if ( isset( $gravity_form_data['price_after'] ) && ! empty( $gravity_form_data['price_after'] ) ) {
+			if ( isset( $gravity_form_data['price_after'] ) && !empty( $gravity_form_data['price_after'] ) ) {
 				$html .= '<span class="woocommerce-price-after"> ' . $gravity_form_data['price_after'] . '</span>';
 			}
 		}
@@ -394,11 +399,11 @@ class WC_GFPA_Main {
 				$html = '';
 			}
 
-			if ( isset( $gravity_form_data['price_before'] ) && ! empty( $gravity_form_data['price_before'] ) ) {
+			if ( isset( $gravity_form_data['price_before'] ) && !empty( $gravity_form_data['price_before'] ) ) {
 				$html = '<span class="woocommerce-price-before">' . $gravity_form_data['price_before'] . ' </span>' . $html;
 			}
 
-			if ( isset( $gravity_form_data['price_after'] ) && ! empty( $gravity_form_data['price_after'] ) ) {
+			if ( isset( $gravity_form_data['price_after'] ) && !empty( $gravity_form_data['price_after'] ) ) {
 				$html .= '<span class="woocommerce-price-after"> ' . $gravity_form_data['price_after'] . '</span>';
 			}
 		}
