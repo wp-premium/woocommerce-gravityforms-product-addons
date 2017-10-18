@@ -11,7 +11,10 @@ class WC_GFPA_Entry {
 
 	public static function register() {
 		if ( self::$instance == null ) {
-			self::$instance = new WC_GFPA_Entry();
+
+			if ( apply_filters( 'woocommerce_gravityforms_create_entries', true ) ) {
+				self::$instance = new WC_GFPA_Entry();
+			}
 		}
 	}
 
@@ -27,7 +30,7 @@ class WC_GFPA_Entry {
 
 		add_action( 'gform_entry_detail_content_before', array( $this, 'entry_detail_screen_notice' ), 10, 2 );
 
-		add_action('woocommerce_checkout_update_order_meta', array($this, 'create_entries'), 10, 2);
+		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'create_entries' ), 10, 2 );
 	}
 
 	/**
@@ -42,24 +45,37 @@ class WC_GFPA_Entry {
 		$order_items = $the_order->get_items();
 
 		foreach ( $order_items as $order_item ) {
-			$meta_data             = $order_item->get_meta_data();
-			$gravity_forms_history = wp_list_filter( $meta_data, array( 'key' => '_gravity_forms_history' ) );
+			$meta_data = $order_item->get_meta_data();
+			if ( WC_GFPA_Compatibility::is_wc_version_gte_3_2() ) {
+
+				foreach($meta_data as $meta_data_item){
+					$d = $meta_data_item->get_data();
+					if ($d['key'] == '_gravity_forms_history' ){
+						$gravity_forms_history = array($meta_data_item);
+						break;
+					}
+				}
+
+			} else {
+				$gravity_forms_history = wp_list_filter( $meta_data, array( 'key' => '_gravity_forms_history' ) );
+			}
+
 			if ( $gravity_forms_history ) {
-				$gravity_forms_history_value = array_pop($gravity_forms_history);
-				$lead_data = $gravity_forms_history_value->value['_gravity_form_lead'];
+				$gravity_forms_history_value = array_pop( $gravity_forms_history );
+				$lead_data                   = $gravity_forms_history_value->value['_gravity_form_lead'];
 				unset( $lead_data['lead_id'] );
 				$entry_id = GFAPI::add_entry( $lead_data );
 				if ( $entry_id && ! is_wp_error( $entry_id ) ) {
-					gform_update_meta( $entry_id, 'woocommerce_order_number', $order_item->get_order_id() , $lead_data['form_id'] );
+					gform_update_meta( $entry_id, 'woocommerce_order_number', $order_item->get_order_id(), $lead_data['form_id'] );
 					gform_update_meta( $entry_id, 'woocommerce_order_item_number', $order_item->get_id(), $lead_data['form_id'] );
 
 					$new_history = array(
 						'_gravity_form_linked_entry_id' => $entry_id,
-						'_gravity_form_lead' => $gravity_forms_history_value->value['_gravity_form_lead'],
-						'_gravity_form_data' => $gravity_forms_history_value->value['_gravity_form_data']
+						'_gravity_form_lead'            => $gravity_forms_history_value->value['_gravity_form_lead'],
+						'_gravity_form_data'            => $gravity_forms_history_value->value['_gravity_form_data']
 					);
 
-					wc_update_order_item_meta($order_item->get_id(), '_gravity_forms_history', $new_history);
+					wc_update_order_item_meta( $order_item->get_id(), '_gravity_forms_history', $new_history );
 				}
 			}
 		}

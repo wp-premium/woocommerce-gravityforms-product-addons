@@ -1,174 +1,324 @@
+# Copyright (C) 2017 Lucas Stark
+# This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2016-11-15 09:33-0500\n"
-"PO-Revision-Date: 2016-11-15 09:34-0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: en_US\n"
+"Project-Id-Version: WooCommerce - Gravity Forms Product Add-Ons 3.2.3\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/gravityforms-product-addons\n"
+"POT-Creation-Date: 2017-10-13 15:23:38+00:00\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
-"X-Poedit-Basepath: ../..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __;_e;esc_attr_e\n"
-"X-Poedit-SearchPath-0: .\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n1.0.0\n"
 
 #: admin/gravityforms-product-addons-admin.php:24
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:24
 msgid ""
-"<strong>Gravity Forms Not Found</strong> &#8211; The Gravity Forms Plugin is "
-"required to build and manage the forms for your products."
+"<strong>Gravity Forms Not Found</strong> &#8211; The Gravity Forms Plugin "
+"is required to build and manage the forms for your products."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:25
+#: admin/gravityforms-product-addons-admin.php:26
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:25
 msgid "Get Gravity Forms"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:34
+#: admin/gravityforms-product-addons-admin.php:36
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:34
 msgid "Gravity Forms Product Add-Ons"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:52
+#: admin/gravityforms-product-addons-admin.php:64
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:52
 msgid "General"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:67
+#: admin/gravityforms-product-addons-admin.php:79
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:67
 msgid "Choose Form"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:69
+#: admin/gravityforms-product-addons-admin.php:81
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:69
 msgid "None"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:80
+#: admin/gravityforms-product-addons-admin.php:92
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:80
 msgid "Display Title"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:85
+#: admin/gravityforms-product-addons-admin.php:98
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:85
 msgid "Display Description"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:100
+#: admin/gravityforms-product-addons-admin.php:114
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:100
 msgid "Multipage Forms"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:105
+#: admin/gravityforms-product-addons-admin.php:119
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:105
 msgid "Disable Gravity Forms Anchors"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:112
+#: admin/gravityforms-product-addons-admin.php:127
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:112
 msgid "Price Labels"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:117
+#: admin/gravityforms-product-addons-admin.php:132
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:117
 msgid "Remove WooCommerce Price?"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:120
+#: admin/gravityforms-product-addons-admin.php:138
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:120
 msgid "Price Before"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:122
+#: admin/gravityforms-product-addons-admin.php:140
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:122
 msgid "Base Price:"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:122
+#: admin/gravityforms-product-addons-admin.php:141
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:122
 msgid "Enter text you would like printed before the price of the product."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:124
+#: admin/gravityforms-product-addons-admin.php:146
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:124
 msgid "Price After"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:126
+#: admin/gravityforms-product-addons-admin.php:149
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:126
 msgid "Enter text you would like printed after the price of the product."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:132
+#: admin/gravityforms-product-addons-admin.php:156
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:132
 msgid "Total Calculations"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:139
+#: admin/gravityforms-product-addons-admin.php:163
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:139
 msgid "Enable Dynamic Pricing?"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:142
+#: admin/gravityforms-product-addons-admin.php:166
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:142
 msgid ""
 "Enable Dynamic Pricing calculations if you are using Dynamic Pricing to "
 "modify the price of this product."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:150
+#: admin/gravityforms-product-addons-admin.php:174
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:150
 msgid "Disable Calculations?"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:157
+#: admin/gravityforms-product-addons-admin.php:182
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:157
 msgid "Disable Subtotal?"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:160
+#: admin/gravityforms-product-addons-admin.php:188
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:160
 msgid "Subtotal Label"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:162
-#: gravityforms-product-addons-form.php:33
+#: admin/gravityforms-product-addons-admin.php:190
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:162
+#: back_compat_less_27/gravityforms-product-addons-form.php:33
+#: gravityforms-product-addons-form.php:31
 msgid "Subtotal"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:162
+#: admin/gravityforms-product-addons-admin.php:191
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:162
 msgid "Enter \"Subtotal\" label to display on for single products."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:166
+#: admin/gravityforms-product-addons-admin.php:196
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:166
 msgid "Disable Options Label?"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:169
+#: admin/gravityforms-product-addons-admin.php:202
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:169
 msgid "Options Label"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:171
-#: gravityforms-product-addons-form.php:34
+#: admin/gravityforms-product-addons-admin.php:204
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:171
+#: back_compat_less_27/gravityforms-product-addons-form.php:34
+#: gravityforms-product-addons-form.php:32
 msgid "Options"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:171
+#: admin/gravityforms-product-addons-admin.php:205
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:171
 msgid "Enter the \"Options\" label to display for single products."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:175
+#: admin/gravityforms-product-addons-admin.php:210
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:175
 msgid "Disable Total Label?"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:178
+#: admin/gravityforms-product-addons-admin.php:216
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:178
 msgid "Total Label"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:180
-#: gravityforms-product-addons-form.php:35
+#: admin/gravityforms-product-addons-admin.php:218
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:180
+#: back_compat_less_27/gravityforms-product-addons-form.php:35
+#: gravityforms-product-addons-form.php:33
 msgid "Total"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:180
+#: admin/gravityforms-product-addons-admin.php:219
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:180
 msgid "Enter the \"Total\" label to display for single products."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:202
+#: back_compat_less_27/admin/gravityforms-product-addons-admin.php:202
 msgid ""
 "You must set a price for the product before the gravity form will be "
 "visible.  Set the price to 0 if you are performing all price calculations "
 "with the attached Gravity Form."
 msgstr ""
 
-#: inc/gravityforms-product-addons-cart.php:46
+#: back_compat_less_27/inc/gravityforms-product-addons-cart.php:46
+#: inc/gravityforms-product-addons-cart.php:48
 msgid " is invalid.  Please remove and try readding to the cart"
 msgstr ""
 
-#: inc/gravityforms-product-addons-display.php:27
+#: back_compat_less_27/inc/gravityforms-product-addons-display.php:27
+#: inc/gravityforms-product-addons-display.php:33
 msgid "Select options"
 msgstr ""
 
-#: inc/html-order-item-meta.php:60
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:57
+#: inc/gravityforms-product-addons-entry.php:106
+msgid "WooCommerce Order Item"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:63
+#: inc/gravityforms-product-addons-entry.php:112
+msgid ""
+"Any changes made on this entry directly will not be reflected on the actual "
+"order."
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:70
+#: inc/gravityforms-product-addons-entry.php:119
+msgid "The WooCommerce order no longer exists."
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:82
+#: inc/gravityforms-product-addons-entry.php:131
+msgid "WooCommerce"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:126
+#: inc/gravityforms-product-addons-entry.php:177
+msgid "Guest"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:132
+#: inc/gravityforms-product-addons-entry.php:181
+msgid "Order"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:135
+#: inc/gravityforms-product-addons-entry.php:186
+msgid "Product"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:151
+#: inc/gravityforms-product-addons-entry.php:202
+msgid "WooCommerce Order Number"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:156
+#: inc/gravityforms-product-addons-entry.php:207
+msgid "WooCommerce Order Item Line Number"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:161
+#: inc/gravityforms-product-addons-entry.php:212
+msgid "WooCommerce Order Item Product Name"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:166
+#: inc/gravityforms-product-addons-entry.php:217
+msgid "WooCommerce Order Item Product ID"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-order.php:38
+#: back_compat_less_27/inc/gravityforms-product-addons-order.php:64
+msgid "View"
+msgstr ""
+
+#: back_compat_less_27/inc/html-order-item-meta.php:60
+#: inc/html-order-item-meta.php:61
 msgid "Add&nbsp;meta"
+msgstr ""
+
+#: inc/gravityforms-product-addons-order.php:69
+msgid "View Gravity Form Entry"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce - Gravity Forms Product Add-Ons"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://woothemes.com/products/gravity-forms-add-ons/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Allows you to use Gravity Forms on individual WooCommerce products. "
+"Requires the Gravity Forms plugin to work. Requires WooCommerce 2.5 or "
+"higher."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Lucas Stark"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.elementstark.com/"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:60
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:67
+#: inc/gravityforms-product-addons-entry.php:109
+#: inc/gravityforms-product-addons-entry.php:116
+msgctxt "Order number"
+msgid "This entry was created as part WooCommerce Order %s"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:113
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:122
+#: inc/gravityforms-product-addons-entry.php:163
+#: inc/gravityforms-product-addons-entry.php:173
+#. translators: 1: first name 2: last name
+msgctxt "full name"
+msgid "%1$s %2$s"
+msgstr ""
+
+#: back_compat_less_27/inc/gravityforms-product-addons-entry.php:132
+#: inc/gravityforms-product-addons-entry.php:181
+msgctxt "Order number by X"
+msgid "%s by %s"
 msgstr ""

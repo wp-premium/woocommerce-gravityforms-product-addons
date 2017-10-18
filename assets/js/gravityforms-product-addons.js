@@ -42,47 +42,52 @@ function get_gravity_forms_price(formId) {
 
 
 function update_dynamic_price(gform_total) {
-    var product_id = jQuery("input[name=product_id]").val();
-    var variation_id = jQuery("input[name=variation_id]").val();
 
+    // Function moved in delay so that variation prices are updated - Vidish - 16-10-2017
+    setTimeout(function() {
 
-    if (product_id || variation_id) {
-        var the_id = 0;
-        if (variation_id) {
-            the_id = variation_id;
-        } else {
-            the_id = product_id;
-        }
+        var product_id = jQuery("input[name=product_id]").val();
+        var variation_id = jQuery("input[name=variation_id]").val();
 
-        var base_price = wc_gravityforms_params.prices[the_id];
-        jQuery('.formattedBasePrice').html(accounting.formatMoney(base_price, {
-                symbol: wc_gravityforms_params.currency_format_symbol,
-                decimal: wc_gravityforms_params.currency_format_decimal_sep,
-                thousand: wc_gravityforms_params.currency_format_thousand_sep,
-                precision: wc_gravityforms_params.currency_format_num_decimals,
-                format: wc_gravityforms_params.currency_format
+        if (product_id || variation_id) {
+            var the_id = 0;
+            if (variation_id) {
+                the_id = variation_id;
+            } else {
+                the_id = product_id;
             }
-        ));
 
-        jQuery('.formattedVariationTotal').html(accounting.formatMoney(gform_total, {
-                symbol: wc_gravityforms_params.currency_format_symbol,
-                decimal: wc_gravityforms_params.currency_format_decimal_sep,
-                thousand: wc_gravityforms_params.currency_format_thousand_sep,
-                precision: wc_gravityforms_params.currency_format_num_decimals,
-                format: wc_gravityforms_params.currency_format
-            }
-        ));
-
-        jQuery('.formattedTotalPrice').html(accounting.formatMoney(parseFloat(base_price) + parseFloat(gform_total), {
+            var base_price = wc_gravityforms_params.prices[the_id];
+            jQuery('.formattedBasePrice').html(accounting.formatMoney(base_price, {
                     symbol: wc_gravityforms_params.currency_format_symbol,
                     decimal: wc_gravityforms_params.currency_format_decimal_sep,
                     thousand: wc_gravityforms_params.currency_format_thousand_sep,
                     precision: wc_gravityforms_params.currency_format_num_decimals,
                     format: wc_gravityforms_params.currency_format
                 }
-            ) + wc_gravityforms_params.price_suffix[product_id]
-        );
-    }
+            ));
+
+            jQuery('.formattedVariationTotal').html(accounting.formatMoney(gform_total, {
+                    symbol: wc_gravityforms_params.currency_format_symbol,
+                    decimal: wc_gravityforms_params.currency_format_decimal_sep,
+                    thousand: wc_gravityforms_params.currency_format_thousand_sep,
+                    precision: wc_gravityforms_params.currency_format_num_decimals,
+                    format: wc_gravityforms_params.currency_format
+                }
+            ));
+
+            jQuery('.formattedTotalPrice').html(accounting.formatMoney(parseFloat(base_price) + parseFloat(gform_total), {
+                        symbol: wc_gravityforms_params.currency_format_symbol,
+                        decimal: wc_gravityforms_params.currency_format_decimal_sep,
+                        thousand: wc_gravityforms_params.currency_format_thousand_sep,
+                        precision: wc_gravityforms_params.currency_format_num_decimals,
+                        format: wc_gravityforms_params.currency_format
+                    }
+                ) + wc_gravityforms_params.price_suffix[product_id]
+            );
+        }
+    }, 1000);
+
 
     return gform_total;
 }
@@ -135,6 +140,10 @@ function update_dynamic_price_ajax(gform_total) {
 (function ($) {
     $.fn.wc_gravity_form = function () {
         var $form = this;
+
+        if (!$form.hasClass('cart')) {
+            return;
+        }
 
         var form_id = $form.find("input[name=wc_gforms_form_id]").val();
 

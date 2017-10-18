@@ -1,4 +1,32 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2017.10.16 - version 3.2.4
+    * Update:  Add woo update header to plugin header.
+    * Fix:  Fix problem with variation prices differences not updating the totals section as different variations selected.
+
+
+2017.10.16 - version 3.2.3
+    * Fix:  Fix issue with entry creation for WooCommerce 3.2x
+
+2017.08.28 - version 3.2.2
+    * Fix:  Check if the product has been loaded in the woocommerce_before_add_to_cart_form action.
+    * Fix:  Update get_product function to prevent gravity forms from caching the result of conditional product fields.
+
+2017.08.15 - version 3.2.1
+    * Update:  Add filter to completely disable the creation of Gravity Form Entries.
+               add_filter('woocommerce_gravityforms_create_entries', '__return_false');
+
+2017.08.08 - version 3.2.0
+    * Fix:  Double check that the wc_gravity_form jQuery function only runs on the cart form.
+
+2017.07.24 - version 3.1.12
+    * New:  Introduce woocommerce_gforms_get_item_data filter to allow filtering of additional cart data.
+            add_filter('woocommerce_gforms_get_item_data', 'custom_woocommerce_gforms_get_item_data', 10, 4);
+            function custom_woocommerce_gforms_get_item_data($item_data, $field, $lead, $form_meta){
+                //Make changes to item data if required.
+                return $item_data;
+            }
+
+
 2017.06.16 - version 3.1.11
     * Fix:  Call get price in edit mode so price adjustments are not filtered and hardcoded on the cart item price.
 
