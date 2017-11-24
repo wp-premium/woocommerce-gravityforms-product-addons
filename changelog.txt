@@ -1,4 +1,7 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2017.11.22 - version 3.2.5
+    * Fix:  Fix issue with Multi File Uploaded not working properly.
+
 2017.10.16 - version 3.2.4
     * Update:  Add woo update header to plugin header.
     * Fix:  Fix problem with variation prices differences not updating the totals section as different variations selected.

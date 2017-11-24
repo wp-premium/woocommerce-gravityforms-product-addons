@@ -190,6 +190,11 @@ function update_dynamic_price_ajax(gform_total) {
                 $form.trigger("submit", [true]);
             });
 
+
+            $("form#gform_" + form_id + " .gform_fileupload_multifile").each(function(){
+                gfMultiFileUploader.setup(this);
+            });
+
         }
     };
 
