@@ -331,7 +331,7 @@ class WC_GFPA_Main {
 					wp_enqueue_script( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/js/gravityforms-product-addons.js', array(
 						'jquery',
 						'accounting'
-					), true );
+					), '3.2.5' );
 
 					// Accounting
 					wp_localize_script( 'accounting', 'accounting_params', array(
