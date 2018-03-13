@@ -1,4 +1,23 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.02.05 - version 3.2.9
+     * Fix:  Do not strip HTML from form options that use an image as their label.
+     * Fix:  Fix issue in WC 3.3.x where images and files uploaded were not listed properly in the order details screen.
+
+2018.01.29 - version 3.2.8
+    * Update:  Only create one entry on order creation, even if the order is being resumed.
+    * Update:  Do not fire gf_after_submission hooks during cart validation or addition unless we have
+        configured entries to be saved when adding to the cart ( default false )
+    * Update:  Fire gform_entry_created and gform_entry_post_save on order created so that Feeds who use those hooks will function properly.
+    * Fix:  Fix issue with Multi File Uploaded not working properly.
+    * New:  Added pre-population filters for wcgf_product_id, wcgf_product_sku, wcgf_variation_id, wcgf_variation_sku.  Use these to fill in the
+                respective values on any form field that allows pre-population.
+
+2018.01.16 - version 3.2.7
+    * Fix:  Move entry manager init to on_init to allow themes to override.
+
+2018.01.02 - version 3.2.6
+    * Fix:  Fix issue where legacy code was causing an error in a function that is called in extreme rare situations.
+
 2017.11.22 - version 3.2.5
     * Fix:  Fix issue with Multi File Uploaded not working properly.
 

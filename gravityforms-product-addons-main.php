@@ -82,9 +82,16 @@ class WC_GFPA_Main {
 		require 'inc/gravityforms-product-addons-cart.php';
 		require 'inc/gravityforms-product-addons-entry.php';
 		require 'inc/gravityforms-product-addons-display.php';
+		require 'inc/gravityforms-product-addons-field-values.php';
 
 		WC_GFPA_Cart::register();
 		WC_GFPA_Display::register();
+		WC_GFPA_FieldValues::register();
+
+		add_action( 'init', array( $this, 'on_init' ) );
+	}
+
+	public function on_init() {
 		WC_GFPA_Entry::register();
 	}
 
@@ -166,15 +173,15 @@ class WC_GFPA_Main {
 				//parsing shortcode attributes
 				$attr       = shortcode_parse_atts( $match[1] );
 				$product_id = isset( $attr['ids'] ) ? $attr['ids'] : false;
-				if ( !empty( $product_id ) ) {
+				if ( ! empty( $product_id ) ) {
 					$product_ids = array_merge( $product_ids, array_map( 'trim', explode( ',', $product_id ) ) );
 				}
 			}
-		} elseif ( $wp_query && !empty( $wp_query->posts ) ) {
+		} elseif ( $wp_query && ! empty( $wp_query->posts ) ) {
 			$product_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 		}
 
-		if ( !empty( $product_ids ) ) {
+		if ( ! empty( $product_ids ) ) {
 			foreach ( $product_ids as $post_id ) {
 				$_product = wc_get_product( $post_id );
 				if ( $_product ) {
@@ -288,7 +295,7 @@ class WC_GFPA_Main {
 
 				wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
 			}
-		} elseif ( is_object( $post ) && isset( $post->post_content ) && !empty( $post->post_content ) ) {
+		} elseif ( is_object( $post ) && isset( $post->post_content ) && ! empty( $post->post_content ) ) {
 			$enqueue = false;
 			$forms   = array();
 			$prices  = array();
@@ -300,7 +307,7 @@ class WC_GFPA_Main {
 					$attr       = shortcode_parse_atts( $match[1] );
 					$product_id = isset( $attr['id'] ) ? $attr['id'] : false;
 
-					if ( !empty( $product_id ) ) {
+					if ( ! empty( $product_id ) ) {
 						$gravity_form_data = $this->get_gravity_form_data( $product_id );
 
 						if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
@@ -373,11 +380,11 @@ class WC_GFPA_Main {
 				$html = '';
 			}
 
-			if ( isset( $gravity_form_data['price_before'] ) && !empty( $gravity_form_data['price_before'] ) ) {
+			if ( isset( $gravity_form_data['price_before'] ) && ! empty( $gravity_form_data['price_before'] ) ) {
 				$html = '<span class="woocommerce-price-before">' . $gravity_form_data['price_before'] . ' </span>' . $html;
 			}
 
-			if ( isset( $gravity_form_data['price_after'] ) && !empty( $gravity_form_data['price_after'] ) ) {
+			if ( isset( $gravity_form_data['price_after'] ) && ! empty( $gravity_form_data['price_after'] ) ) {
 				$html .= '<span class="woocommerce-price-after"> ' . $gravity_form_data['price_after'] . '</span>';
 			}
 		}
@@ -399,11 +406,11 @@ class WC_GFPA_Main {
 				$html = '';
 			}
 
-			if ( isset( $gravity_form_data['price_before'] ) && !empty( $gravity_form_data['price_before'] ) ) {
+			if ( isset( $gravity_form_data['price_before'] ) && ! empty( $gravity_form_data['price_before'] ) ) {
 				$html = '<span class="woocommerce-price-before">' . $gravity_form_data['price_before'] . ' </span>' . $html;
 			}
 
-			if ( isset( $gravity_form_data['price_after'] ) && !empty( $gravity_form_data['price_after'] ) ) {
+			if ( isset( $gravity_form_data['price_after'] ) && ! empty( $gravity_form_data['price_after'] ) ) {
 				$html .= '<span class="woocommerce-price-after"> ' . $gravity_form_data['price_after'] . '</span>';
 			}
 		}
