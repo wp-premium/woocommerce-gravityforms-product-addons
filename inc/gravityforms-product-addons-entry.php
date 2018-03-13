@@ -18,7 +18,7 @@ class WC_GFPA_Entry {
 		}
 	}
 
-	private $_order_items = array();
+	private $_resuming_orders = array();
 
 	private function __construct() {
 
@@ -31,6 +31,7 @@ class WC_GFPA_Entry {
 		add_action( 'gform_entry_detail_content_before', array( $this, 'entry_detail_screen_notice' ), 10, 2 );
 
 		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'create_entries' ), 10, 2 );
+		add_action( 'woocommerce_resume_order', array( $this, 'on_woocommerce_resume_order' ), 10, 1 );
 	}
 
 	/**
@@ -45,13 +46,15 @@ class WC_GFPA_Entry {
 		$order_items = $the_order->get_items();
 
 		foreach ( $order_items as $order_item ) {
+			$gravity_forms_history = null;
+
 			$meta_data = $order_item->get_meta_data();
 			if ( WC_GFPA_Compatibility::is_wc_version_gte_3_2() ) {
 
-				foreach($meta_data as $meta_data_item){
+				foreach ( $meta_data as $meta_data_item ) {
 					$d = $meta_data_item->get_data();
-					if ($d['key'] == '_gravity_forms_history' ){
-						$gravity_forms_history = array($meta_data_item);
+					if ( $d['key'] == '_gravity_forms_history' ) {
+						$gravity_forms_history = array( $meta_data_item );
 						break;
 					}
 				}
@@ -60,16 +63,60 @@ class WC_GFPA_Entry {
 				$gravity_forms_history = wp_list_filter( $meta_data, array( 'key' => '_gravity_forms_history' ) );
 			}
 
+			$entry_id = false;
 			if ( $gravity_forms_history ) {
 				$gravity_forms_history_value = array_pop( $gravity_forms_history );
-				$lead_data                   = $gravity_forms_history_value->value['_gravity_form_lead'];
-				unset( $lead_data['lead_id'] );
-				$entry_id = GFAPI::add_entry( $lead_data );
+
+				//Cart item key is set when the order is first created.
+				$cart_item_key = isset( $gravity_forms_history_value->value['_gravity_form_cart_item_key'] ) ? $gravity_forms_history_value->value['_gravity_form_cart_item_key'] : false;
+
+				if ( $cart_item_key ) {
+					//Check to see if we are resuming an order and if so if we've tracked this entry id already.
+					$entry_id = isset( $this->_resuming_orders[ $order_id ][ $cart_item_key ] ) ? $this->_resuming_orders[ $order_id ][ $cart_item_key ] : false;
+				}
+
+				$form_data = $gravity_forms_history_value->value['_gravity_form_data'];
+				$lead_data = $gravity_forms_history_value->value['_gravity_form_lead'];
+
+				if ( empty( $entry_id ) ) {
+					unset( $lead_data['lead_id'] );
+					$entry_id = GFAPI::add_entry( $lead_data );
+
+					if ( $entry_id && ! is_wp_error( $entry_id ) ) {
+
+						$form  = GFAPI::get_form( $form_data['id'] );
+						$entry = GFAPI::get_entry( $entry_id );
+
+						if ( $entry ) {
+
+							//Send notifications unless disabled
+
+							if ( apply_filters( 'woocommerce_gravityforms_send_entry_notifications_on_order_submission', true, $form ) ) {
+								GFAPI::send_notifications( $form, $entry, 'form_submission', $entry );
+							}
+
+							/**
+							 * Fired after an entry is created
+							 *
+							 * @param array $lead The Entry object
+							 * @param array $form The Form object
+							 */
+							do_action( 'gform_entry_created', $entry, $form );
+							$entry = gf_apply_filters( array( 'gform_entry_post_save', $form['id'] ), $entry, $form );
+
+								gf_do_action( array( 'gform_after_submission', $form_data['id'] ), $entry, $form );
+
+
+						}
+					}
+				}
+
 				if ( $entry_id && ! is_wp_error( $entry_id ) ) {
 					gform_update_meta( $entry_id, 'woocommerce_order_number', $order_item->get_order_id(), $lead_data['form_id'] );
 					gform_update_meta( $entry_id, 'woocommerce_order_item_number', $order_item->get_id(), $lead_data['form_id'] );
 
 					$new_history = array(
+						'_gravity_form_cart_item_key'   => $cart_item_key,
 						'_gravity_form_linked_entry_id' => $entry_id,
 						'_gravity_form_lead'            => $gravity_forms_history_value->value['_gravity_form_lead'],
 						'_gravity_form_data'            => $gravity_forms_history_value->value['_gravity_form_data']
@@ -80,6 +127,52 @@ class WC_GFPA_Entry {
 			}
 		}
 	}
+
+	/**
+	 * If we are resuming an order we need to keep track of our entry's which were already created.
+	 * We do that by storing the cart_item_key which was added to the gravity forms history when the order was created the first time
+	 *
+	 * We use these stored values so we can get the entry id which was already created for the order line item.
+	 *
+	 * We can't use the order item id to track because it get's deleted and a new one created, so we use the cart_item_key as the unique hash.
+	 *
+	 * @since 3.2.5
+	 *
+	 * @param int $order_id The woocommerce order id being resumed.
+	 */
+	public function on_woocommerce_resume_order( $order_id ) {
+
+		$the_order   = wc_get_order( $order_id );
+		$order_items = $the_order->get_items();
+
+		foreach ( $order_items as $order_item ) {
+
+			$meta_data = $order_item->get_meta_data();
+			if ( WC_GFPA_Compatibility::is_wc_version_gte_3_2() ) {
+
+				foreach ( $meta_data as $meta_data_item ) {
+					$d = $meta_data_item->get_data();
+					if ( $d['key'] == '_gravity_forms_history' ) {
+						$gravity_forms_history = array( $meta_data_item );
+						break;
+					}
+				}
+
+			} else {
+				$gravity_forms_history = wp_list_filter( $meta_data, array( 'key' => '_gravity_forms_history' ) );
+			}
+
+			if ( $gravity_forms_history ) {
+
+				$gravity_forms_history_value = array_pop( $gravity_forms_history );
+				$cart_item_key               = isset( $gravity_forms_history_value->value['_gravity_form_cart_item_key'] ) ? $gravity_forms_history_value->value['_gravity_form_cart_item_key'] : false;
+
+				$entry_id                                              = isset( $gravity_forms_history_value->value['_gravity_form_linked_entry_id'] ) ? $gravity_forms_history_value->value['_gravity_form_linked_entry_id'] : false;
+				$this->_resuming_orders[ $order_id ][ $cart_item_key ] = $entry_id;
+			}
+		}
+	}
+
 
 	/**
 	 * @param $order_item WC_Order_Item_Product
