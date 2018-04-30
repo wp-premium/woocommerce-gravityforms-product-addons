@@ -1,4 +1,26 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.04.26 - version 3.3.0
+    * Note:   Tested up to Gravity Forms 2.3
+    * Fix:    Entry deletion for Gravity Forms 2.3
+    * Fix:    Scroll to form automatically if there are validation errors.
+    * Update: Include Order Status column as part of the Gravity Forms Entry export feature.
+    * Update: Include support for Bulk Variation forms.  Note, this works best when disabling the total and subtotal labels.
+    * Update: Update entry after gform_entry_post_save filter is called on order creation.
+    * Update: Add admin notice about Gravity Forms Duplicate Prevention plugin causing problems with the extension.
+    * Update: Moved the Gravity Forms meta box into the WooCommerce Product data meta box to match standards for extensions.
+    * Update: Perform validation when re-ordering to validate the entry is still valid and that the form still exists.
+    * Update: Prevent Zapier from sending duplicate data to it's API.
+    * New:  Include the ability to edit cart items.
+                Clicking on the cart item title will re-populate a form with previously submitted values.
+                Added Additional Options section to control the editing of cart items.  Default is off.
+    * New:  Include ability to turn off the default form notifications which are sent for the form when an item is ordered.
+    * New:  Include the ability to use a Gravity Form field as the quantity field for the cart item.  Supported types are Quantity, Single Product, and Number fields.
+    * New:  Create entries for the Subscription Orders when the Subscription is renewed.
+    * New:  Include ability to keep form entries transaction and payment details in sync with the WooCommerce Order.
+    * New:  Include action for when Gravity Forms creates the final entry for the order.
+            	do_action( 'woocommerce_gravityforms_entry_created', $entry_id, $order_id, $order_item, $form_data, $lead_data );
+    * Fix:  Fix issue where GFormsDisplay was not defined on checkout page.
+
 2018.02.05 - version 3.2.9
      * Fix:  Do not strip HTML from form options that use an image as their label.
      * Fix:  Fix issue in WC 3.3.x where images and files uploaded were not listed properly in the order details screen.

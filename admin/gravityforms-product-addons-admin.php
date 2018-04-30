@@ -11,10 +11,40 @@ class WC_GFPA_Admin_Controller {
 	}
 
 	private function __construct() {
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'on_admin_enqueue_scripts' ), 100 );
 		add_action( 'admin_notices', array( $this, 'admin_install_notices' ) );
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+
 		add_action( 'woocommerce_process_product_meta', array( $this, 'process_meta_box' ), 1, 2 );
+		add_action( 'admin_notices', array( $this, 'on_admin_notices' ) );
+
+
+		add_action( 'woocommerce_product_write_panel_tabs', array( $this, 'add_tab' ) );
+		add_action( 'woocommerce_product_data_panels', array( $this, 'render_panel' ) );
+		add_action( 'woocommerce_process_product_meta', array( $this, 'process_meta_box' ), 1, 2 );
+
+		add_action( 'wp_ajax_wc_gravityforms_get_form_data', array( $this, 'on_wc_gravityforms_get_form_data' ) );
+
 	}
+
+	public function on_admin_enqueue_scripts() {
+		wp_enqueue_style( 'woocommerce_gravityforms_product_addons_css', plugins_url( basename( dirname( dirname( __FILE__ ) ) ) ) . '/assets/css/admin.css' );
+
+		$params = array(
+			'nonce'          => wp_create_nonce( 'wc_gravityforms_get_products' ),
+			'text_edit_form' => __( 'Edit ', 'wc_gf_addons' ),
+			'url_edit_form'  => sprintf( '%s/admin.php?page=gf_edit_forms&id=FORMID', get_admin_url() ),
+			'product_id'     => get_the_ID()
+		);
+
+		wp_enqueue_script( 'woocommerce_gravityforms_product_addons_js', plugins_url( basename( dirname( dirname( __FILE__ ) ) ) ) . '/assets/js/admin.js', array(
+			'jquery',
+			'jquery-blockui'
+		), wc_gfpa()->assets_version );
+
+		wp_localize_script( 'woocommerce_gravityforms_product_addons_js', 'wc_gf_addons', $params );
+	}
+
 
 	public function admin_install_notices() {
 		if ( ! class_exists( 'RGForms' ) ) {
@@ -23,210 +53,68 @@ class WC_GFPA_Admin_Controller {
                 <div class="squeezer">
                     <h4><?php _e( '<strong>Gravity Forms Not Found</strong> &#8211; The Gravity Forms Plugin is required to build and manage the forms for your products.', 'wc_gf_addons' ); ?></h4>
                     <p class="submit">
-                        <a href="http://www.gravityforms.com/" class="button-primary"><?php _e( 'Get Gravity Forms', 'wc_gf_addons' ); ?></a>
+                        <a href="https://www.gravityforms.com/" class="button-primary"><?php _e( 'Get Gravity Forms', 'wc_gf_addons' ); ?></a>
                     </p>
                 </div>
             </div>
 			<?php
 		}
+
+
 	}
 
-	public function add_meta_box() {
-		global $post;
-		add_meta_box( 'woocommerce-gravityforms-meta', __( 'Gravity Forms Product Add-Ons', 'wc_gf_addons' ), array(
-			$this,
-			'meta_box'
-		), 'product', 'normal', 'default' );
-	}
+	public function on_admin_notices() {
 
-	function meta_box( $post ) {
-		$product = wc_get_product( $post );
-		?>
-
-        <script type="text/javascript">
-            jQuery(document).ready(function ($) {
-                $('#gravityform-id').change(function () {
-                    if ($(this).val() != '') {
-                        $('.gforms-panel').show();
-                    } else {
-                        $('.gforms-panel').hide();
-                    }
-                })
-            });
-        </script>
-        <div id="gravityforms_data" class="panel woocommerce_options_panel">
-			<?php if ( !$product->is_purchasable() ) : ?>
-                <div style="margin:5px 0 15px;border-left:4px solid red;padding:1px 12px;box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);">
-                    <p>You must set a price for the product before the gravity form will be visible. Set the price to 0 if you are performing all price calculations with the attached Gravity Form.</p>
+		if ( is_admin() ) {
+			if ( is_plugin_active( 'gravity-forms-duplicate-prevention/gravityforms-duplicateprevention.php' ) || is_plugin_active_for_network( 'gravity-forms-duplicate-prevention/gravityforms-duplicateprevention.php' ) ) {
+				?>
+                <div id="message" class="error woocommerce-error wc-connect">
+                    <div class="squeezer">
+                        <h4><?php printf( __( '<strong>Gravity Forms Duplicate Prevention Active</strong></h4><p>The <strong>Gravity Forms Product Addon Extension</strong> can not function properly if this additional plugin is active.  Please <a href="%s">disable</a> it for proper functionality of the extension.</p>', 'wc_gf_addons' ), $this->na_action_link( 'gravity-forms-duplicate-prevention/gravityforms-duplicateprevention.php', 'deactivate' ) ); ?></h4>
+                    </div>
                 </div>
-			<?php endif; ?>
-
-            <h4><?php _e( 'General', 'wc_gf_addons' ); ?></h4>
-			<?php
-			$gravity_form_data = $product->get_meta( '_gravity_form_data', true );
-			$gravityform       = null;
-			if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_numeric( $gravity_form_data['id'] ) ) {
-
-				$form_meta = RGFormsModel::get_form_meta( $gravity_form_data['id'] );
-
-				if ( ! empty( $form_meta ) ) {
-					$gravityform = RGFormsModel::get_form( $gravity_form_data['id'] );
-				}
+				<?php
 			}
-			?>
-            <div class="options_group">
-                <p class="form-field">
-                    <label for="gravityform-id"><?php _e( 'Choose Form', 'wc_gf_addons' ); ?></label>
-					<?php
-					echo '<select id="gravityform-id" name="gravityform-id"><option value="">' . __( 'None', 'wc_gf_addons' ) . '</option>';
-					foreach ( RGFormsModel::get_forms() as $form ) {
-						echo '<option ' . selected( $form->id, ( isset( $gravity_form_data['id'] ) ? $gravity_form_data['id'] : 0 ) ) . ' value="' . esc_attr( $form->id ) . '">' . wptexturize( $form->title ) . '</option>';
-					}
-					echo '</select>';
-					?>
-                </p>
-
-				<?php
-				woocommerce_wp_checkbox( array(
-					'id'    => 'gravityform-display_title',
-					'label' => __( 'Display Title', 'wc_gf_addons' ),
-					'value' => isset( $gravity_form_data['display_title'] ) && $gravity_form_data['display_title'] ? 'yes' : ''
-				) );
-
-				woocommerce_wp_checkbox( array(
-					'id'    => 'gravityform-display_description',
-					'label' => __( 'Display Description', 'wc_gf_addons' ),
-					'value' => isset( $gravity_form_data['display_description'] ) && $gravity_form_data['display_description'] ? 'yes' : ''
-				) );;
-				?>
-            </div>
-
-            <div class="options_group" style="padding: 0 9px;">
-				<?php if ( ! empty( $gravityform ) && is_object( $gravityform ) ) : ?>
-                    <h4>
-                        <a href="<?php printf( '%s/admin.php?page=gf_edit_forms&id=%d', get_admin_url(), $gravityform->id ) ?>" class="edit_gravityform">Edit <?php echo $gravityform->title; ?> Gravity Form</a>
-                    </h4>
-				<?php endif; ?>
-            </div>
-        </div>
-
-        <div id="multipage_forms_data" class="gforms-panel panel woocommerce_options_panel" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
-            <h4><?php _e( 'Multipage Forms', 'wc_gf_addons' ); ?></h4>
-            <div class="options_group">
-				<?php
-				woocommerce_wp_checkbox( array(
-					'id'    => 'gravityform-disable_anchor',
-					'label' => __( 'Disable Gravity Forms Anchors', 'wc_gf_addons' ),
-					'value' => isset( $gravity_form_data['disable_anchor'] ) ? $gravity_form_data['disable_anchor'] : ''
-				) );
-				?>
-            </div>
-        </div>
-
-        <div id="price_labels_data" class="gforms-panel panel woocommerce_options_panel" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
-            <h4><?php _e( 'Price Labels', 'wc_gf_addons' ); ?></h4>
-            <div class="options_group">
-				<?php
-				woocommerce_wp_checkbox( array(
-					'id'    => 'gravityform-disable_woocommerce_price',
-					'label' => __( 'Remove WooCommerce Price?', 'wc_gf_addons' ),
-					'value' => isset( $gravity_form_data['disable_woocommerce_price'] ) ? $gravity_form_data['disable_woocommerce_price'] : ''
-				) );
-
-				woocommerce_wp_text_input( array(
-					'id'          => 'gravityform-price-before',
-					'label'       => __( 'Price Before', 'wc_gf_addons' ),
-					'value'       => isset( $gravity_form_data['price_before'] ) ? $gravity_form_data['price_before'] : '',
-					'placeholder' => __( 'Base Price:', 'wc_gf_addons' ),
-					'description' => __( 'Enter text you would like printed before the price of the product.', 'wc_gf_addons' )
-				) );
-
-				woocommerce_wp_text_input( array(
-					'id'          => 'gravityform-price-after',
-					'label'       => __( 'Price After', 'wc_gf_addons' ),
-					'value'       => isset( $gravity_form_data['price_after'] ) ? $gravity_form_data['price_after'] : '',
-					'placeholder' => '',
-					'description' => __( 'Enter text you would like printed after the price of the product.', 'wc_gf_addons' )
-				) );
-				?>
-            </div>
-        </div>
-
-        <div id="total_labels_data" class="gforms-panel panel woocommerce_options_panel" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
-            <h4><?php _e( 'Total Calculations', 'wc_gf_addons' ); ?></h4>
-			<?php
-			echo '<div class="options_group">';
-			if ( class_exists( 'WC_Dynamic_Pricing' ) ) {
-				woocommerce_wp_select(
-					array(
-						'id'          => 'gravityform_use_ajax',
-						'label'       => __( 'Enable Dynamic Pricing?', 'wc_gf_addons' ),
-						'value'       => isset( $gravity_form_data['use_ajax'] ) ? $gravity_form_data['use_ajax'] : '',
-						'options'     => array( 'no' => 'No', 'yes' => 'Yes' ),
-						'description' => __( 'Enable Dynamic Pricing calculations if you are using Dynamic Pricing to modify the price of this product.', 'wc_gf_addons' )
-					)
-				);
-			}
-			echo '</div>';
-			echo '<div class="options_group">';
-			woocommerce_wp_checkbox( array(
-				'id'    => 'gravityform-disable_calculations',
-				'label' => __( 'Disable Calculations?', 'wc_gf_addons' ),
-				'value' => isset( $gravity_form_data['disable_calculations'] ) ? $gravity_form_data['disable_calculations'] : ''
-			) );
-			echo '</div>';
-
-			echo '<div class="options_group">';
-			woocommerce_wp_checkbox( array(
-				'id'    => 'gravityform-disable_label_subtotal',
-				'label' => __( 'Disable Subtotal?', 'wc_gf_addons' ),
-				'value' => isset( $gravity_form_data['disable_label_subtotal'] ) ? $gravity_form_data['disable_label_subtotal'] : ''
-			) );
-
-			woocommerce_wp_text_input( array(
-				'id'          => 'gravityform-label_subtotal',
-				'label'       => __( 'Subtotal Label', 'wc_gf_addons' ),
-				'value'       => isset( $gravity_form_data['label_subtotal'] ) && ! empty( $gravity_form_data['label_subtotal'] ) ? $gravity_form_data['label_subtotal'] : 'Subtotal',
-				'placeholder' => __( 'Subtotal', 'wc_gf_addons' ),
-				'description' => __( 'Enter "Subtotal" label to display on for single products.', 'wc_gf_addons' )
-			) );
-			echo '</div><div class="options_group">';
-			woocommerce_wp_checkbox( array(
-				'id'    => 'gravityform-disable_label_options',
-				'label' => __( 'Disable Options Label?', 'wc_gf_addons' ),
-				'value' => isset( $gravity_form_data['disable_label_options'] ) ? $gravity_form_data['disable_label_options'] : ''
-			) );
-
-			woocommerce_wp_text_input( array(
-				'id'          => 'gravityform-label_options',
-				'label'       => __( 'Options Label', 'wc_gf_addons' ),
-				'value'       => isset( $gravity_form_data['label_options'] ) && ! empty( $gravity_form_data['label_options'] ) ? $gravity_form_data['label_options'] : 'Options',
-				'placeholder' => __( 'Options', 'wc_gf_addons' ),
-				'description' => __( 'Enter the "Options" label to display for single products.', 'wc_gf_addons' )
-			) );
-			echo '</div><div class="options_group">';
-			woocommerce_wp_checkbox( array(
-				'id'    => 'gravityform-disable_label_total',
-				'label' => __( 'Disable Total Label?', 'wc_gf_addons' ),
-				'value' => isset( $gravity_form_data['disable_label_total'] ) ? $gravity_form_data['disable_label_total'] : ''
-			) );
-
-			woocommerce_wp_text_input( array(
-				'id'          => 'gravityform-label_total',
-				'label'       => __( 'Total Label', 'wc_gf_addons' ),
-				'value'       => isset( $gravity_form_data['label_total'] ) && ! empty( $gravity_form_data['label_total'] ) ? $gravity_form_data['label_total'] : 'Total',
-				'placeholder' => __( 'Total', 'wc_gf_addons' ),
-				'description' => __( 'Enter the "Total" label to display for single products.', 'wc_gf_addons' )
-			) );
-			echo '</div>';
-			?>
-        </div>
-		<?php
+		}
 	}
+
+	/**
+	 * Get activation or deactivation link of a plugin
+	 *
+	 * @param string $plugin plugin file name
+	 * @param string $action action to perform. activate or deactivate
+	 *
+	 * @return string $url action url
+	 */
+	private function na_action_link( $plugin, $action = 'activate' ) {
+		if ( strpos( $plugin, '/' ) ) {
+			$plugin = str_replace( '\/', '%2F', $plugin );
+		}
+		$url                = sprintf( admin_url( 'plugins.php?action=' . $action . '&plugin=%s&plugin_status=all&paged=1&s' ), $plugin );
+		$_REQUEST['plugin'] = $plugin;
+		$url                = wp_nonce_url( $url, $action . '-plugin_' . $plugin );
+
+		return $url;
+	}
+
+
+	public function add_tab() {
+		?>
+        <li class="gravityforms_addons_tab gravityforms_addons">
+        <a href="#gravityforms_addons_data"><span><?php _e( 'Gravity Forms', 'wc_gf_addons' ); ?></span></a></li><?php
+	}
+
+	/**
+	 * Add product panel.
+	 */
+	public function render_panel() {
+		global $post;
+		$product = wc_get_product( $post );
+		include( dirname( __FILE__ ) . '/views/html-gravityforms-addons-wc-metabox.php' );
+	}
+
 
 	public function process_meta_box( $post_id, $post ) {
-		global $woocommerce_errors;
-
 
 		// Save gravity form as serialised array
 		if ( isset( $_POST['gravityform-id'] ) && ! empty( $_POST['gravityform-id'] ) ) {
@@ -234,22 +122,30 @@ class WC_GFPA_Admin_Controller {
 			$product = wc_get_product( $post );
 
 			$gravity_form_data = array(
-				'id'                        => $_POST['gravityform-id'],
-				'display_title'             => isset( $_POST['gravityform-display_title'] ) ? true : false,
-				'display_description'       => isset( $_POST['gravityform-display_description'] ) ? true : false,
-				'disable_woocommerce_price' => isset( $_POST['gravityform-disable_woocommerce_price'] ) ? 'yes' : 'no',
-				'price_before'              => $_POST['gravityform-price-before'],
-				'price_after'               => $_POST['gravityform-price-after'],
-				'disable_calculations'      => isset( $_POST['gravityform-disable_calculations'] ) ? 'yes' : 'no',
-				'disable_label_subtotal'    => isset( $_POST['gravityform-disable_label_subtotal'] ) ? 'yes' : 'no',
-				'disable_label_options'     => isset( $_POST['gravityform-disable_label_options'] ) ? 'yes' : 'no',
-				'disable_label_total'       => isset( $_POST['gravityform-disable_label_total'] ) ? 'yes' : 'no',
-				'disable_anchor'            => isset( $_POST['gravityform-disable_anchor'] ) ? 'yes' : 'no',
-				'label_subtotal'            => $_POST['gravityform-label_subtotal'],
-				'label_options'             => $_POST['gravityform-label_options'],
-				'label_total'               => $_POST['gravityform-label_total'],
-				'use_ajax'                  => isset( $_POST['gravityform_use_ajax'] ) ? $_POST['gravityform_use_ajax'] : 'no'
-			);
+				'id'                              => $_POST['gravityform-id'],
+				'display_title'                   => isset( $_POST['gravityform-display_title'] ) ? true : false,
+				'display_description'             => isset( $_POST['gravityform-display_description'] ) ? true : false,
+				'disable_woocommerce_price'       => isset( $_POST['gravityform-disable_woocommerce_price'] ) ? 'yes' : 'no',
+				'price_before'                    => $_POST['gravityform-price-before'],
+				'price_after'                     => $_POST['gravityform-price-after'],
+				'disable_calculations'            => isset( $_POST['gravityform-disable_calculations'] ) ? 'yes' : 'no',
+				'disable_label_subtotal'          => isset( $_POST['gravityform-disable_label_subtotal'] ) ? 'yes' : 'no',
+				'disable_label_options'           => isset( $_POST['gravityform-disable_label_options'] ) ? 'yes' : 'no',
+				'disable_label_total'             => isset( $_POST['gravityform-disable_label_total'] ) ? 'yes' : 'no',
+				'disable_anchor'                  => isset( $_POST['gravityform-disable_anchor'] ) ? 'yes' : 'no',
+				'label_subtotal'                  => $_POST['gravityform-label_subtotal'],
+				'label_options'                   => $_POST['gravityform-label_options'],
+				'label_total'                     => $_POST['gravityform-label_total'],
+				'use_ajax'                        => isset( $_POST['gravityform_use_ajax'] ) ? $_POST['gravityform_use_ajax'] : 'no',
+				'enable_cart_edit'                => isset( $_POST['gravityform-enable_cart_edit'] ) ? $_POST['gravityform-enable_cart_edit'] : 'no',
+				'enable_cart_edit_remove'         => isset( $_POST['gravityform-enable_cart_edit_remove'] ) ? $_POST['gravityform-enable_cart_edit'] : 'yes',
+				'keep_cart_entries'               => isset( $_POST['gravityform-keep_cart_entries'] ) ? 'yes' : 'no',
+				'send_notifications'              => isset( $_POST['gravityform-send_notifications'] ) ? $_POST['gravityform-send_notifications'] : 'no',
+				'enable_cart_quantity_management' => isset( $_POST['gravityform-enable_cart_quantity_management'] ) ? $_POST['gravityform-enable_cart_quantity_management'] : 'no',
+				'cart_quantity_field'             => isset( $_POST['gravityform-cart_quantity_field'] ) ? $_POST['gravityform-cart_quantity_field'] : '',
+				'update_payment_details'          => isset( $_POST['gravityform-update_payment_details'] ) ? 'yes' : 'no',
+		);
+
 			$product->update_meta_data( '_gravity_form_data', $gravity_form_data );
 			$product->save_meta_data();
 		} else {
@@ -258,5 +154,85 @@ class WC_GFPA_Admin_Controller {
 			$product->save_meta_data();
 		}
 	}
+
+
+	/** Ajax Handling */
+	public function on_wc_gravityforms_get_form_data() {
+		check_ajax_referer( 'wc_gravityforms_get_products', 'wc_gravityforms_security' );
+
+		$form_id = isset( $_POST['form_id'] ) ? $_POST['form_id'] : 0;
+		if ( empty( $form_id ) ) {
+			wp_send_json_error( array(
+				'status'  => 'error',
+				'message' => __( 'No Form ID', 'wc_gf_addons' ),
+			) );
+			die();
+		}
+
+		$product_id = isset( $_POST['product_id'] ) ? $_POST['product_id'] : 0;
+
+		$selected_field = '';
+		if ( $product_id ) {
+			$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product_id );
+
+			if ( $gravity_form_data && isset( $gravity_form_data['enable_cart_quantity_management'] ) ) {
+
+				if ( isset( $gravity_form_data['cart_quantity_field'] ) ) {
+					$selected_field = $gravity_form_data['cart_quantity_field'];
+				}
+
+			}
+
+		}
+
+
+		$form   = GFAPI::get_form( $form_id );
+		$fields = GFAPI::get_fields_by_type( $form, array( 'quantity', 'number', 'singleproduct', ), true );
+
+		if ( $fields ) {
+			$options = array();
+			foreach ( $fields as $field ) {
+				if ( $field['disableQuantity'] !== true ) {
+					$options[ $field['id'] ] = $field['label'];
+				}
+			}
+
+
+			ob_start();
+			woocommerce_wp_select(
+				array(
+					'id'          => 'gravityform-cart_quantity_field',
+					'label'       => __( 'Quantity Field', 'wc_gf_addons' ),
+					'value'       => $selected_field,
+					'options'     => $options,
+					'description' => __( 'A field to use to control cart item quantity.', 'wc_gf_addons' )
+				)
+			);
+
+			$markup = ob_get_clean();
+		} else {
+			$markup = '<p class="form-field">' . __( 'No suitable quantity fields found.', 'wc_gf_addons' ) . '</p>';
+		}
+
+		/*
+		$markup = '<select name="gravityform-cart_quantity_field" id="gravityform-cart_quantity_field">';
+
+		foreach ( $fields as $field ) {
+			$markup .= '<option ' . selected( $field['id'], $selected_field, false ) . ' value="' . $field['id'] . '">' . $field['label'] . '</option>';
+		}
+
+		$markup .= '</select>';
+        */
+
+		$response = array(
+			'status'  => 'success',
+			'message' => '',
+			'markup'  => $markup
+		);
+
+		wp_send_json_success( $response );
+		die();
+	}
+
 
 }

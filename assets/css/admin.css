@@ -1,0 +1,88 @@
+.wc-product-data-metabox {
+    padding: 10px;
+}
+
+#woocommerce-product-data ul.product_data_tabs li.gravityforms_addons_tab a:before {
+    content: "\f314";
+}
+
+#gravityforms_addons_data {
+    padding-bottom: 25px;
+}
+
+#gravityforms_addons_data h4 {
+    padding: 5px 20px 5px 10px !important;
+    margin: 15px 0 0 0;
+}
+
+#gravityforms_addons_data span.edit_form_link {
+    padding-top: 5px;
+    display: block;
+    clear: left;
+    font-weight: bold;
+}
+
+
+.wc-product-data-metabox .wc-product-data-metabox-group-title {
+    padding: 8px 10px;
+    border-radius: 3px 3px 0 0;
+    border: #DFDFDF solid 1px;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-group-field {
+    position: relative;
+    overflow: hidden;
+    background: #DADADA;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-group-field .wc-product-data-metabox-group-field-title {
+    cursor: pointer;
+    border: #DFDFDF solid 1px;
+    border-top: 0 none;
+    background: #F9F9F9;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-group-field .wc-product-data-metabox-group-field-title a, .wc-product-data-metabox .wc-product-data-metabox-group-field .wc-product-data-metabox-group-field-title span {
+    padding: 10px 10px;
+    display: inline-block;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-group-field .wc-product-data-metabox-group-field-content {
+    padding: 8px 10px;
+    margin: 8px 10px;
+    border: #7390a5 solid 1px;
+    position: relative;
+    overflow: hidden;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    background: #fff;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-group-field.open > .wc-product-data-metabox-group-field-title {
+    background-color: #6e6e6e;
+    color: #fff;
+    text-shadow: #000 0 1px 0;
+    border: #565656 solid 1px;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-group-field.open > .wc-product-data-metabox-group-field-title a, .wc-product-data-metabox .wc-product-data-metabox-group-field.open > .wc-product-data-metabox-group-field-title span {
+    color: #fff;
+}
+
+.wc-product-data-metabox .wc-product-data-metabox-option-group-label {
+
+    margin-top: 8px;
+    font-weight: bold;
+
+}
+
+.form-field.gravityform-enable_cart_edit_remove_field .description {
+
+    display: block;
+    float: none;
+    clear: both;
+
+
+}

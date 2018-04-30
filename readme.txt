@@ -2,21 +2,9 @@
 Contributors: lucasstark
 Tags: woocommerce, gravity forms
 Requires at least: 3.0
-Tested up to: 4.7.1
+Tested up to: 4.9.5
 
-WooCommerce Gravity Forms.  This add-on requires Gravity Forms
-
-3.1.0 Update Notes:
-Gravity Form entries are now created when a customer places an order which has gravity forms data as part of it.  An entry will be created for cart item which has associated gravity form data.  The entry will be linked via custom Gravity Form meta data to the actual WooCommerce order.  You can view your entries for the Gravity Form and see links to the WooCommerce Order and Order Item to which the Gravity Form entry is attached.  You can also view the WooCommerce order and see a link back to the entry for any order line item which has associated entry data.
-
-Note: The entry and the WooCommerce order are linked by simple meta data.  If you make a manual change to an Order Item it will not automatically update the Gravity Form entry, similarly if you update the Gravity Form entry which is attached to an order item, those updates are not automatically pushed to the Order Item.
-
-This update eliminates the problem with creating duplicate entries when an item is added to the cart.  Entries are no longer created and stored when adding to the cart, instead an entry is created during the final checkout process for each cart item respectively.
-
-This give you the ability to use the Gravity Forms Entries system to see the actual entry which was associated with a cart item.
-
-This also gives you additional fields when exporting your entries.  You can choose to export the WooCommerce Order ID, Order Item ID and Order Item Name.   Using the exported data like this you can easily link up the exported Gravity Forms entries with their respective WooCommerce Order Items.
-
+WooCommerce Gravity Forms.  This add-on requires Gravity Forms and has been tested with Gravity Forms 2.3
 
 == Installation ==
 
