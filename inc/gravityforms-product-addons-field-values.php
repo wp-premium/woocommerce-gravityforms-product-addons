@@ -52,6 +52,12 @@ class WC_GFPA_FieldValues {
 					$value = $product->get_sku();
 				}
 				break;
+			case 'wcgf_product_name':
+				$product = wc_get_product( $product_id );
+				if ( $product ) {
+					$value = $product->get_name();
+				}
+				break;
 			case 'wcgf_variation_id':
 				if ( ! empty( $variation_id ) ) {
 					$product = wc_get_product( $variation_id );
@@ -65,6 +71,14 @@ class WC_GFPA_FieldValues {
 					$product = wc_get_product( $variation_id );
 					if ( $product ) {
 						$value = $product->get_sku();
+					}
+				}
+				break;
+			case 'wcgf_variation_name':
+				if ( ! empty( $variation_id ) ) {
+					$product = wc_get_product( $variation_id );
+					if ( $product ) {
+						$value = $product->get_name();
 					}
 				}
 				break;
