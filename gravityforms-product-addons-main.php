@@ -31,6 +31,8 @@ class WC_GFPA_Main {
 		return self::$instance;
 	}
 
+	public $assets_version = '3.2.12';
+
 	public $gravity_products = array();
 
 	public function __construct() {
@@ -44,6 +46,12 @@ class WC_GFPA_Main {
 		add_action( 'woocommerce_before_add_to_cart_form', array(
 			$this,
 			'on_woocommerce_before_add_to_cart_form'
+		) );
+
+
+		add_action( 'woocommerce_bv_before_add_to_cart_button', array(
+			$this,
+			'woocommerce_gravityform_bulk_variations'
 		) );
 
 
@@ -80,13 +88,19 @@ class WC_GFPA_Main {
 
 
 		require 'inc/gravityforms-product-addons-cart.php';
+		require 'inc/gravityforms-product-addons-cart-edit.php';
+		require 'inc/gravityforms-product-addons-reorder.php';
 		require 'inc/gravityforms-product-addons-entry.php';
+		require 'inc/gravityforms-product-addons-stock.php';
 		require 'inc/gravityforms-product-addons-display.php';
 		require 'inc/gravityforms-product-addons-field-values.php';
 
 		WC_GFPA_Cart::register();
+		WC_GFPA_Cart_Edit::register();
+		WC_GFPA_Reorder::register();
 		WC_GFPA_Display::register();
 		WC_GFPA_FieldValues::register();
+		WC_GFPA_Stock::register();
 
 		add_action( 'init', array( $this, 'on_init' ) );
 	}
@@ -111,13 +125,17 @@ class WC_GFPA_Main {
 					'woocommerce_gravityform'
 				), 10 );
 			} else {
+
+				$hook = apply_filters('woocommerce_gforms_form_output_hook', 'woocommerce_single_variation', $product);
+
 				//Use the new 2.4+ hook
-				add_action( 'woocommerce_single_variation', array( $this, 'woocommerce_gravityform' ), 11 );
+				add_action( $hook, array( $this, 'woocommerce_gravityform' ), 11 );
 				add_action( 'wc_cvo_after_single_variation', array( $this, 'woocommerce_gravityform' ), 9 );
 			}
 
 		} else {
-			add_action( 'woocommerce_before_add_to_cart_button', array( $this, 'woocommerce_gravityform' ), 10 );
+			$hook = apply_filters('woocommerce_gforms_form_output_hook', 'woocommerce_before_add_to_cart_button', $product);
+			add_action( $hook, array( $this, 'woocommerce_gravityform' ), 10 );
 		}
 	}
 
@@ -152,6 +170,24 @@ class WC_GFPA_Main {
 
 			echo '<input type="hidden" name="add-to-cart" value="' . esc_attr( $product->get_id() ) . '" />';
 
+		}
+		echo '<div class="clear"></div>';
+	}
+
+	public function woocommerce_gravityform_bulk_variations() {
+		global $post, $woocommerce;
+
+		include_once( 'gravityforms-product-addons-form.php' );
+
+		$gravity_form_data = $this->get_gravity_form_data( $post->ID );
+		if ( is_array( $gravity_form_data ) && $gravity_form_data['id'] ) {
+			$product = wc_get_product( $post->ID );
+
+			$product_form = new woocommerce_gravityforms_product_form( $gravity_form_data['id'], $post->ID );
+			$gravity_form_data['disable_label_subtotal'] = 'yes';
+			$gravity_form_data['disable_label_total'] = 'yes';
+			
+			$product_form->get_form( $gravity_form_data );
 		}
 		echo '<div class="clear"></div>';
 	}

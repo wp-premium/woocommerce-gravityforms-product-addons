@@ -28,10 +28,11 @@ class WC_GFPA_Cart {
 			$this,
 			'on_get_order_again_cart_item_data'
 		), 10, 3 );
+
 	}
 
 	//Helper function, used when an item is added to the cart as well as when an item is restored from session.
-	public function add_cart_item( $cart_item ) {
+	public function add_cart_item( $cart_item, $restoring_session = false ) {
 		global $woocommerce;
 
 		// Adjust price if required based on the gravity form data
@@ -80,6 +81,25 @@ class WC_GFPA_Cart {
 			$cart_item['data']->set_price( $price );
 			$cart_item['_gform_total'] = $total;
 			error_reporting( $err_level );
+
+			if ( $restoring_session === false ) {
+				if ( isset( $gravity_form_data['enable_cart_quantity_management'] ) && $gravity_form_data['enable_cart_quantity_management'] == 'yes' ) {
+
+					$field = isset( $gravity_form_data['cart_quantity_field'] ) ? $gravity_form_data['cart_quantity_field'] : false;
+
+					if ( $field ) {
+						if ( isset( $products['products'][ $field ] ) ) {
+							$quantity = isset( $products['products'][ $field ] ) ? $products['products'][ $field ]['quantity'] : $cart_item['quantity'];
+						} else {
+							$quantity = isset( $lead[ $field ] ) ? $lead[ $field ] : $cart_item['quantity'];
+						}
+
+						$cart_item['quantity'] = $quantity;
+					}
+
+				}
+			}
+
 		}
 
 
@@ -101,6 +121,10 @@ class WC_GFPA_Cart {
 
 		if ( $gravity_form_data && is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && intval( $gravity_form_data['id'] ) > 0 ) {
 
+			if ( ! class_exists( 'GFFormDisplay' ) ) {
+				require_once( GFCommon::get_base_path() . "/form_display.php" );
+			}
+
 			$form_id   = $gravity_form_data['id'];
 			$form_meta = RGFormsModel::get_form_meta( $form_id );
 			$form_meta = gf_apply_filters( array( 'gform_pre_render', $form_id ), $form_meta );
@@ -110,10 +134,13 @@ class WC_GFPA_Cart {
 			error_reporting( 0 );
 
 			//MUST disable notifications manually.
-			add_filter('gform_disable_notification', array($this, 'disable_notifications'), 999, 3);
+			add_filter( 'gform_disable_notification', array( $this, 'disable_notifications' ), 999, 3 );
 
 			add_filter( 'gform_disable_user_notification', array( $this, 'disable_notifications', 999, 3 ) );
-			add_filter( 'gform_disable_user_notification_' . $form_id, array( $this, 'disable_notifications' ), 999, 3 );
+			add_filter( 'gform_disable_user_notification_' . $form_id, array(
+				$this,
+				'disable_notifications'
+			), 999, 3 );
 
 			add_filter( 'gform_disable_admin_notification' . $form_id, array(
 				$this,
@@ -135,7 +162,9 @@ class WC_GFPA_Cart {
 				return $cart_item_meta;
 			}
 
-			if ( apply_filters( 'woocommerce_gravityforms_delete_entries', true ) ) {
+			$delete_cart_entries = isset( $gravity_form_data['keep_cart_entries'] ) && $gravity_form_data['keep_cart_entries'] == 'yes' ? false : true;
+
+			if ( apply_filters( 'woocommerce_gravityforms_delete_entries', $delete_cart_entries ) ) {
 				//We are going to delete this entry, so let's remove all after submission hooks.
 				//Remove all post_submission hooks so data does not get sent to feeds such as Zapier
 				$this->disable_gform_after_submission_hooks( $form_id );
@@ -144,6 +173,7 @@ class WC_GFPA_Cart {
 				$this->enable_gform_after_submission_hooks( $form_id );
 			}
 
+			GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Processing Add to Cart #{$form_id}." );
 			GFFormDisplay::$submission[ $form_id ] = null;
 			require_once( GFCommon::get_base_path() . "/form_display.php" );
 			$_POST['gform_submit'] = $_POST['gform_old_submit'];
@@ -196,7 +226,8 @@ class WC_GFPA_Cart {
 				}
 			}
 
-			if ( apply_filters( 'woocommerce_gravityforms_delete_entries', true ) ) {
+			if ( apply_filters( 'woocommerce_gravityforms_delete_entries', $delete_cart_entries ) ) {
+				GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Add to Cart - Deleting Entry #{$form_id}." );
 				$this->delete_entry( $lead );
 			}
 
@@ -217,7 +248,7 @@ class WC_GFPA_Cart {
 		}
 
 		if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
-			$this->add_cart_item( $cart_item );
+			$this->add_cart_item( $cart_item, true );
 		}
 
 		return $cart_item;
@@ -279,7 +310,7 @@ class WC_GFPA_Cart {
 							$display_title = GFCommon::get_label( $field );
 
 							$prefix         = '';
-							$hidden         = $field['type'] == 'hidden';
+							$hidden         = $field['type'] == 'hidden' || ( isset( $field['visibility'] ) && $field['visibility'] == 'hidden' );
 							$display_hidden = apply_filters( "woocommerce_gforms_field_is_hidden", $hidden, $display_value, $display_title, $field, $lead, $form_meta );
 							if ( $display_hidden ) {
 								$prefix = $hidden ? '_' : '';
@@ -324,7 +355,12 @@ class WC_GFPA_Cart {
 			return false;
 		}
 
-		if ( isset( $_POST['gform_form_id'] ) && is_numeric( $_POST['gform_form_id'] ) ) {
+		if ( $gravity_form_data && is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && intval( $gravity_form_data['id'] ) > 0 && isset( $_POST['gform_form_id'] ) && is_numeric( $_POST['gform_form_id'] ) ) {
+
+			if ( ! class_exists( 'GFFormDisplay' ) ) {
+				require_once( GFCommon::get_base_path() . "/form_display.php" );
+			}
+
 			$form_id = $_POST['gform_form_id'];
 
 			//Gravity forms generates errors and warnings.  To prevent these from conflicting with other things, we are going to disable warnings and errors.
@@ -333,10 +369,13 @@ class WC_GFPA_Cart {
 
 			//MUST disable notifications manually.
 
-			add_filter('gform_disable_notification', array($this, 'disable_notifications'), 999, 3);
+			add_filter( 'gform_disable_notification', array( $this, 'disable_notifications' ), 999, 3 );
 
 			add_filter( 'gform_disable_user_notification', array( $this, 'disable_notifications', 999, 3 ) );
-			add_filter( 'gform_disable_user_notification_' . $form_id, array( $this, 'disable_notifications' ), 999, 3 );
+			add_filter( 'gform_disable_user_notification_' . $form_id, array(
+				$this,
+				'disable_notifications'
+			), 999, 3 );
 
 			add_filter( 'gform_disable_admin_notification' . $form_id, array(
 				$this,
@@ -361,6 +400,7 @@ class WC_GFPA_Cart {
 
 			$_POST['gform_submit'] = $_POST['gform_old_submit'];
 
+			//GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Processing Add to Cart Validation #{$form_id}." );
 			GFFormDisplay::process_form( $form_id );
 			$_POST['gform_old_submit'] = $_POST['gform_submit'];
 			unset( $_POST['gform_submit'] );
@@ -386,8 +426,9 @@ class WC_GFPA_Cart {
 			if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
 				$item_id = $item->get_id();
 				$item->add_meta_data( '_gravity_forms_history', array(
-						'_gravity_form_lead' => $cart_item['_gravity_form_lead'],
-						'_gravity_form_data' => $cart_item['_gravity_form_data']
+						'_gravity_form_lead'          => $cart_item['_gravity_form_lead'],
+						'_gravity_form_data'          => $cart_item['_gravity_form_data'],
+						'_gravity_form_cart_item_key' => $cart_item_key
 					)
 				);
 
@@ -522,27 +563,8 @@ class WC_GFPA_Cart {
 	}
 
 	public function on_get_order_again_cart_item_data( $data, $item, $order ) {
-
 		//disable validation
 		remove_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99, 3 );
-
-		$history = isset( $item['gravity_forms_history'] ) ? maybe_unserialize( $item['gravity_forms_history'] ) : false;
-		if ( ! $history ) {
-			//Not sure why exactly WC strips out the leading _, let's check for it anyways
-			isset( $item['_gravity_forms_history'] ) ? maybe_unserialize( $item['_gravity_forms_history'] ) : false;
-		}
-
-		if ( $history ) {
-			$glead = isset( $history['_gravity_form_lead'] ) ? $history['_gravity_form_lead'] : false;
-			$gdata = isset( $history['_gravity_form_data'] ) ? $history['_gravity_form_data'] : false;
-
-			if ( $glead && $gdata ) {
-				$data['_gravity_form_lead'] = $glead;
-				$data['_gravity_form_data'] = $gdata;
-			}
-		}
-
-		return $data;
 	}
 
 	//Helper Functions
@@ -727,9 +749,50 @@ class WC_GFPA_Cart {
 	//Use a custom delete function so we don't delete files that are uploaded.
 	private function delete_entry( $entry ) {
 		global $wpdb;
+
+		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '<' ) ) {
+			$this->delete_entry_legacy( $entry );
+
+			return;
+		}
+
+		$entry_id = $entry['id'];
+		GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Deleting entry #{$entry_id}." );
+
+		/**
+		 * Fires before a lead is deleted
+		 *
+		 * @param $lead_id
+		 *
+		 * @deprecated
+		 * @see gform_delete_entry
+		 */
+		do_action( 'gform_delete_lead', $entry_id );
+
+		$entry_table           = GFFormsModel::get_entry_table_name();
+		$entry_notes_table     = GFFormsModel::get_entry_notes_table_name();
+		$entry_meta_table_name = GFFormsModel::get_entry_meta_table_name();
+
+		// Delete from entry meta
+		$sql = $wpdb->prepare( "DELETE FROM $entry_meta_table_name WHERE entry_id=%d", $entry_id );
+		$wpdb->query( $sql );
+
+		// Delete from lead notes
+		$sql = $wpdb->prepare( "DELETE FROM $entry_notes_table WHERE entry_id=%d", $entry_id );
+		$wpdb->query( $sql );
+
+
+		// Delete from entry table
+		$sql = $wpdb->prepare( "DELETE FROM $entry_table WHERE id=%d", $entry_id );
+		$wpdb->query( $sql );
+	}
+
+	private function delete_entry_legacy( $entry ) {
+		global $wpdb;
+
 		$lead_id = $entry['id'];
 
-		GFCommon::log_debug( __METHOD__ . "(): Deleting entry #{$lead_id}." );
+		GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Deleting legacy entry #{$lead_id}." );
 
 		/**
 		 * Fires before a lead is deleted

@@ -1,5 +1,6 @@
 var ajax_price_req;
-//See the gravity forms documentation for this function. 
+
+//See the gravity forms documentation for this function.
 function gform_product_total(formId, total) {
 
     var product_id = jQuery("input[name=product_id]").val();
@@ -44,7 +45,7 @@ function get_gravity_forms_price(formId) {
 function update_dynamic_price(gform_total) {
 
     // Function moved in delay so that variation prices are updated - Vidish - 16-10-2017
-    setTimeout(function() {
+    setTimeout(function () {
 
         var product_id = jQuery("input[name=product_id]").val();
         var variation_id = jQuery("input[name=variation_id]").val();
@@ -77,13 +78,13 @@ function update_dynamic_price(gform_total) {
             ));
 
             jQuery('.formattedTotalPrice').html(accounting.formatMoney(parseFloat(base_price) + parseFloat(gform_total), {
-                        symbol: wc_gravityforms_params.currency_format_symbol,
-                        decimal: wc_gravityforms_params.currency_format_decimal_sep,
-                        thousand: wc_gravityforms_params.currency_format_thousand_sep,
-                        precision: wc_gravityforms_params.currency_format_num_decimals,
-                        format: wc_gravityforms_params.currency_format
-                    }
-                ) + wc_gravityforms_params.price_suffix[product_id]
+                    symbol: wc_gravityforms_params.currency_format_symbol,
+                    decimal: wc_gravityforms_params.currency_format_decimal_sep,
+                    thousand: wc_gravityforms_params.currency_format_thousand_sep,
+                    precision: wc_gravityforms_params.currency_format_num_decimals,
+                    format: wc_gravityforms_params.currency_format
+                }
+            ) + wc_gravityforms_params.price_suffix[product_id]
             );
         }
     }, 1000);
@@ -149,6 +150,15 @@ function update_dynamic_price_ajax(gform_total) {
 
         if (form_id) {
 
+            //Maybe jump to validation error:
+
+            if ( $('.gform_validation_error', 'form.cart').length ) {
+
+                window.location = window.location + '#gform_' + form_id;
+
+            }
+
+
             var next_page = $form.find("input[name=wc_gforms_next_page]").val();
             var previous_page = $form.find("input[name=wc_gforms_previous_page]").val();
 
@@ -191,7 +201,7 @@ function update_dynamic_price_ajax(gform_total) {
             });
 
 
-            $("form#gform_" + form_id + " .gform_fileupload_multifile").each(function(){
+            $("form#gform_" + form_id + " .gform_fileupload_multifile").each(function () {
                 gfMultiFileUploader.setup(this);
             });
 

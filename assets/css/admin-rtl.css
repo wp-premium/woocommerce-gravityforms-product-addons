@@ -1,0 +1,15 @@
+#woocommerce-product-data ul.product_data_tabs li.gravityforms_addons_tab a:before {
+	content: "\f314";
+}
+
+#gravityforms_addons_data h4 {
+	padding: 5px 10px 5px 20px !important;
+	margin: 15px 0 0 0;
+}
+
+#gravityforms_addons_data span.edit_form_link {
+	padding-top: 5px;
+	display: block;
+	clear: right;
+	font-weight: bold;
+}
