@@ -33,7 +33,7 @@ class WC_GFPA_Entry {
 		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'create_entries' ), 10, 2 );
 		add_action( 'woocommerce_resume_order', array( $this, 'on_woocommerce_resume_order' ), 10, 1 );
 		add_action( 'woocommerce_order_status_changed', array( $this, 'on_woocommerce_order_status_changed' ), 10, 3 );
-		add_action( 'woocommerce_payment_complete', array( $this, 'on_woocommerce_payment_complete' ), 10, 1 );
+
 
 		//Subscription renewal handling:
 		add_filter( 'wcs_new_order_created', array( $this, 'on_wcs_new_order_created' ), 10, 3 );
