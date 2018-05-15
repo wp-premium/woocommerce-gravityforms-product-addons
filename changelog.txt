@@ -1,4 +1,8 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.05.11 - version 3.3.1
+    * Fix:  Fix warning about missing function in the entry management class.
+    * Fix:  Fix issue where we did not return data from on_get_order_again_cart_item_data.
+
 2018.04.26 - version 3.3.0
     * Note:   Tested up to Gravity Forms 2.3
     * Fix:    Entry deletion for Gravity Forms 2.3
