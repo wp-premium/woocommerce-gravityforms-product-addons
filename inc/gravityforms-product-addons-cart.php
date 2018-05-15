@@ -565,6 +565,7 @@ class WC_GFPA_Cart {
 	public function on_get_order_again_cart_item_data( $data, $item, $order ) {
 		//disable validation
 		remove_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99, 3 );
+		return $data;
 	}
 
 	//Helper Functions
