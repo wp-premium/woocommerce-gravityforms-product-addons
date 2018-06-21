@@ -20,7 +20,7 @@ class WC_GFPA_Cart_Edit {
 
 		add_filter( 'gform_pre_render', array( $this, 'on_gform_pre_render' ), 99, 1 );
 
-		add_action( 'woocommerce_add_to_cart', array( $this, 'on_woocommerce_add_to_cart' ), 99, 2 );
+		add_action( 'woocommerce_add_to_cart', array( $this, 'on_woocommerce_add_to_cart' ), 99, 6 );
 	}
 
 
@@ -89,14 +89,15 @@ class WC_GFPA_Cart_Edit {
 				$field['isRequired'] = false;
 			} else {
 				$value = null;
-				if ( $field['type'] == 'checkbox' ) { // handle checkbox fields
+				if ( $field['type'] == 'checkbox' || ($field['type'] == 'option' && $field['inputType'] == 'checkbox') ) { // handle checkbox fields
 					// only pull the field values from the entry that match the form field we are evaluating
 					$field_values = array();
 
 					foreach ( $entry as $key => $value ) {
 						$entry_key = explode( '.', $key );
 						if ( $entry_key[0] == $field['id'] ) {
-							$field_values[] = $value;
+							$v = explode('|', $value);
+							$field_values[] = $v[0];
 						}
 					}
 					foreach ( $field->choices as &$choice ) {
@@ -141,19 +142,13 @@ class WC_GFPA_Cart_Edit {
 	 * @param $cart_item_key
 	 * @param $cart_item
 	 */
-	public function on_woocommerce_add_to_cart( $cart_item_key, $cart_item ) {
+	public function on_woocommerce_add_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
 
 		if ( isset( $_POST['wc_gforms_previous_cart_item_key'] ) ) {
 			if ( $cart_item_key != $_POST['wc_gforms_previous_cart_item_key'] ) {
-				if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
+				if ( isset( $cart_item_data['_gravity_form_lead'] ) && isset( $cart_item_data['_gravity_form_data'] ) ) {
 
-					if ( $cart_item['data']->get_type() == 'variation' ) {
-						$p = wc_get_product( $cart_item['data']->get_parent_id() );
-					} else {
-						$p = $cart_item['data'];
-					}
-
-					$gravity_form_data = wc_gfpa()->get_gravity_form_data( $p->get_id() );
+					$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product_id );
 
 					if ( isset( $gravity_form_data['enable_cart_edit_remove'] ) && $gravity_form_data['enable_cart_edit_remove'] !== 'no' ) {
 						WC()->cart->remove_cart_item( $_POST['wc_gforms_previous_cart_item_key'] );

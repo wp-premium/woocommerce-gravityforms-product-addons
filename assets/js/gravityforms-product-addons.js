@@ -147,12 +147,13 @@ function update_dynamic_price_ajax(gform_total) {
         }
 
         var form_id = $form.find("input[name=wc_gforms_form_id]").val();
+        var product_type = $form.find("input[name=wc_gforms_product_type]").val();
 
         if (form_id) {
 
             //Maybe jump to validation error:
 
-            if ( $('.gform_validation_error', 'form.cart').length ) {
+            if ($('.gform_validation_error', 'form.cart').length) {
 
                 window.location = window.location + '#gform_' + form_id;
 
@@ -162,7 +163,10 @@ function update_dynamic_price_ajax(gform_total) {
             var next_page = $form.find("input[name=wc_gforms_next_page]").val();
             var previous_page = $form.find("input[name=wc_gforms_previous_page]").val();
 
-            $form.attr('action', '');
+            if (product_type != 'external') {
+                $form.attr('action', '');
+            }
+
             $form.attr('id', 'gform_' + form_id);
 
             $form.on('found_variation', function () {

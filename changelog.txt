@@ -1,4 +1,13 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.06.05 - version 3.3.2
+    * New:  Add woocommerce_gravityforms_wcs_new_order_created_create_entries to allow disabling of new entry creation on subscription renewal.
+    * Update:  Prevent WooCommerce Subscriptions from causing duplicate entry information.
+    * Update:  Fire validation for woocommerce_order_again_cart_item_data.
+    * Fix:  Account for checkbox product option fields when using the cart edit option.
+    * Fix:  Fix Cart Edit - Replace Modified Items.
+    * Update:  Include class GFFormDisplay in get_item_data in case developers use gravity form hooks which expect that to be loaded.
+    * Update:  Allow forms to work on external products.
+
 2018.05.11 - version 3.3.1
     * Fix:  Fix warning about missing function in the entry management class.
     * Fix:  Fix issue where we did not return data from on_get_order_again_cart_item_data.
@@ -90,7 +99,7 @@
         There is a limitation though that on successful addition to the cart the product page needs to be refreshed in order for the re-captcha to show up again.
     * Fix:  Fix issue where Before and After text was duplicated for Variable Products.
     * Fix:  Fix issue with missing argument in add_to_cart text filter.
-    
+
 2017.04.25 - version 3.1.8
     * Update:  Remove deprecated call to adjust_price();
     * Update:  Prevent the View Gravity Form entry data from appearing in re-sent processing emails.
@@ -162,220 +171,220 @@
     * Update:  Added javascript function, get_gravity_forms_price so that extensions such as composite products can get the price of the form when re-loading parts of the composite.
 
 2016.06.20 - version 2.10.10
-	* Fix:  Correct WSOD issue when using the product_page shortcode. 
-	
+	* Fix:  Correct WSOD issue when using the product_page shortcode.
+
 2016.06.16 - version 2.10.9
 	* Fix:  Prior to the 2.10.8 update the extension would automatically disable any emails from being sent by Gravity Forms
-		when an item was added to the cart.   This feature was missed in 2.10.8, and is added back here. 
+		when an item was added to the cart.   This feature was missed in 2.10.8, and is added back here.
 
 2016.06.13 - version 2.10.8
-	* Update:  Use new catalog visibility hook to render the form in the correct location. Requires WC 2.4 or greater. 
-	* Update:  Refactor cart and display logic into individual classes. 
+	* Update:  Use new catalog visibility hook to render the form in the correct location. Requires WC 2.4 or greater.
+	* Update:  Refactor cart and display logic into individual classes.
 	* Fix:  Correct issue on admin screen with missing closing div
-	
-2016.04.12 - version 2.10.7
-	* Fix:  Correct issues with multipage forms, anchors, and Internet Explorer. 
-	
-2016.02.11 - version 2.10.6
-	* Update:  Add option to enable Dynamic Pricing Calculations when using this extension along with WooCommerce Dynamic Pricing.  
-		   Option is in the totals section when configuring products' gravity form options.   Option is only available when Dynamic Pricing is active. 
 
-	* Update:  Add filter, woocommerce_gforms_get_product_form_data to allow filtering of the gravity form attached to a product. 
+2016.04.12 - version 2.10.7
+	* Fix:  Correct issues with multipage forms, anchors, and Internet Explorer.
+
+2016.02.11 - version 2.10.6
+	* Update:  Add option to enable Dynamic Pricing Calculations when using this extension along with WooCommerce Dynamic Pricing.
+		   Option is in the totals section when configuring products' gravity form options.   Option is only available when Dynamic Pricing is active.
+
+	* Update:  Add filter, woocommerce_gforms_get_product_form_data to allow filtering of the gravity form attached to a product.
 		   apply_filters( 'woocommerce_gforms_get_product_form_data', get_post_meta( $post_id, '_gravity_form_data', true ), $post_id );
-	
+
 2016.01.25 - version 2.10.5
-	* Update: Filter to load gravity form for variable product using old hook method.  
-		This is required for sites with WC 2.4+ but have themes which do not call the woocommerce_single_variation hook as 2.4+ requires.  
+	* Update: Filter to load gravity form for variable product using old hook method.
+		This is required for sites with WC 2.4+ but have themes which do not call the woocommerce_single_variation hook as 2.4+ requires.
 		Add this to your functions.php file:
 			add_filter('woocommerce_gforms_use_template_back_compatibility', '__return_true');
-	* Update:  Added backwards compatibility check for less than WC 2.4, will use old hook to bind the form. 
-	* Fix:  Properly enqueue scripts when using product_page shortcode. 
-	* Fix:  Properly render the form when using the product_page shortcode. 
-	
+	* Update:  Added backwards compatibility check for less than WC 2.4, will use old hook to bind the form.
+	* Fix:  Properly enqueue scripts when using product_page shortcode.
+	* Fix:  Properly render the form when using the product_page shortcode.
+
 2015.12.30 - version 2.10.4
 	* WC 2.5 Compatibility
-	
+
 2015.11.17 - version 2.10.3
-	* Use WC 2.4 actions to bind the gravity form inside of the variation wrap area. 
-	
+	* Use WC 2.4 actions to bind the gravity form inside of the variation wrap area.
+
 2015.11.4 - version 2.10.2
-	* Fix:  Correctly handle the file upload field if it's not multifile. 
+	* Fix:  Correctly handle the file upload field if it's not multifile.
 
 2015.10.27 - version 2.10.1
-	* Update:  Small update to include price suffix after the Grand Total section. 
-	
+	* Update:  Small update to include price suffix after the Grand Total section.
+
 2015.10.5 - version 2.10.0
-	* Update:  Updates the way file upload fields are listed on order and order confirmation screens. Lists out each file comma separated. 
-	
+	* Update:  Updates the way file upload fields are listed on order and order confirmation screens. Lists out each file comma separated.
+
 2015.08.24 - version 2.9.9
-	* Fix:  Fixes issue with new ajax params from 2.9.8 not being enqueued when using the product_page shortcode. 
-	
+	* Fix:  Fixes issue with new ajax params from 2.9.8 not being enqueued when using the product_page shortcode.
+
 2015.07.28 - version 2.9.8
-	* Update:  Major Update.  Remove ajax total calculation and formatting when Gravity Form options change.  
-		Migrate all the calculations to JavaScript. 
+	* Update:  Major Update.  Remove ajax total calculation and formatting when Gravity Form options change.
+		Migrate all the calculations to JavaScript.
 
 2015.07.09 - version 2.9.7
-	* Fix:  Check if the global post object is available before checking if a product shortcode exists in $post->post_content. 
+	* Fix:  Check if the global post object is available before checking if a product shortcode exists in $post->post_content.
 
 2015.06.16 - version 2.9.6
-	* Update:  Check if the price before and price after setting is empty before adding it to the HTML. 
-	* Update:  Append the free html from the filter to the end of the price before for free products. 
+	* Update:  Check if the price before and price after setting is empty before adding it to the HTML.
+	* Update:  Append the free html from the filter to the end of the price before for free products.
 
 2015.06.09 - version 2.9.5
 	* Update: Change the way the gravity forms scripts are enqueued when using the product_page shortcode. Ensures compatibility with later versions of gravity forms
-	* Update: Add support for the Time field. 
-	
+	* Update: Add support for the Time field.
+
 2015.05.01 - version 2.9.4
-	* Fix:  Remove console.log debug statement to resolve problems with IE. 
+	* Fix:  Remove console.log debug statement to resolve problems with IE.
 
 2015.04.21 - version 2.9.3
 	* Fix - Potential XSS with add_query_arg
 
 2015.04.16 - version 2.9.2
-	* Fix:  Respect the tax display setting when displaying the total at the bottom of a gravity form.  Prices in a gravity form option still need to be entered inclusive of tax. 
+	* Fix:  Respect the tax display setting when displaying the total at the bottom of a gravity form.  Prices in a gravity form option still need to be entered inclusive of tax.
 
 2015.03.20 - version 2.9.1
 	* Fix:  Fix to allow Secure forms to work properly after Gravity Forms 2.9.4.1
-	
+
 2015.03.02 - version 2.9.0
-	* Fix:  Hidden field usage. 
-	* Update:  Add gravityforms_add_to_cart_text to the functions which override the add to cart link. 
-		
+	* Fix:  Hidden field usage.
+	* Update:  Add gravityforms_add_to_cart_text to the functions which override the add to cart link.
+
 2015.02.26 - version 2.8.9
-	* Fix:  Override gravity forms display:block !important on mobile devices when total options are hidden. 
+	* Fix:  Override gravity forms display:block !important on mobile devices when total options are hidden.
 
 2015.02.25 - version 2.8.8
-	* Fix: Remove missing spinner icon from block UI. 
-	* Fix: Fix notice when editing a product. 
-	
+	* Fix: Remove missing spinner icon from block UI.
+	* Fix: Fix notice when editing a product.
+
 2015.02.16 - version 2.8.7
-	* Added filter to allow hidden fields to be displayed in the cart and customer emails.  
-	* Feature:  Include the filter woocommerce_gforms_use_label_as_value in the cart display as well as order information. 
-	
+	* Added filter to allow hidden fields to be displayed in the cart and customer emails.
+	* Feature:  Include the filter woocommerce_gforms_use_label_as_value in the cart display as well as order information.
+
 2015.02.12 - version 2.8.6
 	* Fix for removed function, error_count, in WC >= 2.3
-	* Added new option to disable anchor linking on multipage forms.  Used for some themes which have issues with jumping to specific anchor locations. 
-	
+	* Added new option to disable anchor linking on multipage forms.  Used for some themes which have issues with jumping to specific anchor locations.
+
 2015.02.10 - version 2.8.5
-	* Update: Show gravity form when catalog visibility is being used to hide the add to cart button. 
+	* Update: Show gravity form when catalog visibility is being used to hide the add to cart button.
 
 2015.02.06 - version 2.8.4
-	* WC 2.3 updates. 
-	
+	* WC 2.3 updates.
+
 2014.12.24 - version 2.8.3
-	* Allow use of hidden fields.  Will not show in the cart or order emails but will show in admin. 
-	
+	* Allow use of hidden fields.  Will not show in the cart or order emails but will show in admin.
+
 2014.12.16 - version 2.8.2
-	* Remove URL hash on multipage forms when the product has successfully been added to the cart. 
+	* Remove URL hash on multipage forms when the product has successfully been added to the cart.
 
 2014.08.27 - version 2.8.1
-	* Added filter to allow submitting of field Values to the order.  Default is to use the Field Label for the Order. 
-		woocommerce_gforms_use_label_as_value 
+	* Added filter to allow submitting of field Values to the order.  Default is to use the Field Label for the Order.
+		woocommerce_gforms_use_label_as_value
 			Parameters:
-				$use_field_label:  Use field label or field value. 
-				$value:  The value which will be used. 
-				$field: Array of information about the gravity form field. 
-				$lead: Array of information about the gravity form "lead" being used to generate the data for woocommerce. 
+				$use_field_label:  Use field label or field value.
+				$value:  The value which will be used.
+				$field: Array of information about the gravity form field.
+				$lead: Array of information about the gravity form "lead" being used to generate the data for woocommerce.
 				$form_meta: Array of information about the form itself.
-		
+
 2014.08.18 - version 2.8.0
-	* Modification of the strip_tags function to allow some malformed HTML entries. 
+	* Modification of the strip_tags function to allow some malformed HTML entries.
 
 2014.06.19 - version 2.7.12
-	* Modification of next and previous actions on multipage forms to return to the form position. 
+	* Modification of next and previous actions on multipage forms to return to the form position.
 
 2014.05.28 - version 2.7.11
-	* Fixed the anchor added in the previous release to be closed properly. 
+	* Fixed the anchor added in the previous release to be closed properly.
 
 2014.04.24 - version 2.7.10
-	* Added anchor and code to append anchor has to the top of long multipage forms. 
+	* Added anchor and code to append anchor has to the top of long multipage forms.
 
 2014.04.23 - version 2.7.9
-	* Added filter to choose the display value for form fields in the cart and on checkout. 
+	* Added filter to choose the display value for form fields in the cart and on checkout.
 		woocommerce_gforms_field_display_text
 			Parameters:
-				$display_text:  The text which will be displayed. 
+				$display_text:  The text which will be displayed.
 				$display_value: The actual value of the field. Usually the same as display_text except when using both labels and values
-				$field: Array of information about the gravity form field. 
-				$lead: Array of information about the gravity form "lead" being used to generate the data for woocommerce. 
+				$field: Array of information about the gravity form field.
+				$lead: Array of information about the gravity form "lead" being used to generate the data for woocommerce.
 				$form_meta: Array of information about the form itself.
 
 2014.04.14 - version 2.7.8
-	* Update to fix notice when checking for embedded products. 
-	
+	* Update to fix notice when checking for embedded products.
+
 2014.03.25 - version 2.7.7
-	* Update to allow file uploads to work on multipage forms. 
+	* Update to allow file uploads to work on multipage forms.
 
 2014.03.21 - version 2.7.6
-	* Remove HTML Entity decode from value.  Use filter woocommerce_gforms_order_meta_value to return a decoded value if required. 
+	* Remove HTML Entity decode from value.  Use filter woocommerce_gforms_order_meta_value to return a decoded value if required.
 
 2014.02.18 - version 2.7.5
-	* Only add product fields when quantity has been entered by the end user. 
-	* Fix for allowing the Gravity Forms total field to function when all WooCommerce total fields are disabled. 
+	* Only add product fields when quantity has been entered by the end user.
+	* Fix for allowing the Gravity Forms total field to function when all WooCommerce total fields are disabled.
 
 2014.02.12 - version 2.7.4
-	* Added support for gravity forms product addons when products loaded with the product_page shortcode. 
+	* Added support for gravity forms product addons when products loaded with the product_page shortcode.
 
 2014.02.04 - version 2.7.3
-	* Fix for javascript error when viewing a product which has been disabled via the Catalog Visibility Plugin. 
-	* Modify re-setting of $_POST variables to only set when the form has been posted.  Allows default options to work as expected.  
+	* Fix for javascript error when viewing a product which has been disabled via the Catalog Visibility Plugin.
+	* Modify re-setting of $_POST variables to only set when the form has been posted.  Allows default options to work as expected.
 
 2014.01.22 - version 2.7.2
-	* Added support for Gravity Forms Multi File Upload field. 
+	* Added support for Gravity Forms Multi File Upload field.
 
 2014.01.14 - version 2.7.1
-	* Remove old debug script enqueue. 
+	* Remove old debug script enqueue.
 
 2014.01.05 - version 2.7.0
 	* WooCommerce 2.1x compatability
 
 2013.12.30 - version 2.6.2
-	* Added more entropy to the unique id function for disabling gravity forms calculation caching. 
-	* Updated validation routine to not set a incorrect URL.  Gravity Forms updates the SERVER_URI, so we need to set it back to the viewed product. 
+	* Added more entropy to the unique id function for disabling gravity forms calculation caching.
+	* Updated validation routine to not set a incorrect URL.  Gravity Forms updates the SERVER_URI, so we need to set it back to the viewed product.
 
 2013.12.21 - version 2.6.1
-	* Allow redirect confirmations. 
+	* Allow redirect confirmations.
 
 2013.12.17 - version 2.6.0
-	* Modification to how add to cart buttons are overridden.  No longer use javascript and json encoded data to override the button. 
+	* Modification to how add to cart buttons are overridden.  No longer use javascript and json encoded data to override the button.
 
 2013.12.08 - version 2.5.2
-	* Updated filters for disable of notifications and of confirmation messages. 
+	* Updated filters for disable of notifications and of confirmation messages.
 
 2013.11.27 - version 2.5.1
-	* Full support for sold items individually. 
+	* Full support for sold items individually.
 
 2013.11.21 - version 2.5.0
 	* Support for Gravity Forms 1.8beta
-	* Use Labels instead of Values when options field is using both. 
+	* Use Labels instead of Values when options field is using both.
 
 2013.11.11 - version 2.4.12
-	* Moved bulk of the custom javascript to an external javascript file. 
+	* Moved bulk of the custom javascript to an external javascript file.
 
 2013.11.05 - version 2.4.11
-	* Update:  HTML entities on admin order screen. 
+	* Update:  HTML entities on admin order screen.
 
 2013.10.25 - version 2.4.10
-	* Fix: return false from validation routine if $valid is already false. 
+	* Fix: return false from validation routine if $valid is already false.
 
 2013.10.21 - version 2.4.9
-	* Hide gravity form on variable subscription products until the variation is selected. 
-	* Update to esc_attr() in gravity form metabox on products. 
+	* Hide gravity form on variable subscription products until the variation is selected.
+	* Update to esc_attr() in gravity form metabox on products.
 
 2013.10.08 - version 2.4.8
 	* Update to Order Again to account for irregularities in meta key naming in core.
 	* Update to restore error_reporting to previous level
-	* No longer disable the submit button during updating of the price. In rare situations when the change event fires when 
-		the submit button is clicked, the form will not submit until it was clicked a second time. 
+	* No longer disable the submit button during updating of the price. In rare situations when the change event fires when
+		the submit button is clicked, the form will not submit until it was clicked a second time.
 
 2013.09.25 - version 2.4.7
 	* Added support for Order Again
 
 2013.09.12 - version 2.4.6
-	* Fix: Remove wp_get_referer() in constructor for compatibility with WordPress 3.6.1 load order. 
+	* Fix: Remove wp_get_referer() in constructor for compatibility with WordPress 3.6.1 load order.
 
 2013.08.31 - version 2.4.5
-	* Update: Better compatibility with Wishlists. 
+	* Update: Better compatibility with Wishlists.
 
 2013.07.16 - version 2.4.4
 	* Update: CSS tweaks for display of checkbox items in the cart.

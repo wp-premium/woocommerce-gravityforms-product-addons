@@ -47,9 +47,17 @@ class WC_GFPA_Entry {
 	 */
 	public function create_entries( $order_id, $data = null ) {
 
-		$the_order   = wc_get_order( $order_id );
-		$order_items = $the_order->get_items();
+		$the_order               = wc_get_order( $order_id );
+		$order_items             = $the_order->get_items();
+		$order_type              = $the_order->get_type();
+		$is_subscription_renewal = false;
+		if ( function_exists( 'wcs_order_contains_renewal' ) && wcs_order_contains_renewal( $the_order ) ) {
+			$is_subscription_renewal = true;
+		}
 
+		if ($is_subscription_renewal && apply_filters( 'woocommerce_gravityforms_wcs_new_order_created_create_entries', false, $the_order ) == false ) {
+			return;
+		}
 
 		foreach ( $order_items as $order_item ) {
 			$gravity_forms_history = null;
@@ -72,7 +80,7 @@ class WC_GFPA_Entry {
 			$entry_id = false;
 			if ( $gravity_forms_history ) {
 
-				GFCommon::log_debug( "Gravity Forms Product Addons: Processing Order (#{$order_id})" );
+				GFCommon::log_debug( "Gravity Forms Product Addons: Processing Order (#{$order_id}) - Type (#{$order_type})" );
 				GFCommon::log_debug( "Gravity Forms Product Addons: Processing Order Item (#{$order_item->get_id()})" );
 
 
@@ -85,7 +93,7 @@ class WC_GFPA_Entry {
 						$create_entries_on_specific_status = array( $create_entries_on_specific_status );
 					}
 
-					GFCommon::log_debug( "Gravity Forms Product Addons: Create Entries For Specific Status " + print_r( $create_entries_on_specific_status ) );
+					GFCommon::log_debug( "Gravity Forms Product Addons: Will Create Entries For Specific Status " + print_r( $create_entries_on_specific_status ) );
 
 					$order_status = $the_order->get_status();
 					GFCommon::log_debug( "Gravity Forms Product Addons: Order Status " + $order_status );
@@ -98,7 +106,7 @@ class WC_GFPA_Entry {
 					}
 				} else {
 					$create_entries = true;
-					GFCommon::log_debug( "Gravity Forms Product Addons: Create Entries ( no specific status )" );
+					GFCommon::log_debug( "Gravity Forms Product Addons: Will Create Entries ( no specific status )" );
 
 				}
 
@@ -358,11 +366,12 @@ class WC_GFPA_Entry {
 
 	function on_wcs_new_order_created( $order, $subscription, $type ) {
 		if ( $type !== 'renewal_order' || $order === false ) {
-			return;
+			return $order;
 		}
 
-		$this->create_entries( $order->get_id() );
-
+		if ( apply_filters( 'woocommerce_gravityforms_wcs_new_order_created_create_entries', false, $order ) ) {
+			$this->create_entries( $order->get_id() );
+		}
 
 		return $order;
 
