@@ -45,7 +45,7 @@ class WC_GFPA_Display {
 	 */
 	public function get_add_to_cart_url( $url, $product ) {
 
-		if ( is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) && ( ! isset( $_GET['wc-api'] ) || $_GET['wc-api'] !== 'WC_Quick_View' ) ) {
+		if ( $product && !$product->is_type('external') && is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) && ( ! isset( $_GET['wc-api'] ) || $_GET['wc-api'] !== 'WC_Quick_View' ) ) {
 			$url = apply_filters( 'addons_add_to_cart_url', get_permalink( $product->get_id() ) );
 		}
 

@@ -83,6 +83,7 @@ class woocommerce_gravityforms_product_form {
 
 			echo $form;
 
+			echo '<input type="hidden" name="wc_gforms_product_type" id="wc_gforms_product_type" value="' . esc_attr( $product->get_type() ) . '" />';
 			echo '<input type="hidden" name="gform_form_id" id="gform_form_id" value="' . $this->form_id . '" />';
 			echo '<input type="hidden" id="woocommerce_get_action" value="" />';
 			echo '<input type="hidden" id="woocommerce_product_base_price" value="' . $product->get_price() . '" />';

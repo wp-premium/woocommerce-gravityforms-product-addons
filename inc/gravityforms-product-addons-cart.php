@@ -174,7 +174,7 @@ class WC_GFPA_Cart {
 			}
 
 			GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Processing Add to Cart #{$form_id}." );
-			GFFormDisplay::$submission[ $form_id ] = null;
+			GFFormDisplay::$submission = array();
 			require_once( GFCommon::get_base_path() . "/form_display.php" );
 			$_POST['gform_submit'] = $_POST['gform_old_submit'];
 
@@ -227,7 +227,7 @@ class WC_GFPA_Cart {
 			}
 
 			if ( apply_filters( 'woocommerce_gravityforms_delete_entries', $delete_cart_entries ) ) {
-				GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Add to Cart - Deleting Entry #{$form_id}." );
+				GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Add to Cart - Deleting Entry #{$lead['id']}." );
 				$this->delete_entry( $lead );
 			}
 
@@ -261,6 +261,12 @@ class WC_GFPA_Cart {
 			error_reporting( 0 );
 
 			$gravity_form_data = $cart_item['_gravity_form_data'];
+
+			//Ensure GFFormDisplay exists in case developers use hooks that expect it to.
+			if ( ! class_exists( 'GFFormDisplay' ) ) {
+				require_once( GFCommon::get_base_path() . "/form_display.php" );
+			}
+
 			$form_meta         = RGFormsModel::get_form_meta( $gravity_form_data['id'] );
 			$form_meta         = gf_apply_filters( array( 'gform_pre_render', $gravity_form_data['id'] ), $form_meta );
 			if ( ! empty( $form_meta ) ) {
@@ -396,11 +402,13 @@ class WC_GFPA_Cart {
 			//Remove all post_submission hooks so data does not get sent to feeds such as Zapier
 			$this->disable_gform_after_submission_hooks( $form_id );
 
+			GFFormDisplay::$submission = array();
+
 			require_once( GFCommon::get_base_path() . "/form_display.php" );
 
 			$_POST['gform_submit'] = $_POST['gform_old_submit'];
 
-			//GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Processing Add to Cart Validation #{$form_id}." );
+			GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Processing Add to Cart Validation #{$form_id}." );
 			GFFormDisplay::process_form( $form_id );
 			$_POST['gform_old_submit'] = $_POST['gform_submit'];
 			unset( $_POST['gform_submit'] );
@@ -412,6 +420,9 @@ class WC_GFPA_Cart {
 			if ( GFFormDisplay::$submission[ $form_id ]['page_number'] != 0 ) {
 				return false;
 			}
+			$lead = GFFormDisplay::$submission[ $form_id ]['lead'];
+
+			GFCommon::log_debug( __METHOD__ . "(): [woocommerce-gravityforms-product-addons] Add to Cart Validation - Deleting Entry #{$lead['id']}." );
 
 			$this->delete_entry( GFFormDisplay::$submission[ $form_id ]['lead'] );
 			error_reporting( $err_level );
@@ -437,6 +448,12 @@ class WC_GFPA_Cart {
 				error_reporting( 0 );
 
 				$gravity_form_data = $cart_item['_gravity_form_data'];
+
+				//Ensure GFFormDisplay exists in case developers use hooks that expect it to.
+				if ( ! class_exists( 'GFFormDisplay' ) ) {
+					require_once( GFCommon::get_base_path() . "/form_display.php" );
+				}
+
 				$form_meta         = RGFormsModel::get_form_meta( $gravity_form_data['id'] );
 				$form_meta         = gf_apply_filters( array(
 					'gform_pre_render',
@@ -565,6 +582,7 @@ class WC_GFPA_Cart {
 	public function on_get_order_again_cart_item_data( $data, $item, $order ) {
 		//disable validation
 		remove_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99, 3 );
+
 		return $data;
 	}
 

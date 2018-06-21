@@ -1,6 +1,6 @@
 <div id="gravityforms_addons_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper">
 
-	<?php if ( $product->get_status() == 'publish' && ! $product->is_purchasable() ) : ?>
+	<?php if ( !$product->is_type('external') && $product->get_status() == 'publish' && ! $product->is_purchasable() ) : ?>
 		<div style="margin:5px 0 15px;border-left:4px solid red;padding:1px 12px;box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);">
 			<p>You must set a price for the product before the gravity form will be visible. Set the price to 0 if you are performing all price calculations with the attached Gravity Form.</p>
 		</div>

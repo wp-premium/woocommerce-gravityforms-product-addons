@@ -15,12 +15,35 @@ class WC_GFPA_Reorder {
 	protected function __construct() {
 
 		//Order Again
+
 		add_filter( 'woocommerce_order_again_cart_item_data', array(
 			$this,
 			'on_get_order_again_cart_item_data'
 		), 10, 3 );
 
+		add_action( 'wcs_before_renewal_setup_cart_subscriptions', array(
+			$this,
+			'on_wcs_before_renewal_setup_cart_subscriptions'
+		) );
+		add_action( 'wcs_after_renewal_setup_cart_subscriptions', array(
+			$this,
+			'on_wcs_after_renewal_setup_cart_subscriptions'
+		) );
 
+	}
+
+	public function on_wcs_before_renewal_setup_cart_subscriptions() {
+		remove_filter( 'woocommerce_order_again_cart_item_data', array(
+			$this,
+			'on_get_order_again_cart_item_data'
+		), 10, 3 );
+	}
+
+	public function on_wcs_after_renewal_setup_cart_subscriptions() {
+		add_filter( 'woocommerce_order_again_cart_item_data', array(
+			$this,
+			'on_get_order_again_cart_item_data'
+		), 10, 3 );
 	}
 
 	public function add_to_cart_validation( $valid, $product_id, $quantity, $variation_id, $variations, $cart_item_data ) {
@@ -56,6 +79,10 @@ class WC_GFPA_Reorder {
 
 		//Note regular add to cart validation is disabled in the gravityforms-product-addons-cart.php during reorder.
 		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99, 6 );
+
+		if ( isset( $data['subscription_resubscribe'] ) ) {
+			return $data;
+		}
 
 		$history = isset( $item['gravity_forms_history'] ) ? maybe_unserialize( $item['gravity_forms_history'] ) : false;
 		if ( ! $history ) {
