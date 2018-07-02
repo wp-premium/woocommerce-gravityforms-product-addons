@@ -434,8 +434,14 @@ class WC_GFPA_Cart {
 	public function order_item_meta( $item, $cart_item_key, $cart_item ) {
 		if ( function_exists( 'woocommerce_add_order_item_meta' ) ) {
 
+			$cart_item_debug = print_r($cart_item, true);
+			GFCommon::log_debug( "Gravity Forms Add Order Item Meta: (#{$cart_item_key}) - Data (#{$cart_item_debug})" );
+
 			if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
+
 				$item_id = $item->get_id();
+				GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Order Item ID(#{$item_id})" );
+
 				$item->add_meta_data( '_gravity_forms_history', array(
 						'_gravity_form_lead'          => $cart_item['_gravity_form_lead'],
 						'_gravity_form_data'          => $cart_item['_gravity_form_data'],
@@ -480,11 +486,14 @@ class WC_GFPA_Cart {
 						if ( ( isset( $field['inputType'] ) && $field['inputType'] == 'hiddenproduct' ) || ( isset( $field['displayOnly'] ) && $field['displayOnly'] )
 						     || ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email-and-admin' ) ) !== false
 						) {
+							$field_debug_string = print_r($field, true);
+							GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Skipping (#{$field_debug_string})" );
 							continue;
 						}
 
 						if ( $field['type'] == 'product' ) {
 							if ( ! in_array( $field['id'], $valid_products ) ) {
+								GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Skipping Non-Valid Product(#{$field['id']})" );
 								continue;
 							}
 						}
@@ -566,10 +575,13 @@ class WC_GFPA_Cart {
 								if ( empty( $prefix ) && empty( $display_title ) ) {
 									$display_title = $field['id'] . ' -';
 								}
+								$value_debug_string = $prefix . $display_title . ' - Value:' . $display_value;
+								GFCommon::log_debug( "Gravity Forms Add Order Item Meta:(#{$value_debug_string})" );
 
 								$item->add_meta_data( $prefix . $display_title, $display_value );
 							} catch ( Exception $e ) {
-
+								$e_debug_string = $e->getMessage();
+								GFCommon::log_debug( "Gravity Forms Add Order Item Meta Exception:(#{$e_debug_string})" );
 							}
 						}
 					}
