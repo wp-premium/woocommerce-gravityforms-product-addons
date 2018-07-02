@@ -175,7 +175,7 @@ class WC_GFPA_Entry {
 
 							$user_id = $the_order->get_user_id() ? $the_order->get_user_id() : false;
 							if ( $user_id ) {
-								GFAPI::update_entry_property( $entry_id, 'user', $user_id );
+								GFAPI::update_entry_property( $entry_id, 'created_by', $user_id );
 							}
 
 							gf_do_action( array( 'gform_after_submission', $form_data['id'] ), $entry, $form );

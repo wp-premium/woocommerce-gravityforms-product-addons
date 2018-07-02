@@ -1,4 +1,9 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.06.29 - version 3.3.3
+    * Fix:  Update created_by property instead of user on the entries created during checkout.
+    * Update:  Remove - from plugin name.
+    * Update:  WC and WP version updates.
+
 2018.06.05 - version 3.3.2
     * New:  Add woocommerce_gravityforms_wcs_new_order_created_create_entries to allow disabling of new entry creation on subscription renewal.
     * Update:  Prevent WooCommerce Subscriptions from causing duplicate entry information.
