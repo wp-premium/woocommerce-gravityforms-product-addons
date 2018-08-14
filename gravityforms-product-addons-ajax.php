@@ -18,7 +18,7 @@ function woocommerce_gravityforms_get_updated_price() {
     
     $discount_price = false;
     $gforms_discount_price = false;
-    $base_price = wc_get_price_to_display($product_data);
+    $base_price = wc_get_price_to_display($product_data, array('price' => $product_data->get_price('edit')));
 
     if (class_exists('WC_Dynamic_Pricing')) {
         $working_price = $base_price;

@@ -31,7 +31,7 @@ class WC_GFPA_Order {
 		foreach ( $meta as $item_id => &$value ) {
 			if ( empty( $value->display_value ) ) {
 
-				if ( ! empty( $value->value ) && (strpos( $value->value, '<img' ) !== false || strpos( $value->value, '<a' ) !== false )) {
+				if ( ! empty( $value->value ) && ( strpos( $value->value, '<img' ) !== false || strpos( $value->value, '<a' ) !== false ) ) {
 
 					$value->display_value = $value->value;
 
