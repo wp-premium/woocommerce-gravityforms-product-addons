@@ -89,14 +89,14 @@ class WC_GFPA_Cart_Edit {
 				$field['isRequired'] = false;
 			} else {
 				$value = null;
-				if ( $field['type'] == 'checkbox' || ($field['type'] == 'option' && $field['inputType'] == 'checkbox') ) { // handle checkbox fields
+				if ( $field['type'] == 'checkbox' || ( $field['type'] == 'option' && $field['inputType'] == 'checkbox' ) ) { // handle checkbox fields
 					// only pull the field values from the entry that match the form field we are evaluating
 					$field_values = array();
 
 					foreach ( $entry as $key => $value ) {
 						$entry_key = explode( '.', $key );
 						if ( $entry_key[0] == $field['id'] ) {
-							$v = explode('|', $value);
+							$v              = explode( '|', $value );
 							$field_values[] = $v[0];
 						}
 					}
@@ -115,9 +115,19 @@ class WC_GFPA_Cart_Edit {
 						$entry[ $field['id'] . '.2' ] = $MM;
 						$entry[ $field['id'] . '.3' ] = $AMPM;
 					}
+
 					// loop each field input and set the default value from the entry
 					foreach ( $field->inputs as $key => &$input ) {
-						$input['defaultValue'] = $entry[ strval( $input['id'] ) ];
+						$value = '';
+						if ( isset( $entry[ strval( $input['id'] ) ] ) ) {
+							$value = $entry[ strval( $input['id'] ) ];
+						} elseif ( isset( $entry[ $field['id'] ] ) ) {
+							$value = $entry[ $field['id'] ];
+						} elseif ( isset( $entry[ $field['id'] . '1' ] ) ) {
+							$value = $entry[ $field['id'] ] . '.1';
+						}
+
+						$input['defaultValue'] = $value;
 					}
 				} else { // handle remaining single input fields
 					if ( isset( $entry[ $field['id'] ] ) ) {

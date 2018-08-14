@@ -120,77 +120,79 @@ class WC_GFPA_Reorder {
 		$form     = RGFormsModel::get_form_meta( $form_id );
 		$is_valid = true;
 
-		foreach ( $form['fields'] as &$field ) {
-			/* @var GF_Field $field */
+		if ( $form && $form['id'] === $form_id ) {
+			foreach ( $form['fields'] as &$field ) {
+				/* @var GF_Field $field */
 
 
-			// don't validate adminOnly fields.
-			if ( $field->is_administrative() ) {
-				continue;
-			}
-
-			//ignore validation if field is hidden
-			if ( RGFormsModel::is_field_hidden( $form, $field, $field_values, $field_values ) ) {
-				$field->is_field_hidden = true;
-
-				continue;
-			}
-
-			if ( $field->get_input_type() == 'fileupload' ) {
-				continue;
-			}
-
-
-			$inputs = $field->get_entry_inputs();
-
-			if ( is_array( $inputs ) ) {
-				$value = array();
-				foreach ( $inputs as $input ) {
-					$v = '';
-
-					if ( isset( $field_values[ strval( $input['id'] ) ] ) ) {
-						$v = $field_values[ strval( $input['id'] ) ];
-					}
-
-					$value[ strval( $input['id'] ) ] = $v;
+				// don't validate adminOnly fields.
+				if ( $field->is_administrative() ) {
+					continue;
 				}
-			} else {
-				$value = isset( $field_values[ $field->id ] ) ? $field_values[ $field->id ] : '';
+
+				//ignore validation if field is hidden
+				if ( RGFormsModel::is_field_hidden( $form, $field, $field_values, $field_values ) ) {
+					$field->is_field_hidden = true;
+
+					continue;
+				}
+
+				if ( $field->get_input_type() == 'fileupload' ) {
+					continue;
+				}
+
+
+				$inputs = $field->get_entry_inputs();
+
+				if ( is_array( $inputs ) ) {
+					$value = array();
+					foreach ( $inputs as $input ) {
+						$v = '';
+
+						if ( isset( $field_values[ strval( $input['id'] ) ] ) ) {
+							$v = $field_values[ strval( $input['id'] ) ];
+						}
+
+						$value[ strval( $input['id'] ) ] = $v;
+					}
+				} else {
+					$value = isset( $field_values[ $field->id ] ) ? $field_values[ $field->id ] : '';
+				}
+
+
+				$input_type = RGFormsModel::get_input_type( $field );
+
+				//display error message if field is marked as required and the submitted value is empty
+				if ( $field->isRequired && $field->is_value_submission_empty( $form_id ) ) {
+					$field->failed_validation  = true;
+					$field->validation_message = empty( $field->errorMessage ) ? __( 'This field is required.', 'gravityforms' ) : $field->errorMessage;
+				} else {
+
+				}
+
+				$field->validate( $value, $form );
+
+				$custom_validation_result = gf_apply_filters( array(
+					'gform_field_validation',
+					$form['id'],
+					$field->id
+				), array(
+					'is_valid' => $field->failed_validation ? false : true,
+					'message'  => $field->validation_message
+				), $value, $form, $field );
+
+				$field->failed_validation  = rgar( $custom_validation_result, 'is_valid' ) ? false : true;
+				$field->validation_message = rgar( $custom_validation_result, 'message' );
+
+				if ( $field->failed_validation ) {
+					$is_valid = false;
+				}
 			}
-
-
-			$input_type = RGFormsModel::get_input_type( $field );
-
-			//display error message if field is marked as required and the submitted value is empty
-			if ( $field->isRequired && $field->is_value_submission_empty( $form_id ) ) {
-				$field->failed_validation  = true;
-				$field->validation_message = empty( $field->errorMessage ) ? __( 'This field is required.', 'gravityforms' ) : $field->errorMessage;
-			} else {
-
-			}
-
-			$field->validate( $value, $form );
-
-			$custom_validation_result = gf_apply_filters( array(
-				'gform_field_validation',
-				$form['id'],
-				$field->id
-			), array(
-				'is_valid' => $field->failed_validation ? false : true,
-				'message'  => $field->validation_message
-			), $value, $form, $field );
-
-			$field->failed_validation  = rgar( $custom_validation_result, 'is_valid' ) ? false : true;
-			$field->validation_message = rgar( $custom_validation_result, 'message' );
-
-			if ( $field->failed_validation ) {
-				$is_valid = false;
-			}
+			return $is_valid;
+		}  else {
+			return false;
 		}
 
-		return $is_valid;
-
 	}
-
 
 }
