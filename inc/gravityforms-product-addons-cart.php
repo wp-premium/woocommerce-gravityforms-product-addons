@@ -517,7 +517,8 @@ class WC_GFPA_Cart {
 
 									$sep = '';
 									foreach ( $files as $file ) {
-										$display_value .= $sep . '<a href="' . $file . '">' . $file . '</a>';
+										$name = substr($file,  strrpos($file, '/') + 1);
+										$display_value .= $sep . '<a href="' . $file . '">' . $name . '</a>';
 										$sep           = ', ';
 									}
 								} else {
