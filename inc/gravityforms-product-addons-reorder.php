@@ -120,7 +120,7 @@ class WC_GFPA_Reorder {
 		$form     = RGFormsModel::get_form_meta( $form_id );
 		$is_valid = true;
 
-		if ( $form && $form['id'] === $form_id ) {
+		if ( $form && $form['id'] == $form_id ) {
 			foreach ( $form['fields'] as &$field ) {
 				/* @var GF_Field $field */
 
