@@ -1,11 +1,15 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.08.22 - version 3.3.5
+    * Update:  Only use file names when creating the order item meta.
+    * Fix:  Fix issue with the reorder validation.
+    
 2018.08.09 - version 3.3.4
     * Fix:  Fix calculation when using Dynamic Pricing.
     * Update:  WP version update.
     * Update:  Make sure the same form is attached to the product when re-ordering, otherwise re-order is disallowed.
     * Update:  Fill in email confirmation field when using the cart edit feature.
     * Update:  Use products regular base price when performing AJAX calculations for Dynamic Pricing.
-    
+
 2018.06.29 - version 3.3.3
     * Fix:  Update created_by property instead of user on the entries created during checkout.
     * Update:  Remove - from plugin name.
