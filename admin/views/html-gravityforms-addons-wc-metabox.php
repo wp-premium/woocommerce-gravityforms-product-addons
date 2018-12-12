@@ -11,7 +11,7 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 
 ?>
 
-<div id="gravityforms_addons_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper">
+<div id="gravityforms_addons_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper hidden">
 
 	<?php if ( !$product->is_type('external') && $product->get_status() == 'publish' && ! $product->is_purchasable() ) : ?>
         <div style="margin:5px 0 15px;border-left:4px solid red;padding:1px 12px;box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);">
