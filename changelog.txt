@@ -1,4 +1,10 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2018.10.23 - version 3.3.6
+    * Update:  Use basename() for file names rather than attempting to parse ourselves.
+    * Update:  Add hidden class to the metaboxes to help fix up some bouncing in the UI when editing products.
+    * Update:  Add additional arguments to the woocommerce_order_item_display_meta_value call on the order screen.
+    * Update:  Tested to WC 3.5
+
 2018.08.22 - version 3.3.5
     * Update:  Only use file names when creating the order item meta.
     * Fix:  Fix issue with the reorder validation.
