@@ -13,9 +13,10 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 
 <div id="gravityforms_addons_data" class="panel woocommerce_options_panel wc-metaboxes-wrapper hidden">
 
-	<?php if ( !$product->is_type('external') && $product->get_status() == 'publish' && ! $product->is_purchasable() ) : ?>
+	<?php if ( ! $product->is_type( 'external' ) && $product->get_status() == 'publish' && ! $product->is_purchasable() ) : ?>
         <div style="margin:5px 0 15px;border-left:4px solid red;padding:1px 12px;box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);">
-            <p>You must set a price for the product before the gravity form will be visible. Set the price to 0 if you are performing all price calculations with the attached Gravity Form.</p>
+            <p>You must set a price for the product before the gravity form will be visible. Set the price to 0 if you
+                are performing all price calculations with the attached Gravity Form.</p>
         </div>
 	<?php endif; ?>
 
@@ -32,14 +33,59 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 			?>
 			<?php if ( ! empty( $gravityform ) && is_object( $gravityform ) ) : ?>
                 <span class="edit_form_link">
-                    <a target="_blank" href="<?php printf( '%s/admin.php?page=gf_edit_forms&id=%d', get_admin_url(), $gravityform->id ); ?>" class="edit_gravityform"><?php _e( 'Edit', 'wc_gf_addons' ); ?> <?php echo $gravityform->title; ?> Gravity Form</a>
+                    <a target="_blank"
+                       href="<?php printf( '%s/admin.php?page=gf_edit_forms&id=%d', get_admin_url(), $gravityform->id ); ?>"
+                       class="edit_gravityform"><?php _e( 'Edit', 'wc_gf_addons' ); ?> <?php echo $gravityform->title; ?>
+                        Gravity Form</a>
                         </span>
 			<?php else: ?>
                 <span class="edit_form_link">
-                            <a target="_blank" href="<?php printf( '%s/admin.php?page=gf_edit_forms', get_admin_url() ); ?>" class="edit_gravityform"><?php _e( 'Browse all your forms', 'wc_gf_addons' ); ?></a>
+                            <a target="_blank"
+                               href="<?php printf( '%s/admin.php?page=gf_edit_forms', get_admin_url() ); ?>"
+                               class="edit_gravityform"><?php _e( 'Browse all your forms', 'wc_gf_addons' ); ?></a>
                         </span>
 			<?php endif; ?>
         </p>
+
+		<?php if ( WC_GFPA_Bulk_Variations_Check::woocommerce_bulk_variations_active_check() && $product->is_type( 'variable' ) ): ?>
+
+            <?php
+
+			$bulk_gravityform       = null;
+			if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['bulk_id'] ) && is_numeric( $gravity_form_data['bulk_id'] ) ) {
+				$bulk_form_meta = RGFormsModel::get_form_meta( $gravity_form_data['bulk_id'] );
+				if ( ! empty( $form_meta ) ) {
+					$bulk_gravityform = RGFormsModel::get_form( $gravity_form_data['bulk_id'] );
+				}
+			}
+
+            ?>
+
+            <p class="form-field bulk-variation-form-field">
+                <label for="gravityform-bulk-id"><?php _e( 'Choose Bulk Form', 'wc_gf_addons' ); ?></label>
+				<?php
+				echo '<select id="gravityform-bulk-id" name="gravityform-bulk-id"><option value="">' . __( 'None', 'wc_gf_addons' ) . '</option>';
+				foreach ( RGFormsModel::get_forms() as $form ) {
+					echo '<option ' . selected( $form->id, ( isset( $gravity_form_data['bulk_id'] ) ? $gravity_form_data['bulk_id'] : 0 ) ) . ' value="' . esc_attr( $form->id ) . '">' . wptexturize( $form->title ) . '</option>';
+				}
+				echo '</select>';
+				?>
+				<?php if ( ! empty( $bulk_gravityform ) && is_object( $bulk_gravityform ) ) : ?>
+                    <span class="edit_bulk_form_link">
+                    <a target="_blank"
+                       href="<?php printf( '%s/admin.php?page=gf_edit_forms&id=%d', get_admin_url(), $bulk_gravityform->id ); ?>"
+                       class="edit_gravityform"><?php _e( 'Edit', 'wc_gf_addons' ); ?> <?php echo $bulk_gravityform->title; ?>
+                        Gravity Form</a>
+                        </span>
+				<?php else: ?>
+                    <span class="edit_bulk_form_link">
+                            <a target="_blank"
+                               href="<?php printf( '%s/admin.php?page=gf_edit_forms', get_admin_url() ); ?>"
+                               class="edit_gravityform"><?php _e( 'Browse all your forms', 'wc_gf_addons' ); ?></a>
+                        </span>
+				<?php endif; ?>
+            </p>
+		<?php endif; ?>
 
 		<?php
 		woocommerce_wp_checkbox( array(
@@ -69,7 +115,8 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 
                     <div class="wc-product-data-metabox-group-field-content" style="display:none;">
 
-                        <div id="multipage_forms_data" class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
+                        <div id="multipage_forms_data"
+                             class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
                             <h4><?php _e( 'Multipage Forms', 'wc_gf_addons' ); ?></h4>
 							<?php
 							woocommerce_wp_checkbox( array(
@@ -91,7 +138,8 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
                     </div>
 
                     <div class="wc-product-data-metabox-group-field-content" style="display:none;">
-                        <div id="price_labels_data" class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
+                        <div id="price_labels_data"
+                             class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
 
 
 							<?php
@@ -132,7 +180,8 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 
                     <div class="wc-product-data-metabox-group-field-content" style="display:none;">
 
-                        <div id="total_labels_data" class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
+                        <div id="total_labels_data"
+                             class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
 							<?php
 
 							if ( class_exists( 'WC_Dynamic_Pricing' ) ) {
@@ -148,7 +197,6 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 								);
 
 							}
-
 
 							woocommerce_wp_checkbox( array(
 								'id'    => 'gravityform-disable_calculations',
@@ -199,6 +247,18 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 								'description' => __( 'Enter the "Total" label to display for single products.', 'wc_gf_addons' )
 							) );
 
+							woocommerce_wp_select(
+								array(
+									'id'          => 'gravityform-display_totals_location',
+									'label'       => __( 'Totals Section Placement', 'wc_gf_addons' ),
+									'value'       => isset( $gravity_form_data['display_totals_location'] ) ? $gravity_form_data['display_totals_location'] : 'after',
+									'std'         => 'after',
+									'default'     => 'after',
+									'options'     => array( 'after' => 'After Form', 'before' => 'Before Form' ),
+									'description' => __( 'Choose where to display the total calculations.  After form is the default.  .', 'wc_gf_addons' )
+								)
+							);
+
 							?>
                         </div>
                     </div>
@@ -211,7 +271,8 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 
                     <div class="wc-product-data-metabox-group-field-content" style="display:none;">
 
-                        <div id="entries_and_notifications_options_data" class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
+                        <div id="entries_and_notifications_options_data"
+                             class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
 
 							<?php
 
@@ -261,42 +322,41 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 
                         <div class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
                             <div class="wc-product-data-metabox-option-group-label">
-		                        <?php _e( 'Cart Options', 'wc_gf_addons' ); ?>
+								<?php _e( 'Cart Options', 'wc_gf_addons' ); ?>
                             </div>
 
-		                    <?php
+							<?php
 
-		                    woocommerce_wp_checkbox( array(
-			                    'id'    => 'gravityform-enable_cart_edit',
-			                    'label' => __( 'Enable Cart Edit?', 'wc_gf_addons' ),
-			                    'value' => isset( $gravity_form_data['enable_cart_edit'] ) ? $gravity_form_data['enable_cart_edit'] : 'no'
-		                    ) );
+							woocommerce_wp_checkbox( array(
+								'id'    => 'gravityform-enable_cart_edit',
+								'label' => __( 'Enable Cart Edit?', 'wc_gf_addons' ),
+								'value' => isset( $gravity_form_data['enable_cart_edit'] ) ? $gravity_form_data['enable_cart_edit'] : 'no'
+							) );
 
-		                    ?>
+							?>
 
-		                    <?php
+							<?php
 
-		                    woocommerce_wp_select( array(
-			                    'id'          => 'gravityform-enable_cart_edit_remove',
-			                    'label'       => __( 'Replace Modified Items?', 'wc_gf_addons' ),
-			                    'value'       => isset( $gravity_form_data['enable_cart_edit_remove'] ) ? $gravity_form_data['enable_cart_edit_remove'] : 'yes',
-			                    'options'     => array(
-				                    'yes' => __( 'Yes:  Replace modified items in the cart.' ),
-				                    'no'  => __( 'No:  Add additional items to the cart.' )
-			                    ),
-			                    'description' => __( 'When items are modified choose to remove the modified item if different or to keep in the cart.  If keeping the items, additional items will be added to the cart with the modified data.  If replacing the items, the original cart item will be replaced with the updated submission data.', 'wc_gf_addons' )
+							woocommerce_wp_select( array(
+								'id'          => 'gravityform-enable_cart_edit_remove',
+								'label'       => __( 'Replace Modified Items?', 'wc_gf_addons' ),
+								'value'       => isset( $gravity_form_data['enable_cart_edit_remove'] ) ? $gravity_form_data['enable_cart_edit_remove'] : 'yes',
+								'options'     => array(
+									'yes' => __( 'Yes:  Replace modified items in the cart.' ),
+									'no'  => __( 'No:  Add additional items to the cart.' )
+								),
+								'description' => __( 'When items are modified choose to remove the modified item if different or to keep in the cart.  If keeping the items, additional items will be added to the cart with the modified data.  If replacing the items, the original cart item will be replaced with the updated submission data.', 'wc_gf_addons' )
 
-		                    ) );
+							) );
 
-		                    ?>
+							?>
 
                         </div>
 
 
-
                         <div class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
                             <div class="wc-product-data-metabox-option-group-label">
-		                        <?php _e( 'Quantity / Stock Options', 'wc_gf_addons' ); ?>
+								<?php _e( 'Quantity / Stock Options', 'wc_gf_addons' ); ?>
                             </div>
 
 							<?php
@@ -306,9 +366,9 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 								'label'       => __( 'Enable Quantity Management?', 'wc_gf_addons' ),
 								'value'       => isset( $gravity_form_data['enable_cart_quantity_management'] ) ? $gravity_form_data['enable_cart_quantity_management'] : 'no',
 								'options'     => array(
-									'no'  => __( 'No' ),
-									'yes' => __( 'Yes - Set Cart Item Quantity' ),
-                                    'stock' => __('Yes - Set Order Item Stock Quantity')
+									'no'    => __( 'No' ),
+									'yes'   => __( 'Yes - Set Cart Item Quantity' ),
+									'stock' => __( 'Yes - Set Order Item Stock Quantity' )
 								),
 								'description' => __( 'Control the cart item or stock reduction quantity with a Gravity Form field.', 'wc_gf_addons' )
 

@@ -15,7 +15,7 @@
     margin: 15px 0 0 0;
 }
 
-#gravityforms_addons_data span.edit_form_link {
+#gravityforms_addons_data span.edit_form_link, #gravityforms_addons_data span.edit_bulk_form_link  {
     padding-top: 5px;
     display: block;
     clear: left;

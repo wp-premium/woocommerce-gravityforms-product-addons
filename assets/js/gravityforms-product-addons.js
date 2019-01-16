@@ -154,9 +154,9 @@ function update_dynamic_price_ajax(gform_total) {
             //Maybe jump to validation error:
 
             if ($('.gform_validation_error', 'form.cart').length) {
-
-                window.location = window.location + '#gform_' + form_id;
-
+                if (!window.location.hash) {
+                    window.location = window.location + '#gform_' + form_id;
+                }
             }
 
 
@@ -191,7 +191,10 @@ function update_dynamic_price_ajax(gform_total) {
             $('.gform_next_button', $form).attr('onclick', '');
 
             $('.gform_next_button', $form).click(function (event) {
-                window.location.hash = '#_form_' + form_id;
+                if (!window.location.hash) {
+                    window.location.hash = '#_form_' + form_id;
+                }
+
                 $form.attr('action', window.location.hash);
                 $("#gform_target_page_number_" + form_id, $form).val(next_page);
                 $form.trigger("submit", [true]);
@@ -199,7 +202,10 @@ function update_dynamic_price_ajax(gform_total) {
 
             $('.gform_previous_button', $form).click(function (event) {
                 $("#gform_target_page_number_" + form_id, $form).val(previous_page);
-                window.location.hash = '#_form_' + form_id
+                if (!window.location.hash) {
+                    window.location.hash = '#_form_' + form_id;
+                }
+
                 $form.attr('action', window.location.hash);
                 $form.trigger("submit", [true]);
             });

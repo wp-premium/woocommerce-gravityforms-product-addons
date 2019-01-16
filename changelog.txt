@@ -1,4 +1,15 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2019.01.02 - version 3.3.7
+    * Update:  Tested to WC 3.5.3
+    * Update:  Tested to WP 5.0.2
+    * Update:  Fix issue where 0 values were not being displayed in the cart.
+    * Fix:  Fix for validation errors when the user fails to fill out all the required fields on a form more than once.
+    * New:  Add option to display totals section before the form.  Helpful for multi-page forms.
+    * New:  Include separate Bulk Variations Form selection option.  Fixes issues with duplicate forms being rendered.
+    * Fix:  Fix issue where the setting for Replace Modified Items was not being saved.
+    * Fix:  Fix issue with the gform_product_total and not respecting the Use Dynamic Pricing filter.
+    * Fix:  Fix warning in PHP 7.3 about continue inside of a switch statement.
+
 2018.10.23 - version 3.3.6
     * Update:  Use basename() for file names rather than attempting to parse ourselves.
     * Update:  Add hidden class to the metaboxes to help fix up some bouncing in the UI when editing products.

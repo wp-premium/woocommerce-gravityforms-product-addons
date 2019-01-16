@@ -1,15 +1,15 @@
-# Copyright (C) 2018 Lucas Stark
+# Copyright (C) 2019 Lucas Stark
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce Gravity Forms Product Add-Ons 3.3.6\n"
+"Project-Id-Version: WooCommerce Gravity Forms Product Add-Ons 3.3.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/gravityforms-product-addons\n"
-"POT-Creation-Date: 2018-10-23 20:49:13+00:00\n"
+"POT-Creation-Date: 2019-01-02 18:49:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n1.0.1\n"
@@ -19,24 +19,31 @@ msgstr ""
 msgid "Edit "
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:54
+#: admin/gravityforms-product-addons-admin.php:37
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:37
+msgid ""
+"The singular and the bulk form can not be the same form. Make a duplicate "
+"of your singular form if need be. "
+msgstr ""
+
+#: admin/gravityforms-product-addons-admin.php:55
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:24
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:54
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:55
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:24
 msgid ""
 "<strong>Gravity Forms Not Found</strong> &#8211; The Gravity Forms Plugin "
 "is required to build and manage the forms for your products."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:56
+#: admin/gravityforms-product-addons-admin.php:58
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:25
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:56
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:58
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:25
 msgid "Get Gravity Forms"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:73
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:73
+#: admin/gravityforms-product-addons-admin.php:75
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:75
 msgid ""
 "<strong>Gravity Forms Duplicate Prevention Active</strong></h4><p>The "
 "<strong>Gravity Forms Product Addon Extension</strong> can not function "
@@ -44,32 +51,32 @@ msgid ""
 "href=\"%s\">disable</a> it for proper functionality of the extension.</p>"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:104
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:104
+#: admin/gravityforms-product-addons-admin.php:106
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:106
 msgid "Gravity Forms"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:167
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:167
+#: admin/gravityforms-product-addons-admin.php:171
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:171
 msgid "No Form ID"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:205
-#: admin/views/html-gravityforms-addons-wc-metabox.php:345
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:205
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:345
+#: admin/gravityforms-product-addons-admin.php:209
+#: admin/views/html-gravityforms-addons-wc-metabox.php:405
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:209
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:405
 msgid "Quantity Field"
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:208
-#: admin/views/html-gravityforms-addons-wc-metabox.php:348
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:208
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:348
+#: admin/gravityforms-product-addons-admin.php:212
+#: admin/views/html-gravityforms-addons-wc-metabox.php:408
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:212
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:408
 msgid "A field to use to control cart item quantity."
 msgstr ""
 
-#: admin/gravityforms-product-addons-admin.php:214
-#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:214
+#: admin/gravityforms-product-addons-admin.php:218
+#: dist/woocommerce-gravityforms-product-addons/admin/gravityforms-product-addons-admin.php:218
 msgid "No suitable quantity fields found."
 msgstr ""
 
@@ -81,159 +88,165 @@ msgid "General"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:24
-#: admin/views/html-gravityforms-addons-wc-metabox.php:25
+#: admin/views/html-gravityforms-addons-wc-metabox.php:26
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:67
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:24
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:25
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:26
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:67
 msgid "Choose Form"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:26
-#: admin/views/html-gravityforms-addons-wc-metabox.php:27
+#: admin/views/html-gravityforms-addons-wc-metabox.php:28
+#: admin/views/html-gravityforms-addons-wc-metabox.php:67
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:69
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:26
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:27
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:28
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:67
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:69
 msgid "None"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:34
-#: admin/views/html-gravityforms-addons-wc-metabox.php:35
+#: admin/views/html-gravityforms-addons-wc-metabox.php:38
+#: admin/views/html-gravityforms-addons-wc-metabox.php:77
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:34
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:35
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:38
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:77
 msgid "Edit"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:38
-#: admin/views/html-gravityforms-addons-wc-metabox.php:39
+#: admin/views/html-gravityforms-addons-wc-metabox.php:45
+#: admin/views/html-gravityforms-addons-wc-metabox.php:84
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:38
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:39
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:45
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:84
 msgid "Browse all your forms"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:46
-#: admin/views/html-gravityforms-addons-wc-metabox.php:47
+#: admin/views/html-gravityforms-addons-wc-metabox.php:93
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:80
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:46
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:47
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:93
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:80
 msgid "Display Title"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:52
-#: admin/views/html-gravityforms-addons-wc-metabox.php:53
+#: admin/views/html-gravityforms-addons-wc-metabox.php:99
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:85
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:52
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:53
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:99
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:85
 msgid "Display Description"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:60
-#: admin/views/html-gravityforms-addons-wc-metabox.php:73
+#: admin/views/html-gravityforms-addons-wc-metabox.php:120
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:100
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:60
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:73
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:120
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:100
 msgid "Multipage Forms"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:64
-#: admin/views/html-gravityforms-addons-wc-metabox.php:77
+#: admin/views/html-gravityforms-addons-wc-metabox.php:124
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:105
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:64
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:77
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:124
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:105
 msgid "Disable Gravity Forms Anchors"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:71
-#: admin/views/html-gravityforms-addons-wc-metabox.php:90
+#: admin/views/html-gravityforms-addons-wc-metabox.php:137
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:112
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:71
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:90
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:137
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:112
 msgid "Price Labels"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:77
-#: admin/views/html-gravityforms-addons-wc-metabox.php:101
+#: admin/views/html-gravityforms-addons-wc-metabox.php:149
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:117
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:77
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:101
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:149
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:117
 msgid "Remove WooCommerce Price?"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:83
-#: admin/views/html-gravityforms-addons-wc-metabox.php:107
+#: admin/views/html-gravityforms-addons-wc-metabox.php:155
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:120
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:83
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:107
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:155
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:120
 msgid "Price Before"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:85
-#: admin/views/html-gravityforms-addons-wc-metabox.php:109
+#: admin/views/html-gravityforms-addons-wc-metabox.php:157
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:122
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:85
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:109
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:157
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:122
 msgid "Base Price:"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:86
-#: admin/views/html-gravityforms-addons-wc-metabox.php:110
+#: admin/views/html-gravityforms-addons-wc-metabox.php:158
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:122
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:86
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:110
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:158
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:122
 msgid "Enter text you would like printed before the price of the product."
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:91
-#: admin/views/html-gravityforms-addons-wc-metabox.php:115
+#: admin/views/html-gravityforms-addons-wc-metabox.php:163
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:124
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:91
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:115
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:163
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:124
 msgid "Price After"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:94
-#: admin/views/html-gravityforms-addons-wc-metabox.php:118
+#: admin/views/html-gravityforms-addons-wc-metabox.php:166
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:126
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:94
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:118
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:166
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:126
 msgid "Enter text you would like printed after the price of the product."
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:102
-#: admin/views/html-gravityforms-addons-wc-metabox.php:130
+#: admin/views/html-gravityforms-addons-wc-metabox.php:178
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:132
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:102
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:130
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:178
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:132
 msgid "Total Calculations"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:110
-#: admin/views/html-gravityforms-addons-wc-metabox.php:143
+#: admin/views/html-gravityforms-addons-wc-metabox.php:192
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:139
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:110
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:143
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:192
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:139
 msgid "Enable Dynamic Pricing?"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:113
-#: admin/views/html-gravityforms-addons-wc-metabox.php:146
+#: admin/views/html-gravityforms-addons-wc-metabox.php:195
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:142
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:113
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:146
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:195
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:142
 msgid ""
 "Enable Dynamic Pricing calculations if you are using Dynamic Pricing to "
@@ -241,225 +254,238 @@ msgid ""
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:122
-#: admin/views/html-gravityforms-addons-wc-metabox.php:155
+#: admin/views/html-gravityforms-addons-wc-metabox.php:203
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:150
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:122
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:155
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:203
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:150
 msgid "Disable Calculations?"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:129
-#: admin/views/html-gravityforms-addons-wc-metabox.php:162
+#: admin/views/html-gravityforms-addons-wc-metabox.php:210
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:157
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:129
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:162
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:210
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:157
 msgid "Disable Subtotal?"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:135
-#: admin/views/html-gravityforms-addons-wc-metabox.php:168
+#: admin/views/html-gravityforms-addons-wc-metabox.php:216
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:160
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:135
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:168
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:216
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:160
 msgid "Subtotal Label"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:137
-#: admin/views/html-gravityforms-addons-wc-metabox.php:169
-#: admin/views/html-gravityforms-addons-wc-metabox.php:170
+#: admin/views/html-gravityforms-addons-wc-metabox.php:217
+#: admin/views/html-gravityforms-addons-wc-metabox.php:218
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:162
 #: back_compat_less_27/gravityforms-product-addons-form.php:33
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:137
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:169
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:170
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:217
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:218
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:162
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/gravityforms-product-addons-form.php:33
-#: dist/woocommerce-gravityforms-product-addons/gravityforms-product-addons-form.php:32
-#: gravityforms-product-addons-form.php:32
+#: dist/woocommerce-gravityforms-product-addons/gravityforms-product-addons-form.php:29
+#: gravityforms-product-addons-form.php:29
 msgid "Subtotal"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:138
-#: admin/views/html-gravityforms-addons-wc-metabox.php:171
+#: admin/views/html-gravityforms-addons-wc-metabox.php:219
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:162
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:138
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:171
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:219
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:162
 msgid "Enter \"Subtotal\" label to display on for single products."
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:143
-#: admin/views/html-gravityforms-addons-wc-metabox.php:176
+#: admin/views/html-gravityforms-addons-wc-metabox.php:224
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:166
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:143
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:176
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:224
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:166
 msgid "Disable Options Label?"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:149
-#: admin/views/html-gravityforms-addons-wc-metabox.php:182
+#: admin/views/html-gravityforms-addons-wc-metabox.php:230
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:169
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:149
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:182
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:230
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:169
 msgid "Options Label"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:151
-#: admin/views/html-gravityforms-addons-wc-metabox.php:183
-#: admin/views/html-gravityforms-addons-wc-metabox.php:184
+#: admin/views/html-gravityforms-addons-wc-metabox.php:231
+#: admin/views/html-gravityforms-addons-wc-metabox.php:232
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:171
 #: back_compat_less_27/gravityforms-product-addons-form.php:34
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:26
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:151
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:183
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:184
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:231
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:232
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:171
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/gravityforms-product-addons-form.php:34
-#: dist/woocommerce-gravityforms-product-addons/gravityforms-product-addons-form.php:33
-#: dist/woocommerce-gravityforms-product-addons/inc/gravityforms-product-addons-gform.php:112
-#: gravityforms-product-addons-form.php:33
+#: dist/woocommerce-gravityforms-product-addons/gravityforms-product-addons-form.php:30
+#: gravityforms-product-addons-form.php:30
 msgid "Options"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:152
-#: admin/views/html-gravityforms-addons-wc-metabox.php:185
+#: admin/views/html-gravityforms-addons-wc-metabox.php:233
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:171
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:152
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:185
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:233
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:171
 msgid "Enter the \"Options\" label to display for single products."
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:157
-#: admin/views/html-gravityforms-addons-wc-metabox.php:190
+#: admin/views/html-gravityforms-addons-wc-metabox.php:238
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:175
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:157
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:190
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:238
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:175
 msgid "Disable Total Label?"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:163
-#: admin/views/html-gravityforms-addons-wc-metabox.php:196
+#: admin/views/html-gravityforms-addons-wc-metabox.php:244
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:178
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:163
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:196
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:244
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:178
 msgid "Total Label"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:165
-#: admin/views/html-gravityforms-addons-wc-metabox.php:197
-#: admin/views/html-gravityforms-addons-wc-metabox.php:198
+#: admin/views/html-gravityforms-addons-wc-metabox.php:245
+#: admin/views/html-gravityforms-addons-wc-metabox.php:246
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:180
 #: back_compat_less_27/gravityforms-product-addons-form.php:35
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:59
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:165
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:197
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:198
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:245
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:246
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:180
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/gravityforms-product-addons-form.php:35
-#: dist/woocommerce-gravityforms-product-addons/gravityforms-product-addons-form.php:34
-#: dist/woocommerce-gravityforms-product-addons/inc/gravityforms-product-addons-gform.php:106
-#: gravityforms-product-addons-form.php:34
+#: dist/woocommerce-gravityforms-product-addons/gravityforms-product-addons-form.php:31
+#: gravityforms-product-addons-form.php:31
 msgid "Total"
 msgstr ""
 
 #: admin/views/html-gravityforms-addons-panel.php:166
-#: admin/views/html-gravityforms-addons-wc-metabox.php:199
+#: admin/views/html-gravityforms-addons-wc-metabox.php:247
 #: back_compat_less_27/admin/gravityforms-product-addons-admin.php:180
 #: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-panel.php:166
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:199
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:247
 #: dist/woocommerce-gravityforms-product-addons/back_compat_less_27/admin/gravityforms-product-addons-admin.php:180
 msgid "Enter the \"Total\" label to display for single products."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:64
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:64
+#: admin/views/html-gravityforms-addons-wc-metabox.php:65
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:65
+msgid "Choose Bulk Form"
+msgstr ""
+
+#: admin/views/html-gravityforms-addons-wc-metabox.php:110
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:110
 msgid "Form Display"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:68
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:68
+#: admin/views/html-gravityforms-addons-wc-metabox.php:114
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:114
 msgid "Multi Page Forms"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:209
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:209
+#: admin/views/html-gravityforms-addons-wc-metabox.php:253
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:253
+msgid "Totals Section Placement"
+msgstr ""
+
+#: admin/views/html-gravityforms-addons-wc-metabox.php:258
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:258
+msgid ""
+"Choose where to display the total calculations.  After form is the default. "
+" ."
+msgstr ""
+
+#: admin/views/html-gravityforms-addons-wc-metabox.php:269
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:269
 msgid "Entries and Notifications"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:220
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:220
+#: admin/views/html-gravityforms-addons-wc-metabox.php:281
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:281
 msgid "Keep Cart Entries?"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:222
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:222
+#: admin/views/html-gravityforms-addons-wc-metabox.php:283
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:283
 msgid ""
 "Entries are created when the order is placed. Check this to keep the copy "
 "when the item is added to the cart."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:231
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:231
+#: admin/views/html-gravityforms-addons-wc-metabox.php:292
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:292
 msgid "Update Payment and Transaction Details?"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:233
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:233
+#: admin/views/html-gravityforms-addons-wc-metabox.php:294
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:294
 msgid ""
 "Automatically update the entry transaction details based on the WooCommerce "
 "Order."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:242
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:242
+#: admin/views/html-gravityforms-addons-wc-metabox.php:303
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:303
 msgid "Send Notifications?"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:244
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:244
+#: admin/views/html-gravityforms-addons-wc-metabox.php:305
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:305
 msgid "Send any form notifications configured when an item is ordered."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:257
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:257
+#: admin/views/html-gravityforms-addons-wc-metabox.php:318
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:318
 msgid "Advanced Options"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:264
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:264
+#: admin/views/html-gravityforms-addons-wc-metabox.php:325
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:325
 msgid "Cart Options"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:271
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:271
+#: admin/views/html-gravityforms-addons-wc-metabox.php:332
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:332
 msgid "Enable Cart Edit?"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:281
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:281
+#: admin/views/html-gravityforms-addons-wc-metabox.php:342
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:342
 msgid "Replace Modified Items?"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:284
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:284
+#: admin/views/html-gravityforms-addons-wc-metabox.php:345
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:345
 msgid "Yes:  Replace modified items in the cart."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:285
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:285
+#: admin/views/html-gravityforms-addons-wc-metabox.php:346
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:346
 msgid "No:  Add additional items to the cart."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:287
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:287
+#: admin/views/html-gravityforms-addons-wc-metabox.php:348
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:348
 msgid ""
 "When items are modified choose to remove the modified item if different or "
 "to keep in the cart.  If keeping the items, additional items will be added "
@@ -467,33 +493,33 @@ msgid ""
 "cart item will be replaced with the updated submission data."
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:299
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:299
+#: admin/views/html-gravityforms-addons-wc-metabox.php:359
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:359
 msgid "Quantity / Stock Options"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:306
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:306
+#: admin/views/html-gravityforms-addons-wc-metabox.php:366
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:366
 msgid "Enable Quantity Management?"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:309
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:309
+#: admin/views/html-gravityforms-addons-wc-metabox.php:369
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:369
 msgid "No"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:310
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:310
+#: admin/views/html-gravityforms-addons-wc-metabox.php:370
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:370
 msgid "Yes - Set Cart Item Quantity"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:311
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:311
+#: admin/views/html-gravityforms-addons-wc-metabox.php:371
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:371
 msgid "Yes - Set Order Item Stock Quantity"
 msgstr ""
 
-#: admin/views/html-gravityforms-addons-wc-metabox.php:313
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:313
+#: admin/views/html-gravityforms-addons-wc-metabox.php:373
+#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-wc-metabox.php:373
 msgid "Control the cart item or stock reduction quantity with a Gravity Form field."
 msgstr ""
 
@@ -615,46 +641,6 @@ msgstr ""
 msgid "Add&nbsp;meta"
 msgstr ""
 
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:15
-msgid "Product Page Options Calculation Type"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:18
-msgid ""
-"Choose how to display the Options Calculation on the single product page.  "
-"Default:  Standard"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:30
-msgid "Product Page Options Total Label"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:32
-msgid "The label to display this products options on the single product page"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:44
-msgid "Calculation Type"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:47
-msgid ""
-"Choose if the product's price is added once to the cart item or is based on "
-"the cart item quantity"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:58
-msgid "Cart Total Label"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/admin/views/html-gravityforms-addons-gform-product.php:60
-msgid "The label to display this products price in the cart"
-msgstr ""
-
-#: dist/woocommerce-gravityforms-product-addons/inc/feature-request-1342.php:73
-msgid "Remove This Field From WooCommerce Cart Item Description"
-msgstr ""
-
 #: dist/woocommerce-gravityforms-product-addons/inc/gravityforms-product-addons-entry.php:487
 #: inc/gravityforms-product-addons-entry.php:487
 msgid "Order Status"
@@ -670,8 +656,8 @@ msgstr ""
 msgid "View Gravity Form Entry"
 msgstr ""
 
-#: dist/woocommerce-gravityforms-product-addons/inc/gravityforms-product-addons-reorder.php:168
-#: inc/gravityforms-product-addons-reorder.php:168
+#: dist/woocommerce-gravityforms-product-addons/inc/gravityforms-product-addons-reorder.php:176
+#: inc/gravityforms-product-addons-reorder.php:176
 msgid "This field is required."
 msgstr ""
 
@@ -694,7 +680,7 @@ msgid "Lucas Stark"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://www.elementstark.com/"
+msgid "https://www.elementstark.com/"
 msgstr ""
 
 #: back_compat_less_27/inc/gravityforms-product-addons-entry.php:60

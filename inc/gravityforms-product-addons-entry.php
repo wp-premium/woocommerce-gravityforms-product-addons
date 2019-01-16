@@ -93,10 +93,10 @@ class WC_GFPA_Entry {
 						$create_entries_on_specific_status = array( $create_entries_on_specific_status );
 					}
 
-					GFCommon::log_debug( "Gravity Forms Product Addons: Will Create Entries For Specific Status " + print_r( $create_entries_on_specific_status ) );
+					GFCommon::log_debug( "Gravity Forms Product Addons: Will Create Entries For Specific Status " . print_r( $create_entries_on_specific_status ) );
 
 					$order_status = $the_order->get_status();
-					GFCommon::log_debug( "Gravity Forms Product Addons: Order Status " + $order_status );
+					GFCommon::log_debug( "Gravity Forms Product Addons: Order Status " . $order_status );
 
 					if ( in_array( $order_status, $create_entries_on_specific_status ) ) {
 						$create_entries = true;

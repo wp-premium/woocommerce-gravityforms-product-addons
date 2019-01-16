@@ -21,6 +21,7 @@ class WC_GFPA_Main {
 
 	/**
 	 * Gets the single instance of the plugin.
+	 *
 	 * @return WC_GFPA_Main
 	 */
 	public static function instance() {
@@ -31,7 +32,7 @@ class WC_GFPA_Main {
 		return self::$instance;
 	}
 
-	public $assets_version = '3.2.12';
+	public $assets_version = '3.3.1';
 
 	public $gravity_products = array();
 
@@ -86,7 +87,7 @@ class WC_GFPA_Main {
 		require 'inc/gravityforms-product-addons-order.php';
 		WC_GFPA_Order::register();
 
-
+		require 'inc/gravityforms-product-addons-bulk-variations.php';
 		require 'inc/gravityforms-product-addons-cart.php';
 		require 'inc/gravityforms-product-addons-cart-edit.php';
 		require 'inc/gravityforms-product-addons-reorder.php';
@@ -126,7 +127,7 @@ class WC_GFPA_Main {
 				), 10 );
 			} else {
 
-				$hook = apply_filters('woocommerce_gforms_form_output_hook', 'woocommerce_single_variation', $product);
+				$hook = apply_filters( 'woocommerce_gforms_form_output_hook', 'woocommerce_single_variation', $product );
 
 				//Use the new 2.4+ hook
 				add_action( $hook, array( $this, 'woocommerce_gravityform' ), 11 );
@@ -134,7 +135,7 @@ class WC_GFPA_Main {
 			}
 
 		} else {
-			$hook = apply_filters('woocommerce_gforms_form_output_hook', 'woocommerce_before_add_to_cart_button', $product);
+			$hook = apply_filters( 'woocommerce_gforms_form_output_hook', 'woocommerce_before_add_to_cart_button', $product );
 			add_action( $hook, array( $this, 'woocommerce_gravityform' ), 10 );
 		}
 	}
@@ -179,14 +180,15 @@ class WC_GFPA_Main {
 
 		include_once( 'gravityforms-product-addons-form.php' );
 
-		$gravity_form_data = $this->get_gravity_form_data( $post->ID );
+		$gravity_form_data = $this->get_gravity_form_data( $post->ID, 'bulk' );
 		if ( is_array( $gravity_form_data ) && $gravity_form_data['id'] ) {
 			$product = wc_get_product( $post->ID );
 
-			$product_form = new woocommerce_gravityforms_product_form( $gravity_form_data['id'], $post->ID );
+			$form_id                                     = isset( $gravity_form_data['bulk_id'] ) ? $gravity_form_data['bulk_id'] : $gravity_form_data['id'];
+			$product_form                                = new woocommerce_gravityforms_product_form( $form_id, $post->ID );
 			$gravity_form_data['disable_label_subtotal'] = 'yes';
-			$gravity_form_data['disable_label_total'] = 'yes';
-			
+			$gravity_form_data['disable_label_total']    = 'yes';
+
 			$product_form->get_form( $gravity_form_data );
 		}
 		echo '<div class="clear"></div>';
@@ -225,6 +227,10 @@ class WC_GFPA_Main {
 					$gravity_form_data = $this->get_gravity_form_data( $post_id );
 					if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
 						gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
+
+						if ( isset( $gravity_form_data['bulk_id'] ) && ! empty( $gravity_form_data['bulk_id'] ) ) {
+							gravity_form_enqueue_scripts( $gravity_form_data['bulk_id'], false );
+						}
 
 						$prices[ $_product->get_id() ]   = wc_get_price_to_display( $_product );
 						$suffixes[ $_product->get_id() ] = $_product->get_price_suffix();
@@ -285,6 +291,9 @@ class WC_GFPA_Main {
 				wp_enqueue_style( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/css/frontend.css', null );
 
 				gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
+				if ( isset( $gravity_form_data['bulk_id'] ) && ! empty( $gravity_form_data['bulk_id'] ) ) {
+					gravity_form_enqueue_scripts( $gravity_form_data['bulk_id'], false );
+				}
 
 				$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -403,7 +412,7 @@ class WC_GFPA_Main {
 	}
 
 	/**
-	 * @param $html
+	 * @param            $html
 	 * @param WC_Product $_product
 	 *
 	 * @return string
@@ -429,7 +438,7 @@ class WC_GFPA_Main {
 	}
 
 	/**
-	 * @param $html
+	 * @param            $html
 	 * @param WC_Product $_product
 	 *
 	 * @return string
@@ -472,21 +481,27 @@ class WC_GFPA_Main {
 		return plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) );
 	}
 
-	public function get_gravity_form_data( $post_id ) {
+	public function get_gravity_form_data( $post_id, $context = 'single' ) {
 		$product = wc_get_product( $post_id );
 		$data    = false;
 		if ( $product ) {
 			$data = $product->get_meta( '_gravity_form_data' );
 		}
 
-		return apply_filters( 'woocommerce_gforms_get_product_form_data', $data, $post_id );
 
+		$data = apply_filters( 'woocommerce_gforms_get_product_form_data', $data, $post_id, $context );
+		if ( $context == 'bulk' ) {
+			$data['id'] = isset( $data['bulk_id'] ) ? $data['bulk_id'] : $data['id'];
+		}
+
+		return $data;
 	}
 
 }
 
 /**
  * The instance of the plugin.
+ *
  * @return WC_GFPA_Main
  */
 function wc_gfpa() {
@@ -494,3 +509,6 @@ function wc_gfpa() {
 }
 
 WC_GFPA_Main::register();
+
+
+
