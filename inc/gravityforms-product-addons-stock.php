@@ -73,14 +73,14 @@ class WC_GFPA_Stock {
 					//ignore products that have been hidden by conditional logic
 					$is_hidden = $this->get_product_field_is_hidden( $form, $field, array(), $lead );
 					if ( $is_hidden ) {
-						continue;
+						break;
 					}
 
 					//if single product, get values from the multiple inputs
 					if ( is_array( $lead_value ) ) {
 						$product_quantity = sizeof( $quantity_field ) == 0 && ! rgar( $field, "disableQuantity" ) ? rgget( $id . ".3", $lead_value ) : $quantity;
 						if ( empty( $product_quantity ) ) {
-							continue;
+							break;
 						}
 
 						if ( ! rgget( $id, $products ) ) {
@@ -93,7 +93,7 @@ class WC_GFPA_Stock {
 					} else if ( ! empty( $lead_value ) ) {
 
 						if ( empty( $quantity ) ) {
-							continue;
+							break;
 						}
 
 						if ( ! rgar( $products, $id ) ) {

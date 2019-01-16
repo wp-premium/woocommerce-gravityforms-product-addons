@@ -36,7 +36,7 @@ class WC_GFPA_Reorder {
 		remove_filter( 'woocommerce_order_again_cart_item_data', array(
 			$this,
 			'on_get_order_again_cart_item_data'
-		), 10, 3 );
+		), 10 );
 	}
 
 	public function on_wcs_after_renewal_setup_cart_subscriptions() {
@@ -51,7 +51,15 @@ class WC_GFPA_Reorder {
 		$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product_id );
 		if ( isset( $cart_item_data['_gravity_form_lead'] ) ) {
 
-			if ( empty( $gravity_form_data ) || $gravity_form_data['id'] != $cart_item_data['_gravity_form_lead']['form_id'] ) {
+			if ( empty( $gravity_form_data ) ) {
+				return false;
+			}
+
+			if ( isset( $gravity_form_data['bulk_id'] ) ) {
+				if ( $gravity_form_data['id'] != $cart_item_data['_gravity_form_lead']['form_id'] && $gravity_form_data['bulk_id'] != $cart_item_data['_gravity_form_lead']['form_id'] ) {
+					return false;
+				}
+			} elseif ( $gravity_form_data['id'] != $cart_item_data['_gravity_form_lead']['form_id'] ) {
 				return false;
 			}
 
@@ -66,11 +74,11 @@ class WC_GFPA_Reorder {
 				$_POST[ 'input_' . str_replace( '.', '_', $key ) ] = $value;
 			}
 
-			$valid = $this->validate_entry( $gravity_form_data['id'], $glead );
+			$valid = $this->validate_entry( $cart_item_data['_gravity_form_lead']['form_id'], $glead );
 		}
 
 
-		remove_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99, 6 );
+		remove_filter( 'woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 99 );
 
 		return $valid;
 	}
@@ -188,8 +196,9 @@ class WC_GFPA_Reorder {
 					$is_valid = false;
 				}
 			}
+
 			return $is_valid;
-		}  else {
+		} else {
 			return false;
 		}
 

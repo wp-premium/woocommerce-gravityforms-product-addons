@@ -116,7 +116,8 @@ class WC_GFPA_Cart {
 			return $cart_item_meta;
 		}
 
-		$gravity_form_data                    = wc_gfpa()->get_gravity_form_data( $product_id );
+		$context                              = ( isset( $_POST['add-variations-to-cart'] ) && $_POST['add-variations-to-cart'] ) ? 'bulk' : 'single';
+		$gravity_form_data                    = wc_gfpa()->get_gravity_form_data( $product_id, $context );
 		$cart_item_meta['_gravity_form_data'] = $gravity_form_data;
 
 		if ( $gravity_form_data && is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && intval( $gravity_form_data['id'] ) > 0 ) {
@@ -298,7 +299,7 @@ class WC_GFPA_Cart {
 					$value   = $this->get_lead_field_value( $lead, $field );
 					$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
 
-					if ( ! empty( $value ) && ! empty( $arr_var ) ) {
+					if ( $value === '0' || ( ! empty( $value ) && ! empty( $arr_var ) ) ) {
 						$display_value     = GFCommon::get_lead_field_display( $field, $value, isset( $lead["currency"] ) ? $lead["currency"] : false, false );
 						$price_adjustement = false;
 						$display_value     = apply_filters( "gform_entry_field_value", $display_value, $field, $lead, $form_meta );
@@ -337,7 +338,6 @@ class WC_GFPA_Cart {
 						), $field, $lead, $form_meta );
 
 
-
 						$other_data[] = $cart_item_data;
 					}
 				}
@@ -357,7 +357,8 @@ class WC_GFPA_Cart {
 		}
 
 		// Check if we need a gravity form!
-		$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product_id );
+		$context           = ( isset( $_POST['add-variations-to-cart'] ) && $_POST['add-variations-to-cart'] ) ? 'bulk' : 'single';
+		$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product_id, $context );
 
 		if ( is_array( $gravity_form_data ) && $gravity_form_data['id'] && empty( $_POST['gform_form_id'] ) ) {
 			return false;
@@ -503,7 +504,7 @@ class WC_GFPA_Cart {
 						$value   = $this->get_lead_field_value( $lead, $field );
 						$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
 
-						if ( ! empty( $value ) && ! empty( $arr_var ) ) {
+						if ( $value === '0' ||  (! empty( $value ) && ! empty( $arr_var )) ) {
 							try {
 								$strip_html = true;
 								if ( $field['type'] == 'fileupload' && isset( $lead[ $field['id'] ] ) ) {
@@ -545,7 +546,6 @@ class WC_GFPA_Cart {
 								$display_title = GFCommon::get_label( $field );
 								$display_title = apply_filters( "woocommerce_gforms_order_meta_title", $display_title, $field, $lead, $form_meta, $item_id, $cart_item );
 								$display_value = apply_filters( "woocommerce_gforms_order_meta_value", $display_value, $field, $lead, $form_meta, $item_id, $cart_item );
-
 
 
 								if ( apply_filters( 'woocommerce_gforms_strip_meta_html', $strip_html, $display_value, $field, $lead, $form_meta, $item_id, $cart_item ) ) {
@@ -624,14 +624,14 @@ class WC_GFPA_Cart {
 					//ignore products that have been hidden by conditional logic
 					$is_hidden = $this->get_product_field_is_hidden( $form, $field, array(), $lead );
 					if ( $is_hidden ) {
-						continue;
+						break;
 					}
 
 					//if single product, get values from the multiple inputs
 					if ( is_array( $lead_value ) ) {
 						$product_quantity = sizeof( $quantity_field ) == 0 && ! rgar( $field, "disableQuantity" ) ? rgget( $id . ".3", $lead_value ) : $quantity;
 						if ( empty( $product_quantity ) ) {
-							continue;
+							break;
 						}
 
 						if ( ! rgget( $id, $products ) ) {
@@ -644,7 +644,7 @@ class WC_GFPA_Cart {
 					} else if ( ! empty( $lead_value ) ) {
 
 						if ( empty( $quantity ) ) {
-							continue;
+							break;
 						}
 
 						if ( ! rgar( $products, $id ) ) {

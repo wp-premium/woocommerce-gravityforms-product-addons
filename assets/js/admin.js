@@ -10,6 +10,7 @@
         $('#gravityform-id').change(function () {
             if ($(this).val() !== '') {
                 $('.gforms-panel').show();
+                $('.bulk-variation-form-field').show();
 
                 $('.edit_form_link a').show()
                     .text(wc_gf_addons.text_edit_form + " " + $(this).find('option:selected').text())
@@ -24,7 +25,29 @@
 
             } else {
                 $('.edit_form_link a').hide();
+
                 $('.gforms-panel').hide();
+                $('.bulk-variation-form-field').hide();
+            }
+        });
+
+        $('#gravityform-bulk-id').change(function (e) {
+
+            if ($(this).val() !== '' && $(this).val() == $('#gravityform-id').val()) {
+                e.preventDefault();
+                alert(wc_gf_addons.duplicate_form_notice);
+                return false;
+            }
+
+            if ($(this).val() !== '') {
+
+                $('.edit_bulk_form_link a').show()
+                    .text(wc_gf_addons.text_edit_form + " " + $(this).find('option:selected').text())
+                    .attr('href', wc_gf_addons.url_edit_form.replace('FORMID', $(this).val()));
+
+
+            } else {
+                $('.edit_bulk_form_link a').hide();
             }
         });
 

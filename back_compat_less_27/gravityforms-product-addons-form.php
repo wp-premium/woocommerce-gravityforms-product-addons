@@ -175,7 +175,13 @@ class woocommerce_gravityforms_product_form {
 
 
 			gform.addFilter('gform_product_total', function(total, formId) {
-				return update_dynamic_price(total);
+                const product_id = jQuery("input[name=product_id]").val();
+
+                if (wc_gravityforms_params.use_ajax[product_id]) {
+                    return update_dynamic_price_ajax(total, formId);
+                } else {
+                    return update_dynamic_price(total, formId);
+                }
 			});
 
 		</script>
