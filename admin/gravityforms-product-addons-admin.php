@@ -31,10 +31,11 @@ class WC_GFPA_Admin_Controller {
 		wp_enqueue_style( 'woocommerce_gravityforms_product_addons_css', plugins_url( basename( dirname( dirname( __FILE__ ) ) ) ) . '/assets/css/admin.css' );
 
 		$params = array(
-			'nonce'          => wp_create_nonce( 'wc_gravityforms_get_products' ),
-			'text_edit_form' => __( 'Edit ', 'wc_gf_addons' ),
-			'url_edit_form'  => sprintf( '%s/admin.php?page=gf_edit_forms&id=FORMID', get_admin_url() ),
-			'product_id'     => get_the_ID()
+			'nonce'                 => wp_create_nonce( 'wc_gravityforms_get_products' ),
+			'text_edit_form'        => __( 'Edit ', 'wc_gf_addons' ),
+			'url_edit_form'         => sprintf( '%s/admin.php?page=gf_edit_forms&id=FORMID', get_admin_url() ),
+			'duplicate_form_notice' => __( 'The singular and the bulk form can not be the same form. Make a duplicate of your singular form if need be. ', 'wc_gf_addons' ),
+			'product_id'            => get_the_ID()
 		);
 
 		wp_enqueue_script( 'woocommerce_gravityforms_product_addons_js', plugins_url( basename( dirname( dirname( __FILE__ ) ) ) ) . '/assets/js/admin.js', array(
@@ -53,7 +54,8 @@ class WC_GFPA_Admin_Controller {
                 <div class="squeezer">
                     <h4><?php _e( '<strong>Gravity Forms Not Found</strong> &#8211; The Gravity Forms Plugin is required to build and manage the forms for your products.', 'wc_gf_addons' ); ?></h4>
                     <p class="submit">
-                        <a href="https://www.gravityforms.com/" class="button-primary"><?php _e( 'Get Gravity Forms', 'wc_gf_addons' ); ?></a>
+                        <a href="https://www.gravityforms.com/"
+                           class="button-primary"><?php _e( 'Get Gravity Forms', 'wc_gf_addons' ); ?></a>
                     </p>
                 </div>
             </div>
@@ -123,6 +125,7 @@ class WC_GFPA_Admin_Controller {
 
 			$gravity_form_data = array(
 				'id'                              => $_POST['gravityform-id'],
+				'bulk_id'                         => isset( $_POST['gravityform-bulk-id'] ) ? $_POST['gravityform-bulk-id'] : 0,
 				'display_title'                   => isset( $_POST['gravityform-display_title'] ) ? true : false,
 				'display_description'             => isset( $_POST['gravityform-display_description'] ) ? true : false,
 				'disable_woocommerce_price'       => isset( $_POST['gravityform-disable_woocommerce_price'] ) ? 'yes' : 'no',
@@ -138,13 +141,14 @@ class WC_GFPA_Admin_Controller {
 				'label_total'                     => $_POST['gravityform-label_total'],
 				'use_ajax'                        => isset( $_POST['gravityform_use_ajax'] ) ? $_POST['gravityform_use_ajax'] : 'no',
 				'enable_cart_edit'                => isset( $_POST['gravityform-enable_cart_edit'] ) ? $_POST['gravityform-enable_cart_edit'] : 'no',
-				'enable_cart_edit_remove'         => isset( $_POST['gravityform-enable_cart_edit_remove'] ) ? $_POST['gravityform-enable_cart_edit'] : 'yes',
+				'enable_cart_edit_remove'         => isset( $_POST['gravityform-enable_cart_edit_remove'] ) ? $_POST['gravityform-enable_cart_edit_remove'] : 'yes',
 				'keep_cart_entries'               => isset( $_POST['gravityform-keep_cart_entries'] ) ? 'yes' : 'no',
 				'send_notifications'              => isset( $_POST['gravityform-send_notifications'] ) ? $_POST['gravityform-send_notifications'] : 'no',
 				'enable_cart_quantity_management' => isset( $_POST['gravityform-enable_cart_quantity_management'] ) ? $_POST['gravityform-enable_cart_quantity_management'] : 'no',
 				'cart_quantity_field'             => isset( $_POST['gravityform-cart_quantity_field'] ) ? $_POST['gravityform-cart_quantity_field'] : '',
 				'update_payment_details'          => isset( $_POST['gravityform-update_payment_details'] ) ? 'yes' : 'no',
-		);
+				'display_totals_location'         => isset( $_POST['gravityform-display_totals_location'] ) ? $_POST['gravityform-display_totals_location'] : 'after',
+			);
 
 			$product->update_meta_data( '_gravity_form_data', $gravity_form_data );
 			$product->save_meta_data();
