@@ -488,10 +488,11 @@ class WC_GFPA_Main {
 			$data = $product->get_meta( '_gravity_form_data' );
 		}
 
-
 		$data = apply_filters( 'woocommerce_gforms_get_product_form_data', $data, $post_id, $context );
-		if ( $context == 'bulk' ) {
-			$data['id'] = isset( $data['bulk_id'] ) ? $data['bulk_id'] : $data['id'];
+		if ($data) {
+			if ( $context == 'bulk' ) {
+				$data['id'] = isset( $data['bulk_id'] ) ? $data['bulk_id'] : $data['id'];
+			}
 		}
 
 		return $data;
