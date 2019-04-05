@@ -12,6 +12,9 @@ class WC_GFPA_Cart {
 
 	private $removed_captcha = false;
 
+	//Keep track of if we have already added the gravity form data to an order item.
+	private $meta_added = array();
+
 	private function __construct() {
 		// Filters for cart actions
 
@@ -75,6 +78,8 @@ class WC_GFPA_Cart {
 
 				$total += floatval( $products["shipping"]["price"] );
 			}
+
+			$total = apply_filters('woocommerce_gforms_get_cart_item_total', $total, $cart_item);
 
 			$price = $cart_item['data']->get_price( 'edit' );
 			$price += (float) $total;
@@ -434,6 +439,11 @@ class WC_GFPA_Cart {
 		return $valid;
 	}
 
+	/**
+	 * @param $item \WC_Order_Item
+	 * @param $cart_item_key
+	 * @param $cart_item
+	 */
 	public function order_item_meta( $item, $cart_item_key, $cart_item ) {
 		if ( function_exists( 'woocommerce_add_order_item_meta' ) ) {
 
@@ -443,6 +453,14 @@ class WC_GFPA_Cart {
 			if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
 
 				$item_id = $item->get_id();
+
+				$history = $item->get_meta('_gravity_forms_history');
+				if ($history) {
+					GFCommon::log_debug( "Gravity Forms Meta Data Already Added: Order Item ID(#{$item_id})" );
+					GFCommon::log_debug( "Gravity Forms Skipping: Order Item ID(#{$item_id})" );
+					return;
+				}
+
 				GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Order Item ID(#{$item_id})" );
 
 				$item->add_meta_data( '_gravity_forms_history', array(
@@ -504,7 +522,7 @@ class WC_GFPA_Cart {
 						$value   = $this->get_lead_field_value( $lead, $field );
 						$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
 
-						if ( $value === '0' ||  (! empty( $value ) && ! empty( $arr_var )) ) {
+						if ( $value === '0' || ( ! empty( $value ) && ! empty( $arr_var ) ) ) {
 							try {
 								$strip_html = true;
 								if ( $field['type'] == 'fileupload' && isset( $lead[ $field['id'] ] ) ) {
@@ -586,7 +604,14 @@ class WC_GFPA_Cart {
 								$value_debug_string = $prefix . $display_title . ' - Value:' . $display_value;
 								GFCommon::log_debug( "Gravity Forms Add Order Item Meta:(#{$value_debug_string})" );
 
-								$item->add_meta_data( $prefix . $display_title, $display_value );
+								$order_item_meta = array(
+									'name'  => $prefix . $display_title,
+									'value' => $display_value
+								);
+
+								$order_item_meta = apply_filters( "woocommerce_gforms_order_item_meta", $order_item_meta, $field, $lead, $form_meta, $item_id, $cart_item );
+
+								$item->add_meta_data( $order_item_meta['name'], $order_item_meta['value'] );
 							} catch ( Exception $e ) {
 								$e_debug_string = $e->getMessage();
 								GFCommon::log_debug( "Gravity Forms Add Order Item Meta Exception:(#{$e_debug_string})" );

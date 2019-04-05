@@ -1,4 +1,10 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2019.02.27 - version 3.3.8
+    * Update:  Include new filter woocommerce_gforms_order_item_meta to allow filtering of order item meta data just prior to it being added to the WC order item.
+    * Update:  Perform a check before adding order item meta data to prevent duplicates.  This could only be caused if the filter was being called incorrectly twice for some reason.
+    * Update:  Include new filter woocommerce_gforms_get_cart_item_total to filter the gforms total to be added to the cart item.
+    * Update:  Include the ability to attach a gravity form to a products bulk input form when WooCommerce Bulk Variation Forms are in use.
+
 2019.01.02 - version 3.3.7
     * Update:  Tested to WC 3.5.3
     * Update:  Tested to WP 5.0.2
