@@ -48,43 +48,45 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
         </p>
 
 		<?php if ( WC_GFPA_Bulk_Variations_Check::woocommerce_bulk_variations_active_check() && $product->is_type( 'variable' ) ): ?>
-
-            <?php
-
-			$bulk_gravityform       = null;
-			if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['bulk_id'] ) && is_numeric( $gravity_form_data['bulk_id'] ) ) {
-				$bulk_form_meta = RGFormsModel::get_form_meta( $gravity_form_data['bulk_id'] );
-				if ( ! empty( $form_meta ) ) {
-					$bulk_gravityform = RGFormsModel::get_form( $gravity_form_data['bulk_id'] );
-				}
-			}
-
-            ?>
-
-            <p class="form-field bulk-variation-form-field">
-                <label for="gravityform-bulk-id"><?php _e( 'Choose Bulk Form', 'wc_gf_addons' ); ?></label>
+			<?php $axis_attributes = $product->get_variation_attributes(); //Attributes configured on this product already.
+			if ( count( $axis_attributes ) === 2 ) : ?>
 				<?php
-				echo '<select id="gravityform-bulk-id" name="gravityform-bulk-id"><option value="">' . __( 'None', 'wc_gf_addons' ) . '</option>';
-				foreach ( RGFormsModel::get_forms() as $form ) {
-					echo '<option ' . selected( $form->id, ( isset( $gravity_form_data['bulk_id'] ) ? $gravity_form_data['bulk_id'] : 0 ) ) . ' value="' . esc_attr( $form->id ) . '">' . wptexturize( $form->title ) . '</option>';
+
+				$bulk_gravityform = null;
+				if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['bulk_id'] ) && is_numeric( $gravity_form_data['bulk_id'] ) ) {
+					$bulk_form_meta = RGFormsModel::get_form_meta( $gravity_form_data['bulk_id'] );
+					if ( ! empty( $form_meta ) ) {
+						$bulk_gravityform = RGFormsModel::get_form( $gravity_form_data['bulk_id'] );
+					}
 				}
-				echo '</select>';
+
 				?>
-				<?php if ( ! empty( $bulk_gravityform ) && is_object( $bulk_gravityform ) ) : ?>
-                    <span class="edit_bulk_form_link">
+
+                <p class="form-field bulk-variation-form-field">
+                    <label for="gravityform-bulk-id"><?php _e( 'Choose Bulk Form', 'wc_gf_addons' ); ?></label>
+					<?php
+					echo '<select id="gravityform-bulk-id" name="gravityform-bulk-id"><option value="">' . __( 'None', 'wc_gf_addons' ) . '</option>';
+					foreach ( RGFormsModel::get_forms() as $form ) {
+						echo '<option ' . selected( $form->id, ( isset( $gravity_form_data['bulk_id'] ) ? $gravity_form_data['bulk_id'] : 0 ) ) . ' value="' . esc_attr( $form->id ) . '">' . wptexturize( $form->title ) . '</option>';
+					}
+					echo '</select>';
+					?>
+					<?php if ( ! empty( $bulk_gravityform ) && is_object( $bulk_gravityform ) ) : ?>
+                        <span class="edit_bulk_form_link">
                     <a target="_blank"
                        href="<?php printf( '%s/admin.php?page=gf_edit_forms&id=%d', get_admin_url(), $bulk_gravityform->id ); ?>"
                        class="edit_gravityform"><?php _e( 'Edit', 'wc_gf_addons' ); ?> <?php echo $bulk_gravityform->title; ?>
                         Gravity Form</a>
                         </span>
-				<?php else: ?>
-                    <span class="edit_bulk_form_link">
+					<?php else: ?>
+                        <span class="edit_bulk_form_link">
                             <a target="_blank"
                                href="<?php printf( '%s/admin.php?page=gf_edit_forms', get_admin_url() ); ?>"
                                class="edit_gravityform"><?php _e( 'Browse all your forms', 'wc_gf_addons' ); ?></a>
                         </span>
-				<?php endif; ?>
-            </p>
+					<?php endif; ?>
+                </p>
+			<?php endif; ?>
 		<?php endif; ?>
 
 		<?php

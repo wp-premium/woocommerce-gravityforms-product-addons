@@ -119,7 +119,7 @@ function update_dynamic_price_ajax(gform_total) {
     }
 
     var opts = "product_id=" + product_id + "&variation_id=" + variation_id
-    opts += '&action=get_updated_price&gform_total=' + gform_total;
+    opts += '&action=gforms_get_updated_price&gform_total=' + gform_total;
 
     ajax_price_req = jQuery.ajax({
         type: "POST",
