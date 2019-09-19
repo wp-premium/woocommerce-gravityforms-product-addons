@@ -62,6 +62,8 @@ class woocommerce_gravityforms_product_form {
 			$this->next_page     = $this->current_page + 1;
 			$this->previous_page = $this->current_page - 1;
 			$this->next_page     = $this->next_page > $this->get_max_page_number( $form_meta ) ? 0 : $this->next_page;
+			$max_page = $this->get_max_page_number($form_meta);
+            $is_last_page = $this->current_page == $max_page;
 
 			if ( $product->get_type() == 'variable' || $product->get_type() == 'variable-subscription' ) {
 				echo '<div class="gform_variation_wrapper gform_wrapper single_variation_wrap">';
@@ -91,6 +93,14 @@ class woocommerce_gravityforms_product_form {
                         }
                     </style>
 				<?php endif; ?>
+			<?php endif; ?>
+
+			<?php if ($max_page && !$is_last_page): ?>
+                <style>
+                    .button[type=submit], div.quantity, #wl-wrapper {
+                        display: none !important;
+                    }
+                </style>
 			<?php endif; ?>
 
 			<?php

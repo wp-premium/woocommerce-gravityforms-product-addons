@@ -13,8 +13,8 @@ function woocommerce_gravityforms_get_updated_price() {
 	$gform_total  = isset( $_POST['gform_total'] ) ? $_POST['gform_total'] : 0;
 
 	$product_data = null;
-	$product_data = wc_get_product( $variation_id > 0 ? $variation_id : $product_id );
-
+	$product_data = wc_get_product( !empty($variation_id) ? $variation_id : $product_id );
+	//$product_data = wc_get_product(186);
 	if ( empty( $product_data ) ) {
 		die();
 	}

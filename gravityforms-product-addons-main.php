@@ -95,6 +95,7 @@ class WC_GFPA_Main {
 		require 'inc/gravityforms-product-addons-stock.php';
 		require 'inc/gravityforms-product-addons-display.php';
 		require 'inc/gravityforms-product-addons-field-values.php';
+		require 'inc/gravityforms-product-addons-structured-data.php';
 
 		WC_GFPA_Cart::register();
 		WC_GFPA_Cart_Edit::register();
@@ -102,6 +103,7 @@ class WC_GFPA_Main {
 		WC_GFPA_Display::register();
 		WC_GFPA_FieldValues::register();
 		WC_GFPA_Stock::register();
+		WC_GFPA_Structured_Data::register();
 
 		add_action( 'init', array( $this, 'on_init' ) );
 	}
@@ -489,10 +491,20 @@ class WC_GFPA_Main {
 		}
 
 		$data = apply_filters( 'woocommerce_gforms_get_product_form_data', $data, $post_id, $context );
-		if ($data) {
+		if ( $data ) {
 			if ( $context == 'bulk' ) {
 				$data['id'] = isset( $data['bulk_id'] ) ? $data['bulk_id'] : $data['id'];
 			}
+
+			$structured_data_settings = array(
+				'structured_data_override'      => isset( $data['structured_data_override'] ) ? $data['structured_data_override'] : 'no',
+				'structured_data_low_price'     => isset( $data['structured_data_low_price'] ) ? $data['structured_data_low_price'] : '',
+				'structured_data_high_price'    => isset( $data['structured_data_high_price'] ) ? $data['structured_data_high_price'] : '',
+				'structured_data_override_type' => isset( $data['structured_data_override_type'] ) ? $data['structured_data_override_type'] : '',
+			);
+
+			$structured_data_settings = apply_filters( 'woocommerce_gforms_get_product_structured_data_settings', $structured_data_settings, $post_id, $data );
+			$data                     = array_merge( $data, $structured_data_settings );
 		}
 
 		return $data;
