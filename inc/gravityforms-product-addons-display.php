@@ -18,18 +18,19 @@ class WC_GFPA_Display {
 	}
 
 	/**
-	 * @param $text
+	 * @param            $text
 	 * @param WC_Product $product
 	 *
 	 * @return mixed|void
 	 */
 	public function get_add_to_cart_text( $text, $product = null ) {
-		if ( empty( $product ) ) {
+		if ( empty( $product ) || !is_object($product) ) {
 			return $text;
 		}
 
 		if ( ! is_single( $product->get_id() ) ) {
-			if ( is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) ) {
+			$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product->get_id() );
+			if ( $gravity_form_data || ( is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) ) ) {
 				$text = apply_filters( 'woocommerce_gforms_add_to_cart_text', __( 'Select options', 'woocommerce' ) );
 			}
 		}
@@ -38,15 +39,17 @@ class WC_GFPA_Display {
 	}
 
 	/**
-	 * @param $url
+	 * @param            $url
 	 * @param WC_Product $product
 	 *
 	 * @return mixed|void
 	 */
 	public function get_add_to_cart_url( $url, $product ) {
-
-		if ( $product && !$product->is_type('external') && is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) && ( ! isset( $_GET['wc-api'] ) || $_GET['wc-api'] !== 'WC_Quick_View' ) ) {
-			$url = apply_filters( 'addons_add_to_cart_url', get_permalink( $product->get_id() ) );
+		if ( $product && ! $product->is_type( 'external' ) ) {
+			$gravity_form_data = wc_gfpa()->get_gravity_form_data( $product->get_id() );
+			if ( $gravity_form_data || ( is_array( wc_gfpa()->gravity_products ) && in_array( $product->get_id(), wc_gfpa()->gravity_products ) ) && ( ! isset( $_GET['wc-api'] ) || $_GET['wc-api'] !== 'WC_Quick_View' ) ) {
+				$url = apply_filters( 'addons_add_to_cart_url', get_permalink( $product->get_id() ) );
+			}
 		}
 
 		return $url;
@@ -58,8 +61,8 @@ class WC_GFPA_Display {
 	 *
 	 * @access public
 	 *
-	 * @param  boolean $supports
-	 * @param  string $feature
+	 * @param  boolean    $supports
+	 * @param  string     $feature
 	 * @param  WC_Product $product
 	 *
 	 * @return boolean

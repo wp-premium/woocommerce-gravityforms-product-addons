@@ -1,4 +1,5 @@
 var ajax_price_req;
+var wc_gforms_current_variation;
 
 //See the gravity forms documentation for this function.
 function gform_product_total(formId, total) {
@@ -103,7 +104,7 @@ function update_dynamic_price_ajax(gform_total) {
     });
 
     var product_id = jQuery("input[name=product_id]").val();
-    var variation_id = jQuery("input[name=variation_id]").val();
+    var variation_id = wc_gforms_current_variation || "";
 
     var the_id = 0;
     if (variation_id) {
@@ -118,7 +119,7 @@ function update_dynamic_price_ajax(gform_total) {
         ajax_price_req.abort();
     }
 
-    var opts = "product_id=" + product_id + "&variation_id=" + variation_id
+    var opts = "product_id=" + product_id + "&variation_id=" + variation_id;
     opts += '&action=gforms_get_updated_price&gform_total=' + gform_total;
 
     ajax_price_req = jQuery.ajax({
@@ -169,8 +170,9 @@ function update_dynamic_price_ajax(gform_total) {
 
             $form.attr('id', 'gform_' + form_id);
 
-            $form.on('found_variation', function () {
+            $form.on('found_variation', function (e, variation) {
                 try {
+                    wc_gforms_current_variation = variation.variation_id;
                     gf_apply_rules(form_id, ["0"]);
                 } catch (err) {
 
@@ -244,8 +246,6 @@ function update_dynamic_price_ajax(gform_total) {
     });
 
 })(jQuery);
-
-
 
 
 

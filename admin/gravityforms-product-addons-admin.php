@@ -148,6 +148,10 @@ class WC_GFPA_Admin_Controller {
 				'cart_quantity_field'             => isset( $_POST['gravityform-cart_quantity_field'] ) ? $_POST['gravityform-cart_quantity_field'] : '',
 				'update_payment_details'          => isset( $_POST['gravityform-update_payment_details'] ) ? 'yes' : 'no',
 				'display_totals_location'         => isset( $_POST['gravityform-display_totals_location'] ) ? $_POST['gravityform-display_totals_location'] : 'after',
+				'structured_data_override'        => isset( $_POST['gravityform-structured_data_override'] ) ? $_POST['gravityform-structured_data_override'] : 'no',
+				'structured_data_low_price'       => isset( $_POST['gravityform-structured_data_low_price'] ) ? $_POST['gravityform-structured_data_low_price'] : '',
+				'structured_data_high_price'      => isset( $_POST['gravityform-structured_data_high_price'] ) ? $_POST['gravityform-structured_data_high_price'] : '',
+				'structured_data_override_type'   => isset( $_POST['gravityform-structured_data_override_type'] ) ? $_POST['gravityform-structured_data_override_type'] : 'append',
 			);
 
 			$product->update_meta_data( '_gravity_form_data', $gravity_form_data );
@@ -191,7 +195,7 @@ class WC_GFPA_Admin_Controller {
 
 
 		$form   = GFAPI::get_form( $form_id );
-		$fields = GFAPI::get_fields_by_type( $form, array( 'quantity', 'number', 'singleproduct', ), true );
+		$fields = GFAPI::get_fields_by_type( $form, array( 'quantity', 'number', 'singleproduct', ), false );
 
 		if ( $fields ) {
 			$options = array();

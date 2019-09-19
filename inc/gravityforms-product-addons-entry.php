@@ -152,6 +152,8 @@ class WC_GFPA_Entry {
 
 						if ( $entry ) {
 
+							gform_update_meta( $entry_id, 'woocommerce_order_number', $order_item->get_order_id(), $lead_data['form_id'] );
+							gform_update_meta( $entry_id, 'woocommerce_order_item_number', $order_item->get_id(), $lead_data['form_id'] );
 
 							/**
 							 * Fired after an entry is created
@@ -222,8 +224,7 @@ class WC_GFPA_Entry {
 					}
 
 
-					gform_update_meta( $entry_id, 'woocommerce_order_number', $order_item->get_order_id(), $lead_data['form_id'] );
-					gform_update_meta( $entry_id, 'woocommerce_order_item_number', $order_item->get_id(), $lead_data['form_id'] );
+
 
 					$new_history = array(
 						'_gravity_form_cart_item_key'   => $cart_item_key,

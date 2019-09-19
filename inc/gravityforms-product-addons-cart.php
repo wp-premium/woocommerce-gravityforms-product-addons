@@ -504,9 +504,7 @@ class WC_GFPA_Cart {
 
 					foreach ( $form_meta['fields'] as $field ) {
 
-						if ( ( isset( $field['inputType'] ) && $field['inputType'] == 'hiddenproduct' ) || ( isset( $field['displayOnly'] ) && $field['displayOnly'] )
-						     || ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email-and-admin' ) ) !== false
-						) {
+						if ( ( isset( $field['inputType'] ) && $field['inputType'] == 'hiddenproduct' ) || ( isset( $field['displayOnly'] ) && $field['displayOnly'] ) || ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email-and-admin' )  !== false ) ) {
 							$field_debug_string = print_r( $field, true );
 							GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Skipping (#{$field_debug_string})" );
 							continue;
@@ -581,7 +579,7 @@ class WC_GFPA_Cart {
 								$display_value = apply_filters( "woocommerce_gforms_field_display_text", $display_value, $display_text, $field, $lead, $form_meta );
 
 								$prefix         = '';
-								$hidden         = $field['type'] == 'hidden';
+								$hidden         = $field['type'] == 'hidden' || ( isset( $field['visibility'] ) && $field['visibility'] == 'hidden' );
 								$display_hidden = apply_filters( "woocommerce_gforms_field_is_hidden", $hidden, $display_value, $display_title, $field, $lead, $form_meta );
 								if ( $display_hidden ) {
 									$prefix = $hidden ? '_' : '';
