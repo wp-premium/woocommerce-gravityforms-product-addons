@@ -193,7 +193,10 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 										'id'          => 'gravityform_use_ajax',
 										'label'       => __( 'Enable Dynamic Pricing?', 'wc_gf_addons' ),
 										'value'       => isset( $gravity_form_data['use_ajax'] ) ? $gravity_form_data['use_ajax'] : '',
-										'options'     => array( 'no' => 'No', 'yes' => 'Yes' ),
+										'options'     => array(
+											'no'  => __( 'No', 'wc_gf_addons' ),
+											'yes' => __( 'Yes', 'wc_gf_addons' )
+										),
 										'description' => __( 'Enable Dynamic Pricing calculations if you are using Dynamic Pricing to modify the price of this product.', 'wc_gf_addons' )
 									)
 								);
@@ -216,7 +219,7 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 							woocommerce_wp_text_input( array(
 								'id'          => 'gravityform-label_subtotal',
 								'label'       => __( 'Subtotal Label', 'wc_gf_addons' ),
-								'value'       => isset( $gravity_form_data['label_subtotal'] ) && ! empty( $gravity_form_data['label_subtotal'] ) ? $gravity_form_data['label_subtotal'] : __( 'Subtotal', 'wc_gf_addons' ),
+								'value'       => isset( $gravity_form_data['label_subtotal'] ) && ! empty( $gravity_form_data['label_subtotal'] ) ? trim($gravity_form_data['label_subtotal']) : __( 'Subtotal', 'wc_gf_addons' ),
 								'placeholder' => __( 'Subtotal', 'wc_gf_addons' ),
 								'description' => __( 'Enter "Subtotal" label to display on for single products.', 'wc_gf_addons' )
 							) );
@@ -256,7 +259,10 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 									'value'       => isset( $gravity_form_data['display_totals_location'] ) ? $gravity_form_data['display_totals_location'] : 'after',
 									'std'         => 'after',
 									'default'     => 'after',
-									'options'     => array( 'after' => 'After Form', 'before' => 'Before Form' ),
+									'options'     => array(
+										'after'  => __( 'After Form', 'wc_gf_addons' ),
+										'before' => __( 'Before Form', 'wc_gf_addons' )
+									),
 									'description' => __( 'Choose where to display the total calculations.  After form is the default.  .', 'wc_gf_addons' )
 								)
 							);
@@ -344,8 +350,8 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 								'label'       => __( 'Replace Modified Items?', 'wc_gf_addons' ),
 								'value'       => isset( $gravity_form_data['enable_cart_edit_remove'] ) ? $gravity_form_data['enable_cart_edit_remove'] : 'yes',
 								'options'     => array(
-									'yes' => __( 'Yes:  Replace modified items in the cart.' ),
-									'no'  => __( 'No:  Add additional items to the cart.' )
+									'yes' => __( 'Yes:  Replace modified items in the cart.', 'wc_gf_addons' ),
+									'no'  => __( 'No:  Add additional items to the cart.', 'wc_gf_addons' )
 								),
 								'description' => __( 'When items are modified choose to remove the modified item if different or to keep in the cart.  If keeping the items, additional items will be added to the cart with the modified data.  If replacing the items, the original cart item will be replaced with the updated submission data.', 'wc_gf_addons' )
 
@@ -368,9 +374,9 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 								'label'       => __( 'Enable Quantity Management?', 'wc_gf_addons' ),
 								'value'       => isset( $gravity_form_data['enable_cart_quantity_management'] ) ? $gravity_form_data['enable_cart_quantity_management'] : 'no',
 								'options'     => array(
-									'no'    => __( 'No' ),
-									'yes'   => __( 'Yes - Set Cart Item Quantity' ),
-									'stock' => __( 'Yes - Set Order Item Stock Quantity' )
+									'no'    => __( 'No', 'wc_gf_addons' ),
+									'yes'   => __( 'Yes - Set Cart Item Quantity', 'wc_gf_addons' ),
+									'stock' => __( 'Yes - Set Order Item Stock Quantity', 'wc_gf_addons' )
 								),
 								'description' => __( 'Control the cart item or stock reduction quantity with a Gravity Form field.', 'wc_gf_addons' )
 
@@ -389,7 +395,7 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 											'quantity',
 											'number',
 											'singleproduct',
-										), true );
+										), false );
 
 										$options = array();
 										foreach ( $fields as $field ) {
@@ -414,6 +420,70 @@ if ( is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && is_n
 								endif;
 								?>
                             </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wc-product-data-metabox-group-field">
+                    <div class="wc-product-data-metabox-group-field-title">
+                        <a href="javascript:;"><?php _e( 'Structured Data', 'wc_gf_addons' ); ?></a>
+                    </div>
+
+
+                    <div class="wc-product-data-metabox-group-field-content" style="display:none;">
+
+                        <div class="gforms-panel options_group" <?php echo empty( $gravity_form_data['id'] ) ? "style='display:none;'" : ''; ?>>
+                            <div class="wc-product-data-metabox-option-group-label">
+								<?php _e( 'Structured Data Options', 'wc_gf_addons' ); ?>
+                                <p style="font-weight: normal;">
+									<?php _e( 'Options for overriding the default WooCommerce structured data output.  Note, if using a plugin to override structured data already these settings may not take effect.', 'wc_gf_addons' ); ?>
+                                </p>
+                            </div>
+
+							<?php
+
+							woocommerce_wp_select( array(
+								'id'          => 'gravityform-structured_data_override',
+								'label'       => __( 'Override WooCommerce Structured Data?', 'wc_gf_addons' ),
+								'value'       => isset( $gravity_form_data['structured_data_override'] ) ? $gravity_form_data['structured_data_override'] : 'no',
+								'options'     => array(
+									'no'  => __( 'No', 'wc_gf_addons' ),
+									'yes' => __( 'Yes - Override Default WooCommerce Structured Data', 'wc_gf_addons' ),
+								),
+								'description' => false
+							) );
+
+							woocommerce_wp_text_input( array(
+								'data_type'   => 'price',
+								'id'          => 'gravityform-structured_data_low_price',
+								'label'       => __( 'Lowest Price', 'wc_gf_addons' ),
+								'value'       => isset( $gravity_form_data['structured_data_low_price'] ) ? $gravity_form_data['structured_data_low_price'] : '',
+								'placeholder' => __( 'Low Price:', 'wc_gf_addons' ),
+								'description' => __( 'The lowest price of the product.', 'wc_gf_addons' )
+							) );
+
+							woocommerce_wp_text_input( array(
+								'data_type'   => 'price',
+								'id'          => 'gravityform-structured_data_high_price',
+								'label'       => __( 'Highest Price', 'wc_gf_addons' ),
+								'value'       => isset( $gravity_form_data['structured_data_high_price'] ) ? $gravity_form_data['structured_data_high_price'] : '',
+								'placeholder' => __( 'High Price:', 'wc_gf_addons' ),
+								'description' => __( 'The highest price of the product. Leave blank if there is no price range.', 'wc_gf_addons' )
+							) );
+
+							woocommerce_wp_select( array(
+								'id'          => 'gravityform-structured_data_override_type',
+								'label'       => __( 'Calculation Type', 'wc_gf_addons' ),
+								'value'       => isset( $gravity_form_data['structured_data_override_type'] ) ? $gravity_form_data['structured_data_override_type'] : 'append',
+								'options'     => array(
+									'append'    => __( 'Add these prices to the base price of the product', 'wc_gf_addons' ),
+									'overwrite' => __( 'Overwrite the price(s) completely', 'wc_gf_addons' )
+								),
+								'description' => false
+							) );
+
+							?>
 
                         </div>
                     </div>

@@ -16,6 +16,7 @@ class WC_GFPA_Order {
 			$this,
 			'on_get_woocommerce_order_item_get_formatted_meta_data'
 		), 10, 2 );
+
 		add_action( 'woocommerce_after_order_itemmeta', array( $this, 'custom_order_item_meta' ), 10, 3 );
 	}
 
@@ -38,6 +39,10 @@ class WC_GFPA_Order {
 				}
 
 			}
+
+			if ( strpos( $value->key, '_gf_email_hidden_' ) === 0 ) {
+				$value->display_key = str_replace( '_gf_email_hidden_', '', $value->display_key );
+			}
 		}
 
 		return $meta;
@@ -50,18 +55,21 @@ class WC_GFPA_Order {
 
 			$meta_to_display = array();
 			$meta_data_items = $item->get_meta_data();
-
-			foreach ( $meta_data_items as $meta ) {
+			/*
+			foreach ( $meta_data_items as &$meta ) {
 				if ( strpos( $meta->key, '_gf_email_hidden_' ) === 0 ) {
 					$meta->display_key = str_replace( '_gf_email_hidden_', '', $meta->display_key );
 
 					$meta->key     = rawurldecode( (string) $meta->key );
 					$meta->value   = rawurldecode( (string) $meta->value );
+
 					$attribute_key = str_replace( 'attribute_', '', $meta->key );
+
 					$display_key   = wc_attribute_label( $attribute_key, is_callable( array(
 						$this,
 						'get_product'
 					) ) ? $this->get_product() : false );
+
 					$display_value = $meta->value;
 
 					if ( taxonomy_exists( $attribute_key ) ) {
@@ -85,6 +93,7 @@ class WC_GFPA_Order {
 			}
 
 			$meta_data_items = $item->get_meta_data();
+			*/
 
 			foreach ( $meta_data_items as $meta ) {
 				if ( $meta->key == '_gravity_forms_history' ) {

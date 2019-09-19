@@ -1,4 +1,16 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2019.09.16 - version 3.3.9
+    * Update:  Include Structured Data Helper
+            Helpful when the base price of the product is 0, or when you want Google to be aware of the pricing options in your form.
+    * Update:  Added translations for some more admin options which were missing them.
+    * Update:  Hide add to cart buttons via CSS when on a multipage form and not on the last page.
+    * Update:  Update the gform entry metadata before sending notifications so that the WC Order information can be used.
+    * Update:  Fields marked with the Visibility: Hidden attribute will be hidden in the WC Order details.
+    * Update:  Update Dynamic Pricing calculation so that variable product rules can be taken into account.
+    * Update:  Allow for drop down quantity fields.
+    * Update:  Make sure fields with a "0" value are included in the cart, orders, and confirmation emails.
+    * Update:  Fix display issue with custom hidden fields in the Order display screen.
+
 2019.02.27 - version 3.3.8
     * Update:  Include new filter woocommerce_gforms_order_item_meta to allow filtering of order item meta data just prior to it being added to the WC order item.
     * Update:  Perform a check before adding order item meta data to prevent duplicates.  This could only be caused if the filter was being called incorrectly twice for some reason.
