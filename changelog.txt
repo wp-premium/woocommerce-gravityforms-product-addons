@@ -1,4 +1,9 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2020.02.19 - version 3.3.10
+    * Update:  Allow for the CSS class of wc-gforms-hide-from-email to work on Product Fields in the cart.
+    * Update:  Allow for the CSS class of wc-gforms-hide-from-email to work on Product Fields during checkout and the order process.
+    * Update:  WC and WP Version Bump.
+
 2019.09.16 - version 3.3.9
     * Update:  Include Structured Data Helper
             Helpful when the base price of the product is 0, or when you want Google to be aware of the pricing options in your form.
