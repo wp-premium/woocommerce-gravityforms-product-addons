@@ -290,65 +290,10 @@ class WC_GFPA_Main {
 			$product           = wc_get_product( get_the_ID() );
 			$gravity_form_data = $this->get_gravity_form_data( $post->ID );
 			if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
-				wp_enqueue_style( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/css/frontend.css', null );
-
-				gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
-				if ( isset( $gravity_form_data['bulk_id'] ) && ! empty( $gravity_form_data['bulk_id'] ) ) {
-					gravity_form_enqueue_scripts( $gravity_form_data['bulk_id'], false );
-				}
-
-				$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-				if ( WC_GFPA_Compatibility::is_wc_version_gte_2_5() ) {
-					wp_register_script( 'accounting', WC()->plugin_url() . '/assets/js/accounting/accounting' . $suffix . '.js', array( 'jquery' ), '0.4.2' );
-				} else {
-					wp_register_script( 'accounting', WC()->plugin_url() . '/assets/js/admin/accounting' . $suffix . '.js', array( 'jquery' ), '0.4.2' );
-				}
-
-				wp_enqueue_script( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/js/gravityforms-product-addons.js', array(
-					'jquery',
-					'accounting'
-				), '3.2.4', true );
-
-				$prices = array(
-					$product->get_id() => wc_get_price_to_display( $product ),
-				);
-
-				if ( $product->has_child() ) {
-					foreach ( $product->get_children() as $variation_id ) {
-						$variation               = wc_get_product( $variation_id );
-						$prices[ $variation_id ] = wc_get_price_to_display( $variation );
-					}
-				}
-
-				// Accounting
-				wp_localize_script( 'accounting', 'accounting_params', array(
-					'mon_decimal_point' => wc_get_price_decimal_separator()
-				) );
-
-				$wc_gravityforms_params = array(
-					'currency_format_num_decimals' => wc_get_price_decimals(),
-					'currency_format_symbol'       => get_woocommerce_currency_symbol(),
-					'currency_format_decimal_sep'  => esc_attr( wc_get_price_decimal_separator() ),
-					'currency_format_thousand_sep' => esc_attr( wc_get_price_thousand_separator() ),
-					'currency_format'              => esc_attr( str_replace( array( '%1$s', '%2$s' ), array(
-						'%s',
-						'%v'
-					), get_woocommerce_price_format() ) ), // For accounting JS
-					'prices'                       => $prices,
-					'price_suffix'                 => array( $product->get_id() => $product->get_price_suffix() ),
-					'use_ajax'                     => array( $product->get_id() => apply_filters( 'woocommerce_gforms_use_ajax', isset( $gravity_form_data['use_ajax'] ) ? ( $gravity_form_data['use_ajax'] == 'yes' ) : false ) )
-				);
-
-				wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
+				$this->__do_enqueue($product, $gravity_form_data);
 			}
 		} elseif ( is_object( $post ) && isset( $post->post_content ) && ! empty( $post->post_content ) ) {
-			$enqueue = false;
-			$forms   = array();
-			$prices  = array();
-
 			if ( preg_match_all( '/\[product_page[s]? +.*?((id=.+?)|(name=.+?))\]/is', $post->post_content, $matches, PREG_SET_ORDER ) ) {
-				$ajax = false;
 				foreach ( $matches as $match ) {
 					//parsing shortcode attributes
 					$attr       = shortcode_parse_atts( $match[1] );
@@ -358,59 +303,67 @@ class WC_GFPA_Main {
 						$gravity_form_data = $this->get_gravity_form_data( $product_id );
 
 						if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
-							$enqueue = true;
-							gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
-
-							$product                      = wc_get_product( $product_id );
-							$prices[ $product->get_id() ] = wc_get_price_to_display( $product );
-
-							if ( $product->has_child() ) {
-								foreach ( $product->get_children() as $variation_id ) {
-									$variation               = wc_get_product( $variation_id );
-									$prices[ $variation_id ] = wc_get_price_to_display( $variation );
-								}
-							}
+							$p = wc_get_product($product_id);
+							$this->__do_enqueue($p, $gravity_form_data);
 						}
 					}
 				}
-
-				if ( $enqueue ) {
-
-					wp_enqueue_style( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/css/frontend.css', null );
-
-
-					$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-					wp_register_script( 'accounting', WC()->plugin_url() . '/assets/js/accounting/accounting' . $suffix . '.js', array( 'jquery' ), '0.4.2' );
-
-					wp_enqueue_script( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/js/gravityforms-product-addons.js', array(
-						'jquery',
-						'accounting'
-					), '3.2.5' );
-
-					// Accounting
-					wp_localize_script( 'accounting', 'accounting_params', array(
-						'mon_decimal_point' => wc_get_price_decimal_separator()
-					) );
-
-					$wc_gravityforms_params = array(
-						'currency_format_num_decimals' => wc_get_price_decimals(),
-						'currency_format_symbol'       => get_woocommerce_currency_symbol(),
-						'currency_format_decimal_sep'  => esc_attr( wc_get_price_decimal_separator() ),
-						'currency_format_thousand_sep' => esc_attr( wc_get_price_thousand_separator() ),
-						'currency_format'              => esc_attr( str_replace( array(
-							'%1$s',
-							'%2$s'
-						), array( '%s', '%v' ), get_woocommerce_price_format() ) ), // For accounting JS
-						'prices'                       => $prices,
-						'price_suffix'                 => array( $product->get_id() => $product->get_price_suffix() ),
-						'use_ajax'                     => array( $product->get_id() => apply_filters( 'woocommerce_gforms_use_ajax', isset( $gravity_form_data['use_ajax'] ) ? ( $gravity_form_data['use_ajax'] == 'yes' ) : false ) )
-
-					);
-
-					wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
-				}
 			}
 		}
+	}
+
+	private function __do_enqueue($product, $gravity_form_data) {
+		wp_enqueue_style( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/css/frontend.css', null );
+
+		gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
+		if ( isset( $gravity_form_data['bulk_id'] ) && ! empty( $gravity_form_data['bulk_id'] ) ) {
+			gravity_form_enqueue_scripts( $gravity_form_data['bulk_id'], false );
+		}
+
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		if ( WC_GFPA_Compatibility::is_wc_version_gte_2_5() ) {
+			wp_register_script( 'accounting', WC()->plugin_url() . '/assets/js/accounting/accounting' . $suffix . '.js', array( 'jquery' ), '0.4.2' );
+		} else {
+			wp_register_script( 'accounting', WC()->plugin_url() . '/assets/js/admin/accounting' . $suffix . '.js', array( 'jquery' ), '0.4.2' );
+		}
+
+		wp_enqueue_script( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/js/gravityforms-product-addons.js', array(
+			'jquery',
+			'accounting'
+		), '3.2.4', true );
+
+		$prices = array(
+			$product->get_id() => wc_get_price_to_display( $product ),
+		);
+
+		if ( $product->has_child() ) {
+			foreach ( $product->get_children() as $variation_id ) {
+				$variation               = wc_get_product( $variation_id );
+				$prices[ $variation_id ] = wc_get_price_to_display( $variation );
+			}
+		}
+
+		// Accounting
+		wp_localize_script( 'accounting', 'accounting_params', array(
+			'mon_decimal_point' => wc_get_price_decimal_separator()
+		) );
+
+		$wc_gravityforms_params = array(
+			'currency_format_num_decimals' => wc_get_price_decimals(),
+			'currency_format_symbol'       => get_woocommerce_currency_symbol(),
+			'currency_format_decimal_sep'  => esc_attr( wc_get_price_decimal_separator() ),
+			'currency_format_thousand_sep' => esc_attr( wc_get_price_thousand_separator() ),
+			'currency_format'              => esc_attr( str_replace( array( '%1$s', '%2$s' ), array(
+				'%s',
+				'%v'
+			), get_woocommerce_price_format() ) ), // For accounting JS
+			'prices'                       => $prices,
+			'price_suffix'                 => array( $product->get_id() => $product->get_price_suffix() ),
+			'use_ajax'                     => array( $product->get_id() => apply_filters( 'woocommerce_gforms_use_ajax', isset( $gravity_form_data['use_ajax'] ) ? ( $gravity_form_data['use_ajax'] == 'yes' ) : false ) )
+		);
+
+		wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
 	}
 
 	/**
@@ -487,7 +440,7 @@ class WC_GFPA_Main {
 		$product = wc_get_product( $post_id );
 		$data    = false;
 		if ( $product ) {
-			$data = $product->get_meta( '_gravity_form_data' );
+				$data = $product->get_meta( '_gravity_form_data' );
 		}
 
 		$data = apply_filters( 'woocommerce_gforms_get_product_form_data', $data, $post_id, $context );

@@ -80,7 +80,8 @@ class woocommerce_gravityforms_product_form {
 			wp_nonce_field( 'add_to_cart' );
 
 			if ( $disable_anchor != 'yes' ) {
-				echo '<a id="_form_' . $this->form_id . '" href="#_form_' . $this->form_id . '" class="gform_anchor"></a>';
+			    $css = apply_filters('woocommerce_gravityforms_anchor_css', '');
+				echo '<a id="_form_' . $this->form_id . '" href="#_form_' . $this->form_id . '" class="gform_anchor ' . esc_attr($css) . '"></a>';
 			}
 			?>
 
