@@ -65,7 +65,7 @@ class WC_GFPA_Cart {
 			$lead['id'] = uniqid() . time() . rand();
 
 			$products = $this->get_product_fields( $form_meta, $lead );
-			if ( ! empty( $products["products"] ) ) {
+			if ( !empty( $products["products"] ) ) {
 
 				foreach ( $products["products"] as $product ) {
 					$price = GFCommon::to_number( $product["price"] );
@@ -125,7 +125,7 @@ class WC_GFPA_Cart {
 
 	//When the item is being added to the cart.
 	public function add_cart_item_data( $cart_item_meta, $product_id, $variation_id = null ) {
-		if ( ! isset( $_POST['gform_old_submit'] ) ) {
+		if ( !isset( $_POST['gform_old_submit'] ) ) {
 			return $cart_item_meta;
 		}
 
@@ -139,7 +139,7 @@ class WC_GFPA_Cart {
 
 		if ( $gravity_form_data && is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && intval( $gravity_form_data['id'] ) > 0 ) {
 
-			if ( ! class_exists( 'GFFormDisplay' ) ) {
+			if ( !class_exists( 'GFFormDisplay' ) ) {
 				require_once( GFCommon::get_base_path() . "/form_display.php" );
 			}
 
@@ -273,6 +273,12 @@ class WC_GFPA_Cart {
 	}
 
 	public function get_item_data( $other_data, $cart_item ) {
+
+		//Short circuit because subscriptions stores the meta data and automatically adds it back in.  If we allow this to run, we end up with duplicate cart item meta data.
+		if ( isset( $cart_item['subscription_initial_payment'] ) ) {
+			return $other_data;
+		}
+
 		if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
 			//Gravity forms generates errors and warnings.  To prevent these from conflicting with other things, we are going to disable warnings and errors.
 			$err_level = error_reporting();
@@ -281,13 +287,13 @@ class WC_GFPA_Cart {
 			$gravity_form_data = $cart_item['_gravity_form_data'];
 
 			//Ensure GFFormDisplay exists in case developers use hooks that expect it to.
-			if ( ! class_exists( 'GFFormDisplay' ) ) {
+			if ( !class_exists( 'GFFormDisplay' ) ) {
 				require_once( GFCommon::get_base_path() . "/form_display.php" );
 			}
 
 			$form_meta = RGFormsModel::get_form_meta( $gravity_form_data['id'] );
 			$form_meta = gf_apply_filters( array( 'gform_pre_render', $gravity_form_data['id'] ), $form_meta );
-			if ( ! empty( $form_meta ) ) {
+			if ( !empty( $form_meta ) ) {
 
 				$lead = $cart_item['_gravity_form_lead'];
 
@@ -308,7 +314,7 @@ class WC_GFPA_Cart {
 					}
 
 					if ( $field['type'] == 'product' ) {
-						if ( ! in_array( $field['id'], $valid_products ) ) {
+						if ( !in_array( $field['id'], $valid_products ) ) {
 							continue;
 						}
 					}
@@ -316,7 +322,7 @@ class WC_GFPA_Cart {
 					$value   = $this->get_lead_field_value( $lead, $field );
 					$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
 
-					if ( $value === '0' || ( ! empty( $value ) && ! empty( $arr_var ) ) ) {
+					if ( $value === '0' || ( !empty( $value ) && !empty( $arr_var ) ) ) {
 						$display_value     = GFCommon::get_lead_field_display( $field, $value, isset( $lead["currency"] ) ? $lead["currency"] : false, false );
 						$price_adjustement = false;
 						$display_value     = apply_filters( "gform_entry_field_value", $display_value, $field, $lead, $form_meta );
@@ -344,7 +350,7 @@ class WC_GFPA_Cart {
 								$prefix = $hidden ? '_' : '';
 							}
 
-							if ( ! $display_hidden && ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email' ) !== false ) ) {
+							if ( !$display_hidden && ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email' ) !== false ) ) {
 								$prefix        = '_gf_email_hidden_';
 								$display_title = str_replace( '_gf_email_hidden_', '', $display_title );
 								$hidden        = true;
@@ -373,7 +379,7 @@ class WC_GFPA_Cart {
 		global $woocommerce;
 
 
-		if ( ! $valid ) {
+		if ( !$valid ) {
 			return false;
 		}
 
@@ -387,7 +393,7 @@ class WC_GFPA_Cart {
 
 		if ( $gravity_form_data && is_array( $gravity_form_data ) && isset( $gravity_form_data['id'] ) && intval( $gravity_form_data['id'] ) > 0 && isset( $_POST['gform_form_id'] ) && is_numeric( $_POST['gform_form_id'] ) ) {
 
-			if ( ! class_exists( 'GFFormDisplay' ) ) {
+			if ( !class_exists( 'GFFormDisplay' ) ) {
 				require_once( GFCommon::get_base_path() . "/form_display.php" );
 			}
 
@@ -437,7 +443,7 @@ class WC_GFPA_Cart {
 			$_POST['gform_old_submit'] = $_POST['gform_submit'];
 			unset( $_POST['gform_submit'] );
 
-			if ( ! GFFormDisplay::$submission[ $form_id ]['is_valid'] ) {
+			if ( !GFFormDisplay::$submission[ $form_id ]['is_valid'] ) {
 				return false;
 			}
 
@@ -461,11 +467,12 @@ class WC_GFPA_Cart {
 	 * @param $cart_item
 	 */
 	public function order_item_meta( $item, $cart_item_key, $cart_item ) {
+		GFCommon::log_debug( "Gravity Forms Begin Adding Order Item Meta: (#{$cart_item_key}) - Order (#{$item->get_order_id()}) - Item(#{$item->get_id()}" );
+
 		if ( function_exists( 'woocommerce_add_order_item_meta' ) ) {
+			GFCommon::log_debug( "Gravity Forms woocommerce_add_order_item_meta Exists Proceeding.. - Order (#{$item->get_order_id()}) - Item(#{$item->get_id()}" );
 
-			$cart_item_debug = print_r( $cart_item, true );
-			GFCommon::log_debug( "Gravity Forms Add Order Item Meta: (#{$cart_item_key}) - Data (#{$cart_item_debug})" );
-
+			//$cart_item_debug = print_r( $cart_item, true );
 			if ( isset( $cart_item['_gravity_form_lead'] ) && isset( $cart_item['_gravity_form_data'] ) ) {
 
 				$item_id = $item->get_id();
@@ -478,7 +485,7 @@ class WC_GFPA_Cart {
 					return;
 				}
 
-				GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Order Item ID(#{$item_id})" );
+				GFCommon::log_debug( "Gravity Forms Has cart_item['_gravity_form_lead'] and cart_item['_gravity_form_data']: Order Item ID(#{$item_id})" );
 
 				$item->add_meta_data( '_gravity_forms_history', array(
 						'_gravity_form_lead'          => $cart_item['_gravity_form_lead'],
@@ -487,6 +494,8 @@ class WC_GFPA_Cart {
 					)
 				);
 
+				GFCommon::log_debug( "Gravity Forms Added Order Item Gravity Forms History: Order Item ID(#{$item_id})" );
+
 				//Gravity forms generates errors and warnings.  To prevent these from conflicting with other things, we are going to disable warnings and errors.
 				$err_level = error_reporting();
 				error_reporting( 0 );
@@ -494,7 +503,7 @@ class WC_GFPA_Cart {
 				$gravity_form_data = $cart_item['_gravity_form_data'];
 
 				//Ensure GFFormDisplay exists in case developers use hooks that expect it to.
-				if ( ! class_exists( 'GFFormDisplay' ) ) {
+				if ( !class_exists( 'GFFormDisplay' ) ) {
 					require_once( GFCommon::get_base_path() . "/form_display.php" );
 				}
 
@@ -503,7 +512,7 @@ class WC_GFPA_Cart {
 					'gform_pre_render',
 					$gravity_form_data['id']
 				), $form_meta );
-				if ( ! empty( $form_meta ) ) {
+				if ( !empty( $form_meta ) ) {
 					$lead = $cart_item['_gravity_form_lead'];
 					//We reset the lead id to disable caching of the gravity form value by gravity forms.
 					//This cache causes issues with multipule cart line items each with their own form.
@@ -512,7 +521,7 @@ class WC_GFPA_Cart {
 					$products       = $this->get_product_fields( $form_meta, $lead );
 					$valid_products = array();
 					foreach ( $products['products'] as $id => $product ) {
-						if ( ! isset( $product['quantity'] ) ) {
+						if ( !isset( $product['quantity'] ) ) {
 
 						} elseif ( $product['quantity'] ) {
 							$valid_products[] = $id;
@@ -523,12 +532,12 @@ class WC_GFPA_Cart {
 
 						if ( ( isset( $field['inputType'] ) && $field['inputType'] == 'hiddenproduct' ) || ( isset( $field['displayOnly'] ) && $field['displayOnly'] ) || ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email-and-admin' ) !== false ) ) {
 							$field_debug_string = print_r( $field, true );
-							GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Skipping (#{$field_debug_string})" );
+							GFCommon::log_debug( "Gravity Forms Function - Add Order Item Meta: Skipping (#{$field_debug_string})" );
 							continue;
 						}
 
 						if ( $field['type'] == 'product' ) {
-							if ( ! in_array( $field['id'], $valid_products ) ) {
+							if ( !in_array( $field['id'], $valid_products ) ) {
 								GFCommon::log_debug( "Gravity Forms Add Order Item Meta: Skipping Non-Valid Product(#{$field['id']})" );
 								continue;
 							}
@@ -537,7 +546,7 @@ class WC_GFPA_Cart {
 						$value   = $this->get_lead_field_value( $lead, $field );
 						$arr_var = ( is_array( $value ) ) ? implode( '', $value ) : '-';
 
-						if ( $value === '0' || ( ! empty( $value ) && ! empty( $arr_var ) ) ) {
+						if ( $value === '0' || ( !empty( $value ) && !empty( $arr_var ) ) ) {
 							try {
 								$strip_html = true;
 								if ( $field['type'] == 'fileupload' && isset( $lead[ $field['id'] ] ) ) {
@@ -601,7 +610,7 @@ class WC_GFPA_Cart {
 									$prefix = $hidden ? '_' : '';
 								}
 
-								if ( ! $display_hidden && ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email' ) !== false ) ) {
+								if ( !$display_hidden && ( isset( $field->cssClass ) && strpos( $field->cssClass, 'wc-gforms-hide-from-email' ) !== false ) ) {
 									$prefix        = '_gf_email_hidden_';
 									$display_title = str_replace( '_gf_email_hidden_', '', $display_title );
 								}
@@ -617,7 +626,7 @@ class WC_GFPA_Cart {
 									$display_title = $field['id'] . ' -';
 								}
 								$value_debug_string = $prefix . $display_title . ' - Value:' . $display_value;
-								GFCommon::log_debug( "Gravity Forms Add Order Item Meta:(#{$value_debug_string})" );
+								GFCommon::log_debug( "Gravity Forms Adding Order Item Meta:(#{$value_debug_string})" );
 
 								$order_item_meta = array(
 									'name'  => $prefix . $display_title,
@@ -628,16 +637,25 @@ class WC_GFPA_Cart {
 
 								if ( $order_item_meta ) {
 									$item->add_meta_data( $order_item_meta['name'], $order_item_meta['value'] );
+									GFCommon::log_debug( "Gravity Forms Added Order Item Meta:({$order_item_meta['name']} - {$order_item_meta['value']})" );
+								} else {
+									GFCommon::log_debug( "(ERROR) Gravity Forms Did Not Add Order Item Meta, It was empty after the filter" );
 								}
 							} catch ( Exception $e ) {
 								$e_debug_string = $e->getMessage();
-								GFCommon::log_debug( "Gravity Forms Add Order Item Meta Exception:(#{$e_debug_string})" );
+								GFCommon::log_debug( "(ERROR) Gravity Forms Add Order Item Meta Exception:(#{$e_debug_string})" );
 							}
 						}
 					}
+				} else {
+					GFCommon::log_debug( "(ERROR) Gravity Forms Form Meta Did Not Exist - Form ID(#{$gravity_form_data['id']} - Order (#{$item->get_order_id()}) - Item(#{$item->get_id()}" );
 				}
 				error_reporting( $err_level );
+			} else {
+				GFCommon::log_debug( "(NOTE) Gravity Forms Product Addons, Skipping: (#{$cart_item_key}) - Order Item ID (#{$item->get_id()}) - No cart_item data form gravity forms." );
 			}
+		} else {
+			GFCommon::log_debug( "(ERROR) Gravity Forms woocommerce_add_order_item_meta DOES NOT EXIST - Order (#{$item->get_order_id()}) - Item(#{$item->get_id()}" );
 		}
 	}
 
@@ -671,25 +689,25 @@ class WC_GFPA_Cart {
 
 					//if single product, get values from the multiple inputs
 					if ( is_array( $lead_value ) ) {
-						$product_quantity = sizeof( $quantity_field ) == 0 && ! rgar( $field, "disableQuantity" ) ? rgget( $id . ".3", $lead_value ) : $quantity;
+						$product_quantity = sizeof( $quantity_field ) == 0 && !rgar( $field, "disableQuantity" ) ? rgget( $id . ".3", $lead_value ) : $quantity;
 						if ( empty( $product_quantity ) ) {
 							break;
 						}
 
-						if ( ! rgget( $id, $products ) ) {
+						if ( !rgget( $id, $products ) ) {
 							$products[ $id ] = array();
 						}
 
-						$products[ $id ]["name"]     = $use_admin_label && ! rgempty( "adminLabel", $field ) ? $field["adminLabel"] : $lead_value[ $id . ".1" ];
+						$products[ $id ]["name"]     = $use_admin_label && !rgempty( "adminLabel", $field ) ? $field["adminLabel"] : $lead_value[ $id . ".1" ];
 						$products[ $id ]["price"]    = rgar( $lead_value, $id . ".2" );
 						$products[ $id ]["quantity"] = $product_quantity;
-					} else if ( ! empty( $lead_value ) ) {
+					} else if ( !empty( $lead_value ) ) {
 
 						if ( empty( $quantity ) ) {
 							break;
 						}
 
-						if ( ! rgar( $products, $id ) ) {
+						if ( !rgar( $products, $id ) ) {
 							$products[ $id ] = array();
 						}
 
@@ -700,7 +718,7 @@ class WC_GFPA_Cart {
 							list( $name, $price ) = explode( "|", $lead_value );
 						}
 
-						$products[ $id ]["name"]     = ! $use_choice_text ? $name : RGFormsModel::get_choice_text( $field, $name );
+						$products[ $id ]["name"]     = !$use_choice_text ? $name : RGFormsModel::get_choice_text( $field, $name );
 						$products[ $id ]["price"]    = $price;
 						$products[ $id ]["quantity"] = $quantity;
 						$products[ $id ]["options"]  = array();
@@ -714,7 +732,7 @@ class WC_GFPA_Cart {
 							if ( is_array( $option_value ) ) {
 								foreach ( $option_value as $value ) {
 									$option_info = GFCommon::get_option_info( $value, $option, $use_choice_text );
-									if ( ! empty( $option_info ) ) {
+									if ( !empty( $option_info ) ) {
 										$products[ $id ]["options"][] = array(
 											"field_label"  => rgar( $option, "label" ),
 											"option_name"  => rgar( $option_info, "name" ),
@@ -723,7 +741,7 @@ class WC_GFPA_Cart {
 										);
 									}
 								}
-							} else if ( ! empty( $option_value ) ) {
+							} else if ( !empty( $option_value ) ) {
 								$option_info                  = GFCommon::get_option_info( $option_value, $option, $use_choice_text );
 								$products[ $id ]["options"][] = array(
 									"field_label"  => rgar( $option, "label" ),
@@ -741,7 +759,7 @@ class WC_GFPA_Cart {
 		$shipping_field = GFCommon::get_fields_by_type( $form, array( "shipping" ) );
 		$shipping_price = $shipping_name = "";
 
-		if ( ! empty( $shipping_field ) && ! RGFormsModel::is_field_hidden( $form, $shipping_field[0], array(), $lead ) ) {
+		if ( !empty( $shipping_field ) && !RGFormsModel::is_field_hidden( $form, $shipping_field[0], array(), $lead ) ) {
 			$shipping_price = $this->get_lead_field_value( $lead, $shipping_field[0] );
 			$shipping_name  = $shipping_field[0]["label"];
 			if ( $shipping_field[0]["inputType"] != "singleshipping" ) {
@@ -811,7 +829,7 @@ class WC_GFPA_Cart {
 		}
 
 		$do_action = ( $logic['logicType'] == 'all' && $match_count == sizeof( $logic['rules'] ) ) || ( $logic['logicType'] == 'any' && $match_count > 0 );
-		$is_hidden = ( $do_action && $logic['actionType'] == 'hide' ) || ( ! $do_action && $logic['actionType'] == 'show' );
+		$is_hidden = ( $do_action && $logic['actionType'] == 'hide' ) || ( !$do_action && $logic['actionType'] == 'show' );
 
 		return $is_hidden ? 'hide' : 'show';
 	}
@@ -910,28 +928,28 @@ class WC_GFPA_Cart {
 	private function disable_gform_after_submission_hooks( $form_id ) {
 		global $wp_filter, $wp_actions;
 		$tag = 'gform_after_submission';
-		if ( ! isset( $this->_wp_filters[ $tag ] ) ) {
+		if ( !isset( $this->_wp_filters[ $tag ] ) ) {
 			if ( isset( $wp_filter[ $tag ] ) ) {
 				$this->_wp_filters[ $tag ] = $wp_filter[ $tag ];
 				unset( $wp_filter[ $tag ] );
 			}
 		}
 		$tag = "gform_after_submission_{$form_id}";
-		if ( ! isset( $this->_wp_filters[ $tag ] ) ) {
+		if ( !isset( $this->_wp_filters[ $tag ] ) ) {
 			if ( isset( $wp_filter[ $tag ] ) ) {
 				$this->_wp_filters[ $tag ] = $wp_filter[ $tag ];
 				unset( $wp_filter[ $tag ] );
 			}
 		}
 		$tag = 'gform_entry_post_save';
-		if ( ! isset( $this->_wp_filters[ $tag ] ) ) {
+		if ( !isset( $this->_wp_filters[ $tag ] ) ) {
 			if ( isset( $wp_filter[ $tag ] ) ) {
 				$this->_wp_filters[ $tag ] = $wp_filter[ $tag ];
 				unset( $wp_filter[ $tag ] );
 			}
 		}
 		$tag = "gform_entry_post_save_{$form_id}";
-		if ( ! isset( $this->_wp_filters[ $tag ] ) ) {
+		if ( !isset( $this->_wp_filters[ $tag ] ) ) {
 			if ( isset( $wp_filter[ $tag ] ) ) {
 				$this->_wp_filters[ $tag ] = $wp_filter[ $tag ];
 				unset( $wp_filter[ $tag ] );
