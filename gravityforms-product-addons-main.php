@@ -192,8 +192,9 @@ class WC_GFPA_Main {
 			$gravity_form_data['disable_label_total']    = 'yes';
 
 			$product_form->get_form( $gravity_form_data );
+			echo '<div class="clear"></div>';
 		}
-		echo '<div class="clear"></div>';
+
 	}
 
 
@@ -213,15 +214,15 @@ class WC_GFPA_Main {
 				//parsing shortcode attributes
 				$attr       = shortcode_parse_atts( $match[1] );
 				$product_id = isset( $attr['ids'] ) ? $attr['ids'] : false;
-				if ( ! empty( $product_id ) ) {
+				if ( !empty( $product_id ) ) {
 					$product_ids = array_merge( $product_ids, array_map( 'trim', explode( ',', $product_id ) ) );
 				}
 			}
-		} elseif ( $wp_query && ! empty( $wp_query->posts ) ) {
+		} elseif ( $wp_query && !empty( $wp_query->posts ) ) {
 			$product_ids = wp_list_pluck( $wp_query->posts, 'ID' );
 		}
 
-		if ( ! empty( $product_ids ) ) {
+		if ( !empty( $product_ids ) ) {
 			foreach ( $product_ids as $post_id ) {
 				$_product = wc_get_product( $post_id );
 				if ( $_product ) {
@@ -230,7 +231,7 @@ class WC_GFPA_Main {
 					if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
 						gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
 
-						if ( isset( $gravity_form_data['bulk_id'] ) && ! empty( $gravity_form_data['bulk_id'] ) ) {
+						if ( isset( $gravity_form_data['bulk_id'] ) && !empty( $gravity_form_data['bulk_id'] ) ) {
 							gravity_form_enqueue_scripts( $gravity_form_data['bulk_id'], false );
 						}
 
@@ -277,6 +278,8 @@ class WC_GFPA_Main {
 				'use_ajax'                     => $use_ajax,
 			);
 
+			$wc_gravityforms_params = apply_filters('woocommerce_gforms_quickview_script_params', $wc_gravityforms_params, $product_ids);
+
 			wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
 		}
 
@@ -290,21 +293,21 @@ class WC_GFPA_Main {
 			$product           = wc_get_product( get_the_ID() );
 			$gravity_form_data = $this->get_gravity_form_data( $post->ID );
 			if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
-				$this->__do_enqueue($product, $gravity_form_data);
+				$this->__do_enqueue( $product, $gravity_form_data );
 			}
-		} elseif ( is_object( $post ) && isset( $post->post_content ) && ! empty( $post->post_content ) ) {
+		} elseif ( is_object( $post ) && isset( $post->post_content ) && !empty( $post->post_content ) ) {
 			if ( preg_match_all( '/\[product_page[s]? +.*?((id=.+?)|(name=.+?))\]/is', $post->post_content, $matches, PREG_SET_ORDER ) ) {
 				foreach ( $matches as $match ) {
 					//parsing shortcode attributes
 					$attr       = shortcode_parse_atts( $match[1] );
 					$product_id = isset( $attr['id'] ) ? $attr['id'] : false;
 
-					if ( ! empty( $product_id ) ) {
+					if ( !empty( $product_id ) ) {
 						$gravity_form_data = $this->get_gravity_form_data( $product_id );
 
 						if ( $gravity_form_data && is_array( $gravity_form_data ) ) {
-							$p = wc_get_product($product_id);
-							$this->__do_enqueue($p, $gravity_form_data);
+							$p = wc_get_product( $product_id );
+							$this->__do_enqueue( $p, $gravity_form_data );
 						}
 					}
 				}
@@ -312,11 +315,11 @@ class WC_GFPA_Main {
 		}
 	}
 
-	private function __do_enqueue($product, $gravity_form_data) {
+	private function __do_enqueue( $product, $gravity_form_data ) {
 		wp_enqueue_style( 'wc-gravityforms-product-addons', WC_GFPA_Main::plugin_url() . '/assets/css/frontend.css', null );
 
 		gravity_form_enqueue_scripts( $gravity_form_data['id'], false );
-		if ( isset( $gravity_form_data['bulk_id'] ) && ! empty( $gravity_form_data['bulk_id'] ) ) {
+		if ( isset( $gravity_form_data['bulk_id'] ) && !empty( $gravity_form_data['bulk_id'] ) ) {
 			gravity_form_enqueue_scripts( $gravity_form_data['bulk_id'], false );
 		}
 
@@ -339,8 +342,10 @@ class WC_GFPA_Main {
 
 		if ( $product->has_child() ) {
 			foreach ( $product->get_children() as $variation_id ) {
-				$variation               = wc_get_product( $variation_id );
-				$prices[ $variation_id ] = wc_get_price_to_display( $variation );
+				$variation = wc_get_product( $variation_id );
+				if ( $variation ) {
+					$prices[ $variation_id ] = wc_get_price_to_display( $variation );
+				}
 			}
 		}
 
@@ -363,6 +368,8 @@ class WC_GFPA_Main {
 			'use_ajax'                     => array( $product->get_id() => apply_filters( 'woocommerce_gforms_use_ajax', isset( $gravity_form_data['use_ajax'] ) ? ( $gravity_form_data['use_ajax'] == 'yes' ) : false ) )
 		);
 
+		$wc_gravityforms_params = apply_filters('woocommerce_gforms_script_params', $wc_gravityforms_params, $product->get_id());
+
 		wp_localize_script( 'wc-gravityforms-product-addons', 'wc_gravityforms_params', $wc_gravityforms_params );
 	}
 
@@ -380,11 +387,11 @@ class WC_GFPA_Main {
 				$html = '';
 			}
 
-			if ( isset( $gravity_form_data['price_before'] ) && ! empty( $gravity_form_data['price_before'] ) ) {
+			if ( isset( $gravity_form_data['price_before'] ) && !empty( $gravity_form_data['price_before'] ) ) {
 				$html = '<span class="woocommerce-price-before">' . $gravity_form_data['price_before'] . ' </span>' . $html;
 			}
 
-			if ( isset( $gravity_form_data['price_after'] ) && ! empty( $gravity_form_data['price_after'] ) ) {
+			if ( isset( $gravity_form_data['price_after'] ) && !empty( $gravity_form_data['price_after'] ) ) {
 				$html .= '<span class="woocommerce-price-after"> ' . $gravity_form_data['price_after'] . '</span>';
 			}
 		}
@@ -406,11 +413,11 @@ class WC_GFPA_Main {
 				$html = '';
 			}
 
-			if ( isset( $gravity_form_data['price_before'] ) && ! empty( $gravity_form_data['price_before'] ) ) {
+			if ( isset( $gravity_form_data['price_before'] ) && !empty( $gravity_form_data['price_before'] ) ) {
 				$html = '<span class="woocommerce-price-before">' . $gravity_form_data['price_before'] . ' </span>' . $html;
 			}
 
-			if ( isset( $gravity_form_data['price_after'] ) && ! empty( $gravity_form_data['price_after'] ) ) {
+			if ( isset( $gravity_form_data['price_after'] ) && !empty( $gravity_form_data['price_after'] ) ) {
 				$html .= '<span class="woocommerce-price-after"> ' . $gravity_form_data['price_after'] . '</span>';
 			}
 		}
@@ -440,7 +447,7 @@ class WC_GFPA_Main {
 		$product = wc_get_product( $post_id );
 		$data    = false;
 		if ( $product ) {
-				$data = $product->get_meta( '_gravity_form_data' );
+			$data = $product->get_meta( '_gravity_form_data' );
 		}
 
 		$data = apply_filters( 'woocommerce_gforms_get_product_form_data', $data, $post_id, $context );

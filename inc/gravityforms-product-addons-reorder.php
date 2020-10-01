@@ -83,6 +83,14 @@ class WC_GFPA_Reorder {
 		return $valid;
 	}
 
+
+	/**
+	 * @param array $data
+	 * @param WC_Order_Item $item
+	 * @param WC_Order $order
+	 *
+	 * @return mixed
+	 */
 	public function on_get_order_again_cart_item_data( $data, $item, $order ) {
 
 		//Note regular add to cart validation is disabled in the gravityforms-product-addons-cart.php during reorder.
@@ -92,6 +100,10 @@ class WC_GFPA_Reorder {
 			return $data;
 		}
 
+		$order_id = $order->get_id();
+		$order_item_id = $item->get_id();
+
+		GFCommon::log_debug( "Gravity Forms Product Addons: Getting Order Again Item Data (#{$order_id}), Item: (#{$order_item_id})" );
 		$history = isset( $item['gravity_forms_history'] ) ? maybe_unserialize( $item['gravity_forms_history'] ) : false;
 		if ( ! $history ) {
 			//Not sure why exactly WC strips out the leading _, let's check for it anyways
@@ -103,8 +115,11 @@ class WC_GFPA_Reorder {
 			$gdata = isset( $history['_gravity_form_data'] ) ? $history['_gravity_form_data'] : false;
 
 			if ( $glead && $gdata ) {
+				GFCommon::log_debug( "Gravity Forms Product Addons: Order Again Item Data - History Found (#{$order_id}), Item: (#{$order_item_id})" );
 				$data['_gravity_form_lead'] = $glead;
 				$data['_gravity_form_data'] = $gdata;
+			} else {
+				GFCommon::log_debug( "Gravity Forms Product Addons: Order Again Item Data - No _gravity_form_lead or _gravity_form_data found (#{$order_id}), Item: (#{$order_item_id})" );
 			}
 
 			foreach ( $_POST as $key => $value ) {
@@ -117,6 +132,8 @@ class WC_GFPA_Reorder {
 				$_POST[ 'input_' . str_replace( '.', '_', $key ) ] = $value;
 			}
 
+		} else {
+			GFCommon::log_debug( "Gravity Forms Product Addons: Order Again Item Data - No Gravity Forms History Found (#{$order_id}), Item: (#{$order_item_id})" );
 		}
 
 		return $data;
@@ -148,6 +165,11 @@ class WC_GFPA_Reorder {
 				if ( $field->get_input_type() == 'fileupload' ) {
 					continue;
 				}
+
+				if ( $field->get_input_type() == 'email' ) {
+					$field->emailConfirmEnabled = false;
+				}
+
 
 
 				$inputs = $field->get_entry_inputs();
