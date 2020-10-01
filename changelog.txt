@@ -1,4 +1,21 @@
 *** Gravity Forms Product Add-Ons Changelog ***
+2020.08.18 - version 3.3.15
+    * New:  Added filter, woocommerce_gforms_script_params, to allow modification of the script params object enqueued for the forms front end.
+    * Update:  Added additional logging when an order is being created.
+
+2020.06.25 - version 3.3.14
+    * Update:  WC and WP version compatibility tags.
+    * Fix:  Fix issue with email fields which require email confirmation on subscription renewal.
+    * Fix:  Short circuit get_item_data if subscription_initial_payment is present on the cart item because subscriptions stores the meta data and automatically adds it back in.
+                If we allow this to run, we end up with duplicate cart item meta data.
+
+2020.05.06 - version 3.3.12
+    * Fix:  Make sure variation exists before attempting to get the price.
+    * Update:  WC and WP version compatibility tags.
+
+2020.04.15 - version 3.3.11
+    * Update:  WC and WP Version Bump.
+
 2020.02.19 - version 3.3.10
     * Update:  Allow for the CSS class of wc-gforms-hide-from-email to work on Product Fields in the cart.
     * Update:  Allow for the CSS class of wc-gforms-hide-from-email to work on Product Fields during checkout and the order process.
